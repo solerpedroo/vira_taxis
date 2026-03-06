@@ -441,14 +441,16 @@
           </div>
         </div>
 
-        <!--
-          RESULTADO DE COTAÇÃO
-          Exibe o valor estimado quando todos os campos estão preenchidos.
-          REGRA DE NEGÓCIO: mostra apenas o valor final — SEM o cálculo (km × tarifa).
-        -->
-        <div class="quote-result" id="quoteResult" role="status" aria-live="polite">
-          <p class="quote-result__label">Estimativa para sua viagem</p>
-          <div class="quote-result__body">
+        <!-- Ações -->
+        <div class="submit-row">
+          <button type="button" class="btn btn--primary btn--full btn--lg" id="quoteBtn">
+            <i class="fa-solid fa-calculator"></i>
+            <span class="btn-text">Realizar cotação</span>
+          </button>
+
+          <!-- Resultado da cotação (aparece após clicar em Realizar cotação) -->
+          <div class="quote-result" id="quoteResult" role="status" aria-live="polite">
+            <p class="quote-result__label">Estimativa para sua viagem</p>
             <div class="quote-result__value">
               <sup>R$</sup><span id="quoteAmount">--</span>
             </div>
@@ -459,21 +461,14 @@
               </div>
               <span class="quote-result__note" id="quoteDistNote"></span>
             </div>
+            <p class="quote-result__disclaimer">
+              Valor estimado sujeito a confirmação pela nossa equipe via WhatsApp.
+            </p>
+            <a href="#" class="btn btn--primary btn--full" id="whatsappBtn" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span class="btn-text">Agendar via WhatsApp</span>
+            </a>
           </div>
-          <p class="quote-result__disclaimer">
-            Valor estimado sujeito a confirmação pela nossa equipe via WhatsApp.
-          </p>
-        </div>
-
-        <!-- Submit -->
-        <div class="submit-row">
-          <button type="submit" class="btn btn--primary btn--full btn--lg" id="submitBtn">
-            <i class="fa-brands fa-whatsapp"></i>
-            <span class="btn-text">Solicitar via WhatsApp</span>
-          </button>
-          <p class="submit-disclaimer">
-            Ao enviar, você será redirecionado ao WhatsApp para confirmar com nossa equipe.
-          </p>
         </div>
 
       </form>

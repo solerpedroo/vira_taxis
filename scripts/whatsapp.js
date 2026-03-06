@@ -50,11 +50,14 @@ const WhatsApp = (() => {
     );
   }
 
-  function redirect(data) {
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage(data))}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+  function getUrl(data) {
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage(data))}`;
   }
 
-  return { redirect, buildMessage };
+  function redirect(data) {
+    window.open(getUrl(data), '_blank', 'noopener,noreferrer');
+  }
+
+  return { redirect, buildMessage, getUrl };
 
 })();

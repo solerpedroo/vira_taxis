@@ -127,93 +127,41 @@ document.addEventListener('DOMContentLoaded', () => {
       vehicleTag.classList.toggle('vehicle-tag--van',    info.requiresVan);
     }
     vanNotice?.classList.toggle('show', info.requiresVan);
-    tryUpdateQuote();
   }
   btnMinus?.addEventListener('click', () => updatePassengers(passengers - 1));
   btnPlus?.addEventListener('click',  () => updatePassengers(passengers + 1));
   updatePassengers(1);
 
-  /* ── 9. COTAÇÃO AUTOMÁTICA ─────────────────────────────────
-     Exibe o VALOR ESTIMADO quando todos os campos estão
-     preenchidos. NUNCA exibe tarifa/km ou o cálculo.
-  ─────────────────────────────────────────────────────────── */
-  const quoteResult     = $('#quoteResult');
-  const quoteAmount     = $('#quoteAmount');
-  const quoteVehicleIcon  = $('#quoteVehicleIcon');
+  /* ── 9. COTAÇÃO ─────────────────────────────────────────── */
+  const quoteResult      = $('#quoteResult');
+  const quoteAmount      = $('#quoteAmount');
+  const quoteVehicleIcon = $('#quoteVehicleIcon');
   const quoteVehicleLabel = $('#quoteVehicleLabel');
-  const quoteDistNote   = $('#quoteDistNote');
+  const quoteDistNote    = $('#quoteDistNote');
 
-  // KM padrão por origem/destino (estimativa sem Maps API)
-  // Quando Google Maps estiver ativo, _currentKm é atualizado via evento
   let _currentKm = null;
 
-  /** Tenta estimar km a partir do texto (fallback sem Maps) */
   function _guessKm() {
-    // Sem Maps API: tenta extrair número explícito no campo origem ou destino
     const origin = $('#origin')?.value ?? '';
     const dest   = $('#destination')?.value ?? '';
     const match  = (origin + dest).match(/(\d+)\s*km/i);
     if (match) return parseInt(match[1], 10);
-    // Fallback: se ambos os campos têm endereços reais, usa 15km como referência
     if (origin.length >= 10 && dest.length >= 10) return 15;
     return null;
   }
 
-  function tryUpdateQuote() {
-    if (!quoteResult) return;
-
-    const name  = $('#name')?.value.trim()       ?? '';
-    const phone = $('#phone')?.value             ?? '';
-    const orig  = $('#origin')?.value.trim()     ?? '';
-    const dest  = $('#destination')?.value.trim()?? '';
-    const date  = $('#date')?.value              ?? '';
-    const time  = $('#time')?.value              ?? '';
-    const lug   = $('#luggage')?.value           ?? '0';
-
-    // Só mostra cotação se os campos principais estão preenchidos
-    const mainFilled = name.length >= 3
-      && phone.replace(/\D/g,'').length >= 10
-      && orig.length >= 5
-      && dest.length >= 5
-      && date
-      && time;
-
-    if (!mainFilled) {
-      quoteResult?.classList.remove('show');
-      return;
-    }
-
-    const km = _currentKm || _guessKm();
-    const info = Pricing.getVehicleInfo(passengers);
-
-    quoteResult?.classList.add('show');
-    if (quoteVehicleIcon)  quoteVehicleIcon.className  = `fa-solid ${info.vehicleIcon}`;
-    if (quoteVehicleLabel) quoteVehicleLabel.textContent = info.vehicleLabel;
-
-    if (!km) {
-      // Sem Maps API — mostra que está pronto para enviar, preço confirmado pela equipe
-      if (quoteAmount) quoteAmount.textContent = '--';
-      if (quoteDistNote) quoteDistNote.textContent = 'Preço confirmado via WhatsApp';
-      return;
-    }
-
-    const result = Pricing.calculate(km, passengers);
-    // Exibe APENAS o valor final — sem tarifa/km
-    if (quoteAmount)   quoteAmount.textContent   = Pricing.formatAmount(result.total);
-    if (quoteDistNote) quoteDistNote.textContent = `~${km} km estimados`;
-  }
-
-  // Observa mudanças nos campos do formulário
-  ['name','phone','origin','destination','date','time','luggage'].forEach(id => {
-    $('#' + id)?.addEventListener('input', tryUpdateQuote);
-    $('#' + id)?.addEventListener('change', tryUpdateQuote);
-  });
-
   // Atualiza km quando Maps API retorna distância real
   document.addEventListener('maps:distance', e => {
     _currentKm = e.detail.km;
-    tryUpdateQuote();
   });
+
+  // Ao alterar campos, esconde a cotação (usuário deve clicar em Realizar cotação novamente)
+  ['name','phone','origin','destination','date','time','luggage'].forEach(id => {
+    $('#' + id)?.addEventListener('input', () => quoteResult?.classList.remove('show'));
+    $('#' + id)?.addEventListener('change', () => quoteResult?.classList.remove('show'));
+  });
+  btnMinus?.addEventListener('click', () => quoteResult?.classList.remove('show'));
+  btnPlus?.addEventListener('click', () => quoteResult?.classList.remove('show'));
 
   /* ── 10. VALIDAÇÃO INLINE ──────────────────────────────── */
   function setFieldError(id, msg) {
@@ -239,12 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ── 11. SUBMIT ────────────────────────────────────────── */
-  const form      = $('#quoteForm');
-  const submitBtn = $('#submitBtn');
+  /* ── 11. REALIZAR COTAÇÃO + AGENDAR VIA WHATSAPP ───────── */
+  const form       = $('#quoteForm');
+  const quoteBtn   = $('#quoteBtn');
+  const whatsappBtn = $('#whatsappBtn');
 
   form?.addEventListener('submit', e => {
     e.preventDefault();
+    quoteBtn?.click();
+  });
+
+  quoteBtn?.addEventListener('click', () => {
     clearErrors();
 
     const raw = {
@@ -261,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const { valid, errors } = Validations.validateForm(raw);
     if (!valid) {
       Object.entries(errors).forEach(([f,m]) => setFieldError(f, m));
-      form.querySelector('.field-error')
+      form?.querySelector('.field-error')
         ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
@@ -272,26 +225,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const km      = MapsService.isActive() ? MapsService.getDistanceKm() : (_currentKm || _guessKm());
     const pricing = km ? Pricing.calculate(km, pax) : {};
 
-    submitBtn.classList.add('loading');
-    submitBtn.disabled = true;
+    quoteBtn.classList.add('loading');
+    quoteBtn.disabled = true;
+
+    quoteResult?.classList.add('show');
+
+    if (quoteVehicleIcon)  quoteVehicleIcon.className  = `fa-solid ${info.vehicleIcon}`;
+    if (quoteVehicleLabel) quoteVehicleLabel.textContent = info.vehicleLabel;
+    if (quoteAmount) quoteAmount.textContent = km ? Pricing.formatAmount(pricing.total) : '--';
+    if (quoteDistNote) quoteDistNote.textContent = km ? `~${km} km estimados` : 'Preço confirmado via WhatsApp';
+
+    whatsappBtn?.setAttribute('href', WhatsApp.getUrl({
+      name: raw.name, phone: raw.phone,
+      origin: raw.origin, destination: raw.destination,
+      date: raw.date, time: raw.time,
+      passengers: pax, luggage,
+      vehicleLabel: info.vehicleLabel,
+      requiresVan: info.requiresVan,
+      estimatedKm: km,
+      total: pricing.total ?? null,
+      pricePerKm: pricing.pricePerKm ?? null,
+    }));
+
+    quoteResult?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
     setTimeout(() => {
-      submitBtn.classList.remove('loading');
-      submitBtn.disabled = false;
-      WhatsApp.redirect({
-        name: raw.name, phone: raw.phone,
-        origin: raw.origin, destination: raw.destination,
-        date: raw.date, time: raw.time,
-        passengers: pax, luggage,
-        vehicleLabel: info.vehicleLabel,
-        requiresVan: info.requiresVan,
-        estimatedKm: km,
-        total: pricing.total ?? null,
-        pricePerKm: pricing.pricePerKm ?? null,
-      });
-      MapsService.reset();
-      _currentKm = null;
-    }, 700);
+      quoteBtn.classList.remove('loading');
+      quoteBtn.disabled = false;
+    }, 400);
   });
 
   /* ── 12. WHATSAPP FLOAT ────────────────────────────────── */
