@@ -135,7 +135,7 @@
             <div class="dot dot--origin"></div>
             <div class="route-stop__info">
               <span class="route-stop__label">Origem</span>
-              <span class="route-stop__addr">Shopping Iguatemi, Campinas</span>
+              <span class="route-stop__addr">Royal Palm Plaza Resort, Campinas</span>
             </div>
           </div>
           <div class="route-line"></div>
@@ -187,12 +187,12 @@
       <span class="stat-item__label">Corridas realizadas</span>
     </div>
     <div class="stat-item reveal stagger-3">
-      <strong class="stat-item__num" data-target="98" data-suffix="%">98%</strong>
+      <strong class="stat-item__num" data-target="100" data-suffix="%">100%</strong>
       <span class="stat-item__label">Clientes satisfeitos</span>
     </div>
     <div class="stat-item reveal stagger-4">
       <strong class="stat-item__num" data-target="24" data-suffix="h">24h</strong>
-      <span class="stat-item__label">Suporte disponível</span>
+      <span class="stat-item__label">Viagens à qualquer hora</span>
     </div>
   </div>
 </div>
@@ -393,22 +393,14 @@
             <label class="form-label" for="date">
               <i class="fa-solid fa-calendar"></i> Data
             </label>
-            <button type="button" id="dateTrigger" class="form-input picker-trigger" aria-haspopup="dialog">
-              <span id="dateDisplay">Selecione a data</span>
-              <i class="fa-solid fa-calendar"></i>
-            </button>
-            <input type="hidden" id="date" name="date" />
+            <input type="date" id="date" name="date" class="form-input" min="" />
             <span class="field-msg" id="err-date" role="alert"></span>
           </div>
           <div class="form-group">
-            <label class="form-label" for="timeTrigger">
+            <label class="form-label" for="time">
               <i class="fa-solid fa-clock"></i> Horário
             </label>
-            <button type="button" id="timeTrigger" class="form-input picker-trigger" aria-haspopup="dialog">
-              <span id="timeDisplay">Selecione o horário</span>
-              <i class="fa-solid fa-clock"></i>
-            </button>
-            <input type="hidden" id="time" name="time" />
+            <input type="time" id="time" name="time" class="form-input" />
             <span class="field-msg" id="err-time" role="alert"></span>
           </div>
         </div>
@@ -735,54 +727,42 @@
       <p class="section-sub">Não encontrou o que procura? Fale conosco pelo WhatsApp de Campinas.</p>
     </div>
     <div class="faq__list reveal stagger-1">
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          Como funciona o agendamento?<i class="fa-solid fa-chevron-down"></i>
-        </button>
+      <details class="faq-item">
+        <summary class="faq-question">Como funciona o agendamento?<i class="fa-solid fa-chevron-down"></i></summary>
         <div class="faq-answer">
           <p>Preencha o formulário com os dados da sua viagem. Você será redirecionado ao WhatsApp com tudo pré-preenchido. Nossa equipe em Campinas responde em minutos com a confirmação e os detalhes da corrida.</p>
         </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          Como é calculado o preço?<i class="fa-solid fa-chevron-down"></i>
-        </button>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">Como é calculado o preço?<i class="fa-solid fa-chevron-down"></i></summary>
         <div class="faq-answer">
           <p>O valor é calculado com base na distância percorrida e no tipo de veículo. Nossa equipe confirma a proposta pelo WhatsApp antes do embarque — garantindo que você saiba exatamente o que vai pagar.</p>
         </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          Vocês atendem Viracopos?<i class="fa-solid fa-chevron-down"></i>
-        </button>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">Vocês atendem Viracopos?<i class="fa-solid fa-chevron-down"></i></summary>
         <div class="faq-answer">
           <p>Sim! Transfer para o Aeroporto Internacional de Viracopos é um dos nossos serviços mais solicitados. Monitoramos o voo em tempo real para ajustar o horário em caso de atrasos ou adiantamentos.</p>
         </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          Qual a diferença entre Sedan e Van?<i class="fa-solid fa-chevron-down"></i>
-        </button>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">Qual a diferença entre Sedan e Van?<i class="fa-solid fa-chevron-down"></i></summary>
         <div class="faq-answer">
           <p>O <strong>Sedan</strong> comporta até 4 passageiros — ideal para deslocamentos executivos e cotidianos. O <strong>Carro 7 lugares</strong> é indicado para grupos de 5 a 6 passageiros, viagens com muita bagagem ou eventos em Campinas.</p>
         </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          Atendem madrugada e feriados?<i class="fa-solid fa-chevron-down"></i>
-        </button>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">Atendem madrugada e feriados?<i class="fa-solid fa-chevron-down"></i></summary>
         <div class="faq-answer">
           <p>Operamos 24 horas por dia, 7 dias por semana, incluindo feriados. Para corridas de madrugada ou em datas especiais em Campinas, recomendamos o agendamento com antecedência.</p>
         </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          Quais formas de pagamento?<i class="fa-solid fa-chevron-down"></i>
-        </button>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">Quais formas de pagamento?<i class="fa-solid fa-chevron-down"></i></summary>
         <div class="faq-answer">
           <p>Aceitamos Pix, cartão de crédito, débito e dinheiro. Para clientes corporativos com contrato mensal em Campinas, disponibilizamos faturamento via boleto.</p>
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -920,54 +900,6 @@
 <script src="scripts/whatsapp.js"></script>
 <script src="scripts/maps.js"></script>
 <script src="scripts/ui.js"></script>
-
-<!-- ══════════════════════════════════════
-     DATE PICKER MODAL
-══════════════════════════════════════ -->
-<div class="picker-overlay" id="datePickerOverlay" role="dialog" aria-modal="true" aria-label="Selecionar data" hidden>
-  <div class="picker-modal">
-    <div class="picker-modal__header">
-      <button type="button" class="picker-nav" id="datePrevMonth" aria-label="Mês anterior"><i class="fa-solid fa-chevron-left"></i></button>
-      <span class="picker-modal__title" id="calMonthYear"></span>
-      <button type="button" class="picker-nav" id="dateNextMonth" aria-label="Próximo mês"><i class="fa-solid fa-chevron-right"></i></button>
-    </div>
-    <div class="cal-weekdays">
-      <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
-    </div>
-    <div class="cal-grid" id="calGrid"></div>
-    <div class="picker-modal__footer">
-      <button type="button" class="btn btn--outline btn--sm" id="dateCancelBtn">Cancelar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     TIME PICKER MODAL
-══════════════════════════════════════ -->
-<div class="picker-overlay" id="timePickerOverlay" role="dialog" aria-modal="true" aria-label="Selecionar horário" hidden>
-  <div class="picker-modal picker-modal--time">
-    <div class="picker-modal__header">
-      <span class="picker-modal__title">Selecione o horário</span>
-    </div>
-    <div class="time-picker-body">
-      <div class="time-col" id="hourCol">
-        <button class="time-arr" data-dir="-1" data-unit="h"><i class="fa-solid fa-chevron-up"></i></button>
-        <span class="time-display" id="hourDisplay">08</span>
-        <button class="time-arr" data-dir="1" data-unit="h"><i class="fa-solid fa-chevron-down"></i></button>
-      </div>
-      <span class="time-sep">:</span>
-      <div class="time-col" id="minCol">
-        <button class="time-arr" data-dir="-1" data-unit="m"><i class="fa-solid fa-chevron-up"></i></button>
-        <span class="time-display" id="minDisplay">00</span>
-        <button class="time-arr" data-dir="1" data-unit="m"><i class="fa-solid fa-chevron-down"></i></button>
-      </div>
-    </div>
-    <div class="picker-modal__footer">
-      <button type="button" class="btn btn--outline btn--sm" id="timeCancelBtn">Cancelar</button>
-      <button type="button" class="btn btn--primary btn--sm" id="timeConfirmBtn">Confirmar</button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
