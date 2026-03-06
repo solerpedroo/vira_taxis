@@ -6,7 +6,7 @@
 
 const WhatsApp = (() => {
 
-  const WHATSAPP_NUMBER = '5519999999999'; // Campinas DDD 19
+  const WHATSAPP_NUMBER = '5519991865431'; // Campinas DDD 19
 
   function _fmtDate(iso) {
     if (!iso) return 'Não informada';
@@ -14,7 +14,7 @@ const WhatsApp = (() => {
   }
 
   function buildMessage(data) {
-    const vehicle  = data.requiresVan ? '🚐 Van 7 lugares' : '🚗 Sedan';
+    const vehicle  = data.requiresVan ? '🚗 Carro 7 lugares' : '🚗 Sedan';
     const vanFlag  = data.requiresVan ? '\n   ⚠️ _Van necessária para o grupo_' : '';
     const kmLine   = data.estimatedKm ? `\n📏 *Distância:* ~${data.estimatedKm} km` : '';
 

@@ -184,27 +184,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const km = _currentKm || _guessKm();
+    const info = Pricing.getVehicleInfo(passengers);
+
+    quoteResult?.classList.add('show');
+    if (quoteVehicleIcon)  quoteVehicleIcon.className  = `fa-solid ${info.vehicleIcon}`;
+    if (quoteVehicleLabel) quoteVehicleLabel.textContent = info.vehicleLabel;
+
     if (!km) {
-      // Campos preenchidos mas km não disponível — mostra "sob consulta"
-      if (quoteResult) {
-        quoteResult.classList.add('show');
-        if (quoteAmount) quoteAmount.textContent = '--';
-        const info = Pricing.getVehicleInfo(passengers);
-        if (quoteVehicleIcon)  quoteVehicleIcon.className  = `fa-solid ${info.vehicleIcon}`;
-        if (quoteVehicleLabel) quoteVehicleLabel.textContent = info.vehicleLabel;
-        if (quoteDistNote) quoteDistNote.textContent = 'Sob consulta';
-      }
+      // Sem Maps API — mostra que está pronto para enviar, preço confirmado pela equipe
+      if (quoteAmount) quoteAmount.textContent = '--';
+      if (quoteDistNote) quoteDistNote.textContent = 'Preço confirmado via WhatsApp';
       return;
     }
 
     const result = Pricing.calculate(km, passengers);
-
     // Exibe APENAS o valor final — sem tarifa/km
-    quoteResult?.classList.add('show');
-    if (quoteAmount)     quoteAmount.textContent      = Pricing.formatAmount(result.total);
-    if (quoteVehicleIcon)  quoteVehicleIcon.className  = `fa-solid ${result.vehicleIcon}`;
-    if (quoteVehicleLabel) quoteVehicleLabel.textContent = result.vehicleLabel;
-    if (quoteDistNote)   quoteDistNote.textContent    = km ? `~${km} km estimados` : '';
+    if (quoteAmount)   quoteAmount.textContent   = Pricing.formatAmount(result.total);
+    if (quoteDistNote) quoteDistNote.textContent = `~${km} km estimados`;
   }
 
   // Observa mudanças nos campos do formulário
@@ -244,21 +240,28 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ── 11. FAQ ACCORDION ─────────────────────────────────── */
+  $$('.faq-answer').forEach(a => { a.style.maxHeight = '0px'; });
+
   $$('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
       const item   = btn.closest('.faq-item');
       const answer = item?.querySelector('.faq-answer');
-      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      const isOpen = item.classList.contains('open');
+
       $$('.faq-item').forEach(i => {
         i.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
         i.classList.remove('open');
         const a = i.querySelector('.faq-answer');
-        if (a) a.style.maxHeight = null;
+        if (a) a.style.maxHeight = '0px';
       });
-      if (!isOpen) {
+
+      if (!isOpen && answer) {
         btn.setAttribute('aria-expanded', 'true');
         item.classList.add('open');
-        if (answer) answer.style.maxHeight = answer.scrollHeight + 'px';
+        answer.style.maxHeight = '0px';
+        requestAnimationFrame(() => {
+          answer.style.maxHeight = (answer.scrollHeight + 32) + 'px';
+        });
       }
     });
   });
@@ -328,3 +331,133 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+  /* ── 14. CUSTOM DATE PICKER ────────────────────────────── */
+  const dateOverlay   = $('#datePickerOverlay');
+  const dateTrigger   = $('#dateTrigger');
+  const dateDisplay   = $('#dateDisplay');
+  const dateHidden    = $('#date');
+  const calGrid       = $('#calGrid');
+  const calMonthYear  = $('#calMonthYear');
+  const datePrevBtn   = $('#datePrevMonth');
+  const dateNextBtn   = $('#dateNextMonth');
+  const dateCancelBtn = $('#dateCancelBtn');
+
+  const MONTHS_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+  let calView = new Date();
+  calView.setDate(1);
+  let selectedDate = null;
+
+  function renderCalendar() {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const year  = calView.getFullYear();
+    const month = calView.getMonth();
+    calMonthYear.textContent = `${MONTHS_PT[month]} ${year}`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+
+    calGrid.innerHTML = '';
+    // Empty cells
+    for (let i = 0; i < firstDay; i++) {
+      const empty = document.createElement('span');
+      empty.className = 'cal-day empty';
+      calGrid.appendChild(empty);
+    }
+    // Day buttons
+    for (let d = 1; d <= daysInMonth; d++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cal-day';
+      btn.textContent = d;
+      const thisDate = new Date(year, month, d);
+      thisDate.setHours(0,0,0,0);
+      if (thisDate < today) btn.disabled = true;
+      if (thisDate.getTime() === today.getTime()) btn.classList.add('today');
+      if (selectedDate && thisDate.getTime() === selectedDate.getTime()) btn.classList.add('selected');
+      btn.addEventListener('click', () => {
+        selectedDate = thisDate;
+        const iso = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        dateHidden.value = iso;
+        dateDisplay.textContent = `${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`;
+        dateTrigger.classList.add('has-value');
+        closeDatePicker();
+        tryUpdateQuote();
+        const errEl = $('#err-date');
+        if (errEl) { errEl.textContent = ''; errEl.classList.remove('show'); }
+        dateHidden.classList.remove('field-error');
+      });
+      calGrid.appendChild(btn);
+    }
+  }
+
+  function openDatePicker() {
+    const now = new Date();
+    if (!selectedDate) { calView = new Date(now.getFullYear(), now.getMonth(), 1); }
+    renderCalendar();
+    dateOverlay?.removeAttribute('hidden');
+    document.body.classList.add('no-scroll');
+  }
+  function closeDatePicker() {
+    dateOverlay?.setAttribute('hidden', '');
+    document.body.classList.remove('no-scroll');
+  }
+
+  dateTrigger?.addEventListener('click', openDatePicker);
+  dateCancelBtn?.addEventListener('click', closeDatePicker);
+  dateOverlay?.addEventListener('click', e => { if (e.target === dateOverlay) closeDatePicker(); });
+  datePrevBtn?.addEventListener('click', () => { calView.setMonth(calView.getMonth()-1); renderCalendar(); });
+  dateNextBtn?.addEventListener('click', () => { calView.setMonth(calView.getMonth()+1); renderCalendar(); });
+
+  /* ── 15. CUSTOM TIME PICKER ────────────────────────────── */
+  const timeOverlay    = $('#timePickerOverlay');
+  const timeTrigger    = $('#timeTrigger');
+  const timeDisplay    = $('#timeDisplay');
+  const timeHidden     = $('#time');
+  const hourDisp       = $('#hourDisplay');
+  const minDisp        = $('#minDisplay');
+  const timeCancelBtn  = $('#timeCancelBtn');
+  const timeConfirmBtn = $('#timeConfirmBtn');
+
+  let tHour = 8, tMin = 0;
+
+  function updateTimeDisplays() {
+    if (hourDisp) hourDisp.textContent = String(tHour).padStart(2,'0');
+    if (minDisp)  minDisp.textContent  = String(tMin).padStart(2,'0');
+  }
+
+  function openTimePicker() {
+    updateTimeDisplays();
+    timeOverlay?.removeAttribute('hidden');
+    document.body.classList.add('no-scroll');
+  }
+  function closeTimePicker() {
+    timeOverlay?.setAttribute('hidden', '');
+    document.body.classList.remove('no-scroll');
+  }
+
+  timeTrigger?.addEventListener('click', openTimePicker);
+  timeCancelBtn?.addEventListener('click', closeTimePicker);
+  timeOverlay?.addEventListener('click', e => { if (e.target === timeOverlay) closeTimePicker(); });
+
+  $$('.time-arr').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dir  = parseInt(btn.dataset.dir, 10);
+      const unit = btn.dataset.unit;
+      if (unit === 'h') { tHour = (tHour + dir + 24) % 24; }
+      if (unit === 'm') { tMin  = (tMin  + dir + 60) % 60; }
+      updateTimeDisplays();
+    });
+  });
+
+  timeConfirmBtn?.addEventListener('click', () => {
+    const val = `${String(tHour).padStart(2,'0')}:${String(tMin).padStart(2,'0')}`;
+    timeHidden.value = val;
+    timeDisplay.textContent = val;
+    timeTrigger.classList.add('has-value');
+    closeTimePicker();
+    tryUpdateQuote();
+    const errEl = $('#err-time');
+    if (errEl) { errEl.textContent = ''; errEl.classList.remove('show'); }
+    timeHidden.classList.remove('field-error');
+  });

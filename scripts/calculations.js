@@ -18,7 +18,7 @@ const Pricing = (() => {
 
   function _tariff(passengers) {
     return passengers > MAX_SEDAN_PASSENGERS
-      ? { pricePerKm: PRICE_PER_KM_VAN,   vehicleLabel: 'Van 7 lugares', vehicleIcon: 'fa-van-shuttle', requiresVan: true  }
+      ? { pricePerKm: PRICE_PER_KM_VAN,   vehicleLabel: 'Carro 7 lugares', vehicleIcon: 'fa-van-shuttle', requiresVan: true  }
       : { pricePerKm: PRICE_PER_KM_SEDAN, vehicleLabel: 'Sedan',         vehicleIcon: 'fa-car',         requiresVan: false };
   }
 
