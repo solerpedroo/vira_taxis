@@ -164,6 +164,30 @@
   pointer-events: none;
 }
 
+/* Origem e destino — mais espaço, mais largos, texto próximo ao ícone */
+.form-route-section {
+  margin-left: -1.6rem;
+  margin-right: -1.6rem;
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+  width: calc(100% + 3.2rem);
+  max-width: none;
+}
+.form-group--route { flex: 1; min-width: 0; width: 100%; }
+.input-with-icon--route { width: 100%; }
+.input-with-icon--route .form-input--route {
+  width: 100%;
+  min-height: 52px;
+  padding: .85rem 2.6rem .85rem 1rem;
+  font-size: .95rem;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+.input-with-icon--route .input-icon {
+  right: .75rem;
+  font-size: .9rem;
+}
+
 /* Field messages */
 .field-msg {
   font-size: .71rem;

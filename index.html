@@ -357,32 +357,34 @@
 
         <!-- Rota -->
         <p class="form-section-label">Rota da viagem</p>
-        <div class="form-row form-row--single">
-          <div class="form-group">
-            <label class="form-label" for="origin">
-              <i class="fa-solid fa-circle-dot"></i> Endereço de origem
-            </label>
-            <div class="input-with-icon">
-              <input type="text" id="origin" name="origin" class="form-input"
-                placeholder="Ex: Shopping Iguatemi, Campinas – SP"
-                autocomplete="off" data-maps-autocomplete="origin" />
-              <span class="input-icon"><i class="fa-solid fa-location-crosshairs"></i></span>
+        <div class="form-route-section">
+          <div class="form-row form-row--single">
+            <div class="form-group form-group--route">
+              <label class="form-label" for="origin">
+                <i class="fa-solid fa-circle-dot"></i> Endereço de origem
+              </label>
+              <div class="input-with-icon input-with-icon--route">
+                <input type="text" id="origin" name="origin" class="form-input form-input--route"
+                  placeholder="Ex: Shopping Iguatemi, Campinas – SP"
+                  autocomplete="off" data-maps-autocomplete="origin" />
+                <span class="input-icon"><i class="fa-solid fa-location-crosshairs"></i></span>
+              </div>
+              <span class="field-msg" id="err-origin" role="alert"></span>
             </div>
-            <span class="field-msg" id="err-origin" role="alert"></span>
           </div>
-        </div>
-        <div class="form-row form-row--single">
-          <div class="form-group">
-            <label class="form-label" for="destination">
-              <i class="fa-solid fa-location-dot"></i> Endereço de destino
-            </label>
-            <div class="input-with-icon">
-              <input type="text" id="destination" name="destination" class="form-input"
-                placeholder="Ex: Aeroporto de Viracopos – Campinas, SP"
-                autocomplete="off" data-maps-autocomplete="destination" />
-              <span class="input-icon"><i class="fa-solid fa-map-location-dot"></i></span>
+          <div class="form-row form-row--single">
+            <div class="form-group form-group--route">
+              <label class="form-label" for="destination">
+                <i class="fa-solid fa-location-dot"></i> Endereço de destino
+              </label>
+              <div class="input-with-icon input-with-icon--route">
+                <input type="text" id="destination" name="destination" class="form-input form-input--route"
+                  placeholder="Ex: Aeroporto de Viracopos – Campinas, SP"
+                  autocomplete="off" data-maps-autocomplete="destination" />
+                <span class="input-icon"><i class="fa-solid fa-map-location-dot"></i></span>
+              </div>
+              <span class="field-msg" id="err-destination" role="alert"></span>
             </div>
-            <span class="field-msg" id="err-destination" role="alert"></span>
           </div>
         </div>
 
