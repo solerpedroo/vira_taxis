@@ -3,45 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Vira Táxis – Mais de 10 anos de transporte urbano e executivo em São Paulo. Agendamento rápido, motoristas verificados, preço sob consulta." />
-  <title>Vira Táxis – Transporte com segurança e pontualidade</title>
+  <meta name="description" content="Vira Táxis – Transporte urbano e executivo em Campinas, SP. Mais de 10 anos de experiência. Motoristas verificados, frota moderna, preço sob consulta." />
+  <title>Vira Táxis – Transporte com segurança em Campinas, SP</title>
 
-  <!-- Fonts -->
+  <!-- Preconnect fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Styles -->
+  <!-- CSS modular — ordem importa -->
+  <link rel="stylesheet" href="styles/tokens.css" />
   <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/header-hero.css" />
+  <link rel="stylesheet" href="styles/sections.css" />
+  <link rel="stylesheet" href="styles/form-faq.css" />
+  <link rel="stylesheet" href="styles/depoimentos-footer.css" />
+  <link rel="stylesheet" href="styles/responsive.css" />
 
   <!--
-    ╔══════════════════════════════════════════════════════════╗
-    ║  GOOGLE MAPS — Para ativar a integração:                ║
-    ║  1. Acesse https://console.cloud.google.com             ║
-    ║  2. Crie um projeto e gere uma API Key                  ║
-    ║  3. Ative: Maps JavaScript API, Places API,             ║
-    ║            Distance Matrix API, Geocoding API           ║
-    ║  4. Substitua YOUR_KEY abaixo e descomente a linha      ║
-    ╚══════════════════════════════════════════════════════════╝
+    ╔══════════════════════════════════════════════════════╗
+    ║  GOOGLE MAPS — Para ativar:                         ║
+    ║  1. console.cloud.google.com → criar API Key        ║
+    ║  2. Ativar: Maps JS API, Places API,                ║
+    ║     Distance Matrix API, Geocoding API              ║
+    ║  3. Substituir YOUR_KEY e descomentar abaixo        ║
+    ╚══════════════════════════════════════════════════════╝
   -->
   <!-- <script defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places&callback=initGoogleMaps"></script> -->
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      HEADER
-══════════════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <header class="header" id="header">
   <div class="container header__inner">
-
     <a href="#" class="logo" aria-label="Vira Táxis — início">
       <div class="logo__mark"><i class="fa-solid fa-taxi"></i></div>
       <span class="logo__name">Vira<span>Táxis</span></span>
     </a>
-
     <nav class="nav" aria-label="Menu principal">
       <ul class="nav__list">
         <li><a href="#historia"    class="nav__link">Nossa história</a></li>
@@ -55,14 +58,12 @@
         </li>
       </ul>
     </nav>
-
     <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<!-- Mobile overlay -->
 <nav class="mobile-nav" id="mobileMenu" aria-label="Menu mobile">
   <a href="#historia"    class="mobile-nav__link">Nossa história</a>
   <a href="#servicos"    class="mobile-nav__link">Serviços</a>
@@ -75,37 +76,37 @@
 
 <main>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      HERO
-══════════════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <section class="hero" id="inicio" aria-label="Seção principal">
   <div class="hero__bg" aria-hidden="true">
     <div class="hero__bg-gradient"></div>
+    <div class="hero__bg-stripe"></div>
     <div class="hero__bg-dots"></div>
   </div>
 
   <div class="container hero__inner">
-
     <div class="hero__content">
       <span class="hero__tag reveal">
-        <i class="fa-solid fa-award"></i>
-        Referência em transporte desde 2014
+        <i class="fa-solid fa-location-dot"></i>
+        Campinas e região — desde 2014
       </span>
 
       <h1 class="hero__h1 reveal stagger-1">
-        Chegue com<br />
-        <span class="accent">segurança.</span><br />
+        Chegue com<br/>
+        <span class="accent">segurança.</span><br/>
         Parta com <span class="highlight">confiança.</span>
       </h1>
 
       <p class="hero__desc reveal stagger-2">
-        O Vira Táxis é a referência em transporte urbano e executivo em São Paulo. Motoristas verificados, frota moderna e atendimento personalizado — do agendamento à chegada.
+        Referência em transporte urbano e executivo em Campinas, SP. Motoristas verificados, frota moderna e atendimento humano — do agendamento à chegada.
       </p>
 
       <div class="hero__actions reveal stagger-3">
         <a href="#agendamento" class="btn btn--primary btn--lg">
           <i class="fa-solid fa-calendar-check"></i>
-          <span class="btn-text">Solicitar agendamento</span>
+          <span class="btn-text">Solicitar cotação</span>
         </a>
         <a href="#historia" class="btn btn--outline btn--lg">
           Nossa história <i class="fa-solid fa-arrow-right"></i>
@@ -116,14 +117,13 @@
         <div class="hero__trust-avatars" aria-hidden="true">
           <div class="hero__avatar">MF</div>
           <div class="hero__avatar">RC</div>
-          <div class="hero__avatar">JL</div>
+          <div class="hero__avatar">AL</div>
           <div class="hero__avatar">+</div>
         </div>
-        <span>+2.400 clientes satisfeitos este mês</span>
+        <span>+2.400 clientes satisfeitos em Campinas este mês</span>
       </div>
     </div>
 
-    <!-- Mockup visual decorativo -->
     <div class="hero__visual reveal from-right" aria-hidden="true">
       <div class="hero__card">
         <div class="card-top">
@@ -135,7 +135,7 @@
             <div class="dot dot--origin"></div>
             <div class="route-stop__info">
               <span class="route-stop__label">Origem</span>
-              <span class="route-stop__addr">Av. Paulista, 1000 — SP</span>
+              <span class="route-stop__addr">Shopping Iguatemi, Campinas</span>
             </div>
           </div>
           <div class="route-line"></div>
@@ -143,14 +143,14 @@
             <div class="dot dot--dest"></div>
             <div class="route-stop__info">
               <span class="route-stop__label">Destino</span>
-              <span class="route-stop__addr">Aeroporto de Congonhas</span>
+              <span class="route-stop__addr">Aeroporto Viracopos</span>
             </div>
           </div>
         </div>
         <div class="card-details">
           <div class="card-detail-item"><i class="fa-solid fa-car"></i><span>Sedan</span></div>
           <div class="card-detail-item"><i class="fa-solid fa-users"></i><span>2 pessoas</span></div>
-          <div class="card-detail-item"><i class="fa-solid fa-clock"></i><span>~22 min</span></div>
+          <div class="card-detail-item"><i class="fa-solid fa-clock"></i><span>~25 min</span></div>
         </div>
         <div class="card-status">
           <i class="fa-solid fa-circle-check" style="color:#37B422"></i>
@@ -164,24 +164,23 @@
         <i class="fa-solid fa-shield-halved"></i> Viagem segura
       </div>
     </div>
-
   </div>
 
   <div class="hero__wave" aria-hidden="true">
     <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,32 C480,64 960,0 1440,32 L1440,64 L0,64 Z" fill="#f0f5fb"/>
+      <path d="M0,32 C480,64 960,0 1440,32 L1440,64 L0,64 Z" fill="#f5f8fb"/>
     </svg>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      STATS BAR
-══════════════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <div class="stats-bar" role="region" aria-label="Nossos números">
   <div class="container stats-bar__inner">
     <div class="stat-item reveal stagger-1">
       <strong class="stat-item__num" data-target="10" data-suffix="+">10+</strong>
-      <span class="stat-item__label">Anos de experiência</span>
+      <span class="stat-item__label">Anos em Campinas</span>
     </div>
     <div class="stat-item reveal stagger-2">
       <strong class="stat-item__num" data-target="52000" data-suffix="+">52k+</strong>
@@ -198,9 +197,9 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     NOSSA HISTÓRIA
-══════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     HISTÓRIA
+══════════════════════════════════════ -->
 <section class="historia" id="historia" aria-label="Nossa história">
   <div class="container historia__inner">
 
@@ -221,85 +220,84 @@
 
     <div class="historia__content reveal from-right">
       <p class="eyebrow">Nossa história</p>
-      <h2 class="section-title">Uma década conectando<br /><em>pessoas e destinos.</em></h2>
+      <h2 class="section-title">Uma década conectando<br/><em>pessoas e destinos.</em></h2>
 
       <p class="historia__text">
-        O Vira Táxis nasceu em 2014 a partir de uma necessidade real e urgente: oferecer transporte urbano de qualidade em São Paulo — com preço claro, motorista confiável e chegada no horário certo. Numa cidade onde o trânsito é imprevisível e o tempo vale ouro, percebemos que os paulistanos mereciam mais do que uma corrida. Mereciam uma experiência.
+        O Vira Táxis nasceu em 2014 no coração de Campinas com uma missão clara: oferecer transporte urbano de verdade — com preço justo, motorista confiável e pontualidade de relógio. Numa cidade que cresce rápido e exige mobilidade de qualidade, percebemos que campineiros e visitantes mereciam muito mais do que uma corrida. Mereciam uma experiência.
       </p>
       <p class="historia__text">
-        Durante mais de uma década, construímos uma operação que vai muito além de levar pessoas de um ponto a outro. Formamos motoristas com treinamento próprio, desenvolvemos uma metodologia de seleção rigorosa e investimos continuamente em uma frota moderna, revisada e higienizada. Criamos um modelo de atendimento que prioriza o respeito, a pontualidade e a transparência em cada corrida — seja ela às 6h da manhã rumo ao aeroporto ou na madrugada de volta de um evento.
+        Em mais de uma década, construímos uma operação que vai além de transportar pessoas. Formamos motoristas com metodologia própria, revisamos a frota mensalmente e desenvolvemos um modelo de atendimento que coloca respeito e transparência acima de tudo — seja às 5h da manhã rumo a Viracopos ou numa noite de evento no centro de Campinas.
       </p>
       <p class="historia__text">
-        Hoje atendemos clientes particulares, empresas e eventos corporativos em toda a Grande São Paulo, com veículos sedan para até 4 passageiros e vans de 7 lugares para grupos. Somos uma empresa paulistana, criada para os paulistanos — com orgulho de cada quilômetro rodado.
+        Hoje atendemos particulares, empresas e eventos corporativos em Campinas e toda a região metropolitana. Somos campineiros, orgulhosos de cada quilômetro rodado nesta cidade.
       </p>
 
       <ul class="historia__list">
-        <li><i class="fa-solid fa-circle-check"></i> Fundados em São Paulo em 2014</li>
+        <li><i class="fa-solid fa-circle-check"></i> Fundados em Campinas, SP, em 2014</li>
         <li><i class="fa-solid fa-circle-check"></i> Frota 100% revisada, segurada e rastreada</li>
-        <li><i class="fa-solid fa-circle-check"></i> Motoristas certificados com treinamento próprio</li>
+        <li><i class="fa-solid fa-circle-check"></i> Motoristas com treinamento e certificação próprios</li>
         <li><i class="fa-solid fa-circle-check"></i> Atendimento corporativo, executivo e particular</li>
-        <li><i class="fa-solid fa-circle-check"></i> Cobertura em toda a Grande São Paulo</li>
+        <li><i class="fa-solid fa-circle-check"></i> Cobertura em toda a região metropolitana de Campinas</li>
       </ul>
     </div>
 
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      SERVIÇOS
-══════════════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <section class="servicos" id="servicos" aria-label="Nossos serviços">
   <div class="container">
     <header class="section-header reveal">
       <p class="eyebrow">O que oferecemos</p>
       <h2 class="section-title">Soluções para cada <em>necessidade</em></h2>
-      <p class="section-sub">Do traslado diário ao transporte executivo de alto padrão — temos o veículo e o serviço certos para você.</p>
+      <p class="section-sub">Do traslado diário ao transporte executivo de alto padrão — temos o veículo e o serviço certos para você em Campinas.</p>
     </header>
-
     <div class="servicos__grid">
       <article class="servico-card reveal stagger-1">
         <div class="servico-card__icon icon--sky"><i class="fa-solid fa-plane-arrival"></i></div>
-        <h3>Transfer Aeroporto</h3>
-        <p>Pontualidade garantida para GRU, Congonhas e demais terminais. Monitoramos seu voo em tempo real para evitar qualquer imprevisto.</p>
+        <h3>Transfer Viracopos</h3>
+        <p>Pontualidade garantida para o Aeroporto Internacional de Viracopos e demais terminais da região. Monitoramos seu voo em tempo real.</p>
         <span class="servico-tag">Sedan · Van</span>
       </article>
       <article class="servico-card reveal stagger-2">
         <div class="servico-card__icon icon--green"><i class="fa-solid fa-briefcase"></i></div>
         <h3>Executivo Corporativo</h3>
-        <p>Veículos confortáveis e motoristas treinados para reuniões, visitas a clientes e deslocamentos profissionais de alto padrão.</p>
+        <p>Veículos confortáveis e motoristas treinados para reuniões, visitas a clientes e deslocamentos profissionais em Campinas e região.</p>
         <span class="servico-tag">Sedan</span>
       </article>
       <article class="servico-card reveal stagger-3">
         <div class="servico-card__icon icon--mist"><i class="fa-solid fa-van-shuttle"></i></div>
         <h3>Grupos e Eventos</h3>
-        <p>Van espaçosa para grupos de até 6 passageiros. Ideal para eventos corporativos, festas, casamentos e traslados em grupo.</p>
+        <p>Van espaçosa para grupos de até 6 passageiros. Ideal para eventos corporativos, casamentos e traslados em grupo pela região.</p>
         <span class="servico-tag">Van 7 lugares</span>
       </article>
       <article class="servico-card reveal stagger-4">
         <div class="servico-card__icon icon--sky"><i class="fa-solid fa-city"></i></div>
         <h3>Deslocamento Urbano</h3>
-        <p>Corridas diárias com conforto, segurança e motoristas que conhecem São Paulo como a palma da mão.</p>
+        <p>Corridas diárias com conforto, segurança e motoristas que conhecem Campinas como a palma da mão.</p>
         <span class="servico-tag">Sedan · Van</span>
       </article>
       <article class="servico-card reveal stagger-5">
         <div class="servico-card__icon icon--green"><i class="fa-solid fa-calendar-days"></i></div>
         <h3>Locação Mensal</h3>
-        <p>Motorista particular dedicado para empresas ou profissionais que precisam de transporte recorrente e confiável.</p>
+        <p>Motorista particular dedicado para empresas ou profissionais que precisam de transporte recorrente e de confiança em Campinas.</p>
         <span class="servico-tag">Sob consulta</span>
       </article>
       <article class="servico-card reveal stagger-6">
         <div class="servico-card__icon icon--mist"><i class="fa-solid fa-moon"></i></div>
         <h3>Atendimento 24 horas</h3>
-        <p>Disponíveis em qualquer hora. Madrugada, feriado, fim de semana — nossa equipe responde em minutos.</p>
+        <p>Disponíveis a qualquer hora. Madrugada, feriado, fim de semana — nossa equipe campineira responde em minutos.</p>
         <span class="servico-tag">24h · 7 dias</span>
       </article>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════
-     FORMULÁRIO DE AGENDAMENTO
-══════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     AGENDAMENTO / COTAÇÃO
+══════════════════════════════════════ -->
 <section class="agendamento" id="agendamento" aria-label="Formulário de agendamento">
   <div class="agendamento__bg" aria-hidden="true"></div>
   <div class="container agendamento__inner">
@@ -307,24 +305,22 @@
     <!-- Painel esquerdo -->
     <div class="agendamento__info reveal from-left">
       <p class="eyebrow eyebrow--light">Agende sua viagem</p>
-      <h2 class="section-title section-title--light">Solicite sua<br /><em>corrida agora.</em></h2>
+      <h2 class="section-title section-title--light">Solicite sua<br/><em>cotação agora.</em></h2>
       <p class="agendamento__desc">
-        Preencha o formulário com os dados da sua viagem. Nossa equipe entrará em contato pelo WhatsApp com a confirmação e todos os detalhes.
+        Preencha o formulário com os dados da sua viagem. Nossa equipe em Campinas entrará em contato pelo WhatsApp com a confirmação e todos os detalhes.
       </p>
-
       <ul class="agendamento__checklist">
         <li><i class="fa-solid fa-circle-check"></i> Resposta rápida pelo WhatsApp</li>
         <li><i class="fa-solid fa-circle-check"></i> Sem compromisso ao solicitar</li>
         <li><i class="fa-solid fa-circle-check"></i> Preço confirmado antes da viagem</li>
         <li><i class="fa-solid fa-circle-check"></i> Motorista e veículo indicados</li>
       </ul>
-
       <div class="agendamento__contact">
-        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener" class="contact-pill">
-          <i class="fa-brands fa-whatsapp"></i> (11) 99999-9999
+        <a href="https://wa.me/5519999999999" target="_blank" rel="noopener" class="contact-pill">
+          <i class="fa-brands fa-whatsapp"></i> (19) 99999-9999
         </a>
-        <a href="tel:+5511999999999" class="contact-pill">
-          <i class="fa-solid fa-phone"></i> (11) 99999-9999
+        <a href="tel:+5519999999999" class="contact-pill">
+          <i class="fa-solid fa-phone"></i> (19) 99999-9999
         </a>
       </div>
     </div>
@@ -336,11 +332,10 @@
         <span>Dados do agendamento</span>
       </div>
 
-      <form id="quoteForm" novalidate aria-label="Formulário de agendamento de táxi">
+      <form id="quoteForm" novalidate aria-label="Formulário de cotação de táxi">
 
-        <!-- ── Responsável ── -->
+        <!-- Responsável -->
         <p class="form-section-label">Responsável pela viagem</p>
-
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="name">
@@ -355,14 +350,13 @@
               <i class="fa-solid fa-phone"></i> Telefone / WhatsApp
             </label>
             <input type="tel" id="phone" name="phone" class="form-input"
-              placeholder="(11) 99999-9999" autocomplete="tel" maxlength="16" />
+              placeholder="(19) 99999-9999" autocomplete="tel" maxlength="16" />
             <span class="field-msg" id="err-phone" role="alert"></span>
           </div>
         </div>
 
-        <!-- ── Rota ── -->
+        <!-- Rota -->
         <p class="form-section-label">Rota da viagem</p>
-
         <div class="form-row form-row--single">
           <div class="form-group">
             <label class="form-label" for="origin">
@@ -370,19 +364,13 @@
             </label>
             <div class="input-with-icon">
               <input type="text" id="origin" name="origin" class="form-input"
-                placeholder="Ex: Av. Paulista, 1000 – São Paulo, SP"
-                autocomplete="off"
-                data-maps-autocomplete="origin" />
-              <!--
-                [MAPS] Campo preparado para Google Places Autocomplete.
-                maps.js vincula o autocomplete quando a API estiver ativa.
-              -->
+                placeholder="Ex: Shopping Iguatemi, Campinas – SP"
+                autocomplete="off" data-maps-autocomplete="origin" />
               <span class="input-icon"><i class="fa-solid fa-location-crosshairs"></i></span>
             </div>
             <span class="field-msg" id="err-origin" role="alert"></span>
           </div>
         </div>
-
         <div class="form-row form-row--single">
           <div class="form-group">
             <label class="form-label" for="destination">
@@ -390,22 +378,16 @@
             </label>
             <div class="input-with-icon">
               <input type="text" id="destination" name="destination" class="form-input"
-                placeholder="Ex: Aeroporto de Congonhas – São Paulo, SP"
-                autocomplete="off"
-                data-maps-autocomplete="destination" />
-              <!--
-                [MAPS] Campo preparado para Google Places Autocomplete.
-                maps.js resolve a distância via Distance Matrix API.
-              -->
+                placeholder="Ex: Aeroporto de Viracopos – Campinas, SP"
+                autocomplete="off" data-maps-autocomplete="destination" />
               <span class="input-icon"><i class="fa-solid fa-map-location-dot"></i></span>
             </div>
             <span class="field-msg" id="err-destination" role="alert"></span>
           </div>
         </div>
 
-        <!-- ── Data e horário ── -->
+        <!-- Data e horário -->
         <p class="form-section-label">Data e horário</p>
-
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="date">
@@ -423,27 +405,23 @@
           </div>
         </div>
 
-        <!-- ── Passageiros e bagagem ── -->
+        <!-- Passageiros e bagagem -->
         <p class="form-section-label">Passageiros e bagagem</p>
-
         <div class="form-row">
-          <!-- Stepper de passageiros -->
           <div class="form-group">
             <label class="form-label">
               <i class="fa-solid fa-users"></i> Passageiros (1–6)
             </label>
             <div class="stepper" role="group" aria-label="Número de passageiros">
-              <button type="button" class="stepper__btn" id="btnMinus" aria-label="Diminuir passageiros">
+              <button type="button" class="stepper__btn" id="btnMinus" aria-label="Diminuir">
                 <i class="fa-solid fa-minus"></i>
               </button>
               <span class="stepper__display" id="passengerDisplay" aria-live="polite">1</span>
               <input type="hidden" id="passengers" name="passengers" value="1" />
-              <button type="button" class="stepper__btn" id="btnPlus" aria-label="Aumentar passageiros">
+              <button type="button" class="stepper__btn" id="btnPlus" aria-label="Aumentar">
                 <i class="fa-solid fa-plus"></i>
               </button>
             </div>
-
-            <!-- Indicador de tipo de veículo — sem preço, apenas tipo -->
             <div class="vehicle-tag vehicle-tag--sedan" id="vehicleTag">
               <i class="fa-solid fa-car"></i> Sedan
             </div>
@@ -451,10 +429,8 @@
               <i class="fa-solid fa-van-shuttle"></i>
               Para 5 ou mais passageiros utilizamos van com 7 lugares.
             </div>
-
             <span class="field-msg" id="err-passengers" role="alert"></span>
           </div>
-
           <div class="form-group">
             <label class="form-label" for="luggage">
               <i class="fa-solid fa-suitcase"></i> Bagagens
@@ -465,14 +441,38 @@
           </div>
         </div>
 
-        <!-- ── Submit ── -->
+        <!--
+          RESULTADO DE COTAÇÃO
+          Exibe o valor estimado quando todos os campos estão preenchidos.
+          REGRA DE NEGÓCIO: mostra apenas o valor final — SEM o cálculo (km × tarifa).
+        -->
+        <div class="quote-result" id="quoteResult" role="status" aria-live="polite">
+          <p class="quote-result__label">Estimativa para sua viagem</p>
+          <div class="quote-result__body">
+            <div class="quote-result__value">
+              <sup>R$</sup><span id="quoteAmount">--</span>
+            </div>
+            <div class="quote-result__meta">
+              <div class="quote-result__vehicle">
+                <i class="fa-solid fa-car" id="quoteVehicleIcon"></i>
+                <span id="quoteVehicleLabel">Sedan</span>
+              </div>
+              <span class="quote-result__note" id="quoteDistNote"></span>
+            </div>
+          </div>
+          <p class="quote-result__disclaimer">
+            Valor estimado sujeito a confirmação pela nossa equipe via WhatsApp.
+          </p>
+        </div>
+
+        <!-- Submit -->
         <div class="submit-row">
           <button type="submit" class="btn btn--primary btn--full btn--lg" id="submitBtn">
             <i class="fa-brands fa-whatsapp"></i>
-            <span class="btn-text">Solicitar agendamento via WhatsApp</span>
+            <span class="btn-text">Solicitar via WhatsApp</span>
           </button>
           <p class="submit-disclaimer">
-            Ao enviar, você será redirecionado ao WhatsApp para confirmar os detalhes com nossa equipe.
+            Ao enviar, você será redirecionado ao WhatsApp para confirmar com nossa equipe.
           </p>
         </div>
 
@@ -482,9 +482,9 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      DIFERENCIAIS
-══════════════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <section class="diferenciais" id="diferenciais" aria-label="Nossos diferenciais">
   <div class="container">
     <header class="section-header reveal">
@@ -496,19 +496,19 @@
         <div class="dif-card__num">01</div>
         <div class="dif-card__icon icon--sky"><i class="fa-solid fa-user-check"></i></div>
         <h3>Motoristas verificados</h3>
-        <p>Seleção rigorosa com checagem de antecedentes, CNH e treinamento presencial antes de integrar nossa frota.</p>
+        <p>Seleção rigorosa com checagem de antecedentes, CNH e treinamento presencial antes de integrar nossa frota em Campinas.</p>
       </article>
       <article class="dif-card reveal stagger-2">
         <div class="dif-card__num">02</div>
         <div class="dif-card__icon icon--green"><i class="fa-solid fa-car-burst"></i></div>
         <h3>Frota revisada</h3>
-        <p>Todos os veículos passam por revisão preventiva mensal, higienização completa e vistoria de segurança.</p>
+        <p>Todos os veículos passam por revisão preventiva mensal, higienização completa e vistoria de segurança obrigatória.</p>
       </article>
       <article class="dif-card reveal stagger-3">
         <div class="dif-card__num">03</div>
         <div class="dif-card__icon icon--mist"><i class="fa-solid fa-handshake-angle"></i></div>
         <h3>Atendimento humano</h3>
-        <p>Nossa equipe está disponível por WhatsApp e telefone 24 horas por dia — sem chatbot, sem fila.</p>
+        <p>Nossa equipe está disponível por WhatsApp e telefone 24h por dia — sem chatbot, sem fila de espera.</p>
       </article>
       <article class="dif-card reveal stagger-4">
         <div class="dif-card__num">04</div>
@@ -520,134 +520,282 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════
-     DEPOIMENTOS
-══════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     DEPOIMENTOS — CARROSSEL INFINITO
+══════════════════════════════════════ -->
 <section class="depoimentos" id="depoimentos" aria-label="Depoimentos de clientes">
   <div class="container">
     <header class="section-header reveal">
       <p class="eyebrow">Depoimentos</p>
-      <h2 class="section-title">Quem usa, <em>recomenda.</em></h2>
-      <p class="section-sub">Histórias reais de clientes que fazem do Vira Táxis sua escolha de transporte.</p>
+      <h2 class="section-title">Quem usa em Campinas, <em>recomenda.</em></h2>
+      <p class="section-sub">Histórias reais de clientes que confiam no Vira Táxis para cada viagem.</p>
     </header>
-    <div class="depoimentos__grid">
-      <article class="dep-card reveal stagger-1">
+  </div>
+
+  <!-- Carrossel — fora do container para ocupar full width -->
+  <div class="depoimentos__track-wrap">
+    <div class="depoimentos__track" id="depTrack">
+
+      <!-- Depoimento 1 -->
+      <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
-        <div class="dep-card__stars" aria-label="5 de 5 estrelas">
+        <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Uso o Vira Táxis toda semana para meus traslados no aeroporto. O motorista sempre chega com antecedência, o carro está impecável e o valor combinado é exatamente o pago. Não troco por nada.</blockquote>
+        <blockquote>Uso o Vira Táxis toda semana para meus traslados em Viracopos. O motorista sempre chega com antecedência, o carro está impecável e o valor combinado é exatamente o cobrado. Não troco por nada.</blockquote>
         <footer class="dep-card__author">
-          <div class="dep-card__avatar av--sky">MF</div>
-          <div><strong>Mariana Ferreira</strong><span>Diretora Financeira · São Paulo, SP</span></div>
+          <div class="dep-card__avatar">MF</div>
+          <div><strong>Mariana Ferreira</strong><span>Diretora Financeira · Campinas, SP</span></div>
         </footer>
       </article>
-      <article class="dep-card dep-card--featured reveal stagger-2">
+
+      <!-- Depoimento 2 -->
+      <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
-        <div class="dep-card__stars" aria-label="5 de 5 estrelas">
+        <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Contratei a van para um evento corporativo com 6 executivos. Profissionalismo impecável do início ao fim — pontualidade, conforto e atendimento de alto nível. Com certeza voltarei.</blockquote>
+        <blockquote>Contratei a van para um evento corporativo com 6 executivos em Campinas. Profissionalismo do início ao fim — pontualidade, conforto e atendimento de alto nível. Com certeza voltarei.</blockquote>
         <footer class="dep-card__author">
-          <div class="dep-card__avatar av--green">RC</div>
+          <div class="dep-card__avatar">RC</div>
           <div><strong>Ricardo Campos</strong><span>Gerente Comercial · Campinas, SP</span></div>
         </footer>
       </article>
-      <article class="dep-card reveal stagger-3">
+
+      <!-- Depoimento 3 -->
+      <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
-        <div class="dep-card__stars" aria-label="5 de 5 estrelas">
+        <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Sou cliente há três anos. O que me fidelizou foi a seriedade: combinam o preço, cumprem o horário e o motorista sempre se apresenta. É o tipo de serviço que dá paz de espírito.</blockquote>
+        <blockquote>Sou cliente há três anos. O que me fidelizou foi a seriedade: combinam o preço, cumprem o horário e o motorista sempre se apresenta. É o tipo de serviço que dá paz de espírito aqui em Campinas.</blockquote>
         <footer class="dep-card__author">
-          <div class="dep-card__avatar av--mist">JL</div>
-          <div><strong>Juliana Lima</strong><span>Consultora de RH · Santo André, SP</span></div>
+          <div class="dep-card__avatar">JL</div>
+          <div><strong>Juliana Lima</strong><span>Consultora de RH · Campinas, SP</span></div>
         </footer>
       </article>
+
+      <!-- Depoimento 4 -->
+      <article class="dep-card">
+        <div class="dep-card__quote" aria-hidden="true">"</div>
+        <div class="dep-card__stars" aria-label="5 estrelas">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <blockquote>Viajo bastante a trabalho e o Vira Táxis virou meu parceiro de confiança para o aeroporto de Viracopos. Pontualidade impecável e carro sempre limpo. Recomendo sem hesitar.</blockquote>
+        <footer class="dep-card__author">
+          <div class="dep-card__avatar">AL</div>
+          <div><strong>André Lopes</strong><span>Engenheiro de TI · Barão Geraldo, SP</span></div>
+        </footer>
+      </article>
+
+      <!-- Depoimento 5 -->
+      <article class="dep-card">
+        <div class="dep-card__quote" aria-hidden="true">"</div>
+        <div class="dep-card__stars" aria-label="5 estrelas">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <blockquote>Precisei de um traslado de madrugada para o aeroporto e em 10 minutos tinham me respondido e confirmado. Em Campinas é difícil achar esse nível de atendimento. Parabéns ao time!</blockquote>
+        <footer class="dep-card__author">
+          <div class="dep-card__avatar">PS</div>
+          <div><strong>Patricia Souza</strong><span>Médica · Campinas, SP</span></div>
+        </footer>
+      </article>
+
+      <!-- Depoimento 6 -->
+      <article class="dep-card">
+        <div class="dep-card__quote" aria-hidden="true">"</div>
+        <div class="dep-card__stars" aria-label="5 estrelas">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <blockquote>Nossa empresa contratou locação mensal e a experiência superou as expectativas. Motoristas educados, trajetos pontuais e relatório de viagens impecável. Parceria que vai continuar.</blockquote>
+        <footer class="dep-card__author">
+          <div class="dep-card__avatar">CT</div>
+          <div><strong>Carla Torres</strong><span>CEO · Vinhedo, SP</span></div>
+        </footer>
+      </article>
+
+      <!-- Depoimento 7 -->
+      <article class="dep-card">
+        <div class="dep-card__quote" aria-hidden="true">"</div>
+        <div class="dep-card__stars" aria-label="5 estrelas">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <blockquote>Usei para o meu casamento e foi perfeito. A van estava decorada, o motorista era super gentil e chegamos no horário certo. O Vira Táxis fez parte do nosso dia especial em Campinas.</blockquote>
+        <footer class="dep-card__author">
+          <div class="dep-card__avatar">BM</div>
+          <div><strong>Beatriz Martins</strong><span>Professora · Sumaré, SP</span></div>
+        </footer>
+      </article>
+
+      <!-- Depoimento 8 -->
+      <article class="dep-card">
+        <div class="dep-card__quote" aria-hidden="true">"</div>
+        <div class="dep-card__stars" aria-label="5 estrelas">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <blockquote>Não adianta ter carro bom se o motorista não é profissional. O Vira Táxis tem os dois. Atende em Campinas e região, sempre no horário e com preço que faz sentido. É o que basta.</blockquote>
+        <footer class="dep-card__author">
+          <div class="dep-card__avatar">FO</div>
+          <div><strong>Felipe Oliveira</strong><span>Advogado · Campinas, SP</span></div>
+        </footer>
+      </article>
+
+      <!-- Depoimento 9 -->
+      <article class="dep-card">
+        <div class="dep-card__quote" aria-hidden="true">"</div>
+        <div class="dep-card__stars" aria-label="5 estrelas">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <blockquote>Terceiro ano como cliente. Uso para ir e voltar de Viracopos toda semana. O que mais gosto é a transparência: o preço que cotamos é o que pagamos. Zero surpresas. Empresa séria.</blockquote>
+        <footer class="dep-card__author">
+          <div class="dep-card__avatar">RN</div>
+          <div><strong>Rafael Nogueira</strong><span>Consultor de Negócios · Campinas, SP</span></div>
+        </footer>
+      </article>
+
+      <!-- Depoimento 10 -->
+      <article class="dep-card">
+        <div class="dep-card__quote" aria-hidden="true">"</div>
+        <div class="dep-card__stars" aria-label="5 estrelas">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <blockquote>Agendei pelo WhatsApp em menos de 2 minutos. Motorista chegou 5 minutos antes, carro higienizado e ele me ajudou com as malas. Isso é serviço de verdade. Campinas tem sorte de ter o Vira Táxis.</blockquote>
+        <footer class="dep-card__author">
+          <div class="dep-card__avatar">IS</div>
+          <div><strong>Isabela Santos</strong><span>Arquiteta · Americana, SP</span></div>
+        </footer>
+      </article>
+
+      <!--
+        Duplicatas para loop infinito perfeito.
+        O JS clona automaticamente via data-dup — mas as duplicatas
+        abaixo garantem o loop mesmo sem JS.
+      -->
+      <article class="dep-card" aria-hidden="true">
+        <div class="dep-card__quote">"</div>
+        <div class="dep-card__stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <blockquote>Uso o Vira Táxis toda semana para meus traslados em Viracopos. O motorista sempre chega com antecedência, o carro está impecável e o valor combinado é exatamente o cobrado.</blockquote>
+        <footer class="dep-card__author"><div class="dep-card__avatar">MF</div><div><strong>Mariana Ferreira</strong><span>Diretora Financeira · Campinas, SP</span></div></footer>
+      </article>
+      <article class="dep-card" aria-hidden="true">
+        <div class="dep-card__quote">"</div>
+        <div class="dep-card__stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <blockquote>Contratei a van para um evento corporativo com 6 executivos em Campinas. Profissionalismo do início ao fim — pontualidade, conforto e atendimento de alto nível.</blockquote>
+        <footer class="dep-card__author"><div class="dep-card__avatar">RC</div><div><strong>Ricardo Campos</strong><span>Gerente Comercial · Campinas, SP</span></div></footer>
+      </article>
+      <article class="dep-card" aria-hidden="true">
+        <div class="dep-card__quote">"</div>
+        <div class="dep-card__stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <blockquote>Viajo bastante a trabalho e o Vira Táxis virou meu parceiro de confiança para o aeroporto de Viracopos. Pontualidade impecável e carro sempre limpo.</blockquote>
+        <footer class="dep-card__author"><div class="dep-card__avatar">AL</div><div><strong>André Lopes</strong><span>Engenheiro de TI · Barão Geraldo, SP</span></div></footer>
+      </article>
+      <article class="dep-card" aria-hidden="true">
+        <div class="dep-card__quote">"</div>
+        <div class="dep-card__stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <blockquote>Precisei de um traslado de madrugada para o aeroporto e em 10 minutos tinham me respondido. Em Campinas é difícil achar esse nível de atendimento.</blockquote>
+        <footer class="dep-card__author"><div class="dep-card__avatar">PS</div><div><strong>Patricia Souza</strong><span>Médica · Campinas, SP</span></div></footer>
+      </article>
+      <article class="dep-card" aria-hidden="true">
+        <div class="dep-card__quote">"</div>
+        <div class="dep-card__stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <blockquote>Nossa empresa contratou locação mensal e a experiência superou as expectativas. Motoristas educados, trajetos pontuais e relatório impecável.</blockquote>
+        <footer class="dep-card__author"><div class="dep-card__avatar">CT</div><div><strong>Carla Torres</strong><span>CEO · Vinhedo, SP</span></div></footer>
+      </article>
+
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      FAQ
-══════════════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <section class="faq" id="faq" aria-label="Perguntas frequentes">
   <div class="container faq__inner">
     <div class="faq__header reveal">
       <p class="eyebrow">Dúvidas frequentes</p>
       <h2 class="section-title">Perguntas <em>e respostas</em></h2>
-      <p class="section-sub">Não encontrou o que procura? Fale conosco pelo WhatsApp.</p>
+      <p class="section-sub">Não encontrou o que procura? Fale conosco pelo WhatsApp de Campinas.</p>
     </div>
     <div class="faq__list reveal stagger-1">
       <div class="faq-item">
         <button class="faq-question" aria-expanded="false">
-          Como funciona o agendamento?
-          <i class="fa-solid fa-chevron-down"></i>
+          Como funciona o agendamento?<i class="fa-solid fa-chevron-down"></i>
         </button>
         <div class="faq-answer">
-          <p>Preencha o formulário com os dados da sua viagem e clique em "Solicitar agendamento". Você será redirecionado ao WhatsApp com todas as informações pré-preenchidas. Nossa equipe responde em minutos com a confirmação e os detalhes da corrida.</p>
+          <p>Preencha o formulário com os dados da sua viagem. Você será redirecionado ao WhatsApp com tudo pré-preenchido. Nossa equipe em Campinas responde em minutos com a confirmação e os detalhes da corrida.</p>
         </div>
       </div>
       <div class="faq-item">
         <button class="faq-question" aria-expanded="false">
-          Como é calculado o preço da corrida?
-          <i class="fa-solid fa-chevron-down"></i>
+          Como é calculado o preço?<i class="fa-solid fa-chevron-down"></i>
         </button>
         <div class="faq-answer">
-          <p>O valor é calculado com base na distância percorrida e no tipo de veículo necessário. Nossa equipe envia a proposta personalizada pelo WhatsApp antes da confirmação — garantindo que você saiba exatamente o que vai pagar antes de embarcar.</p>
+          <p>O valor é calculado com base na distância percorrida e no tipo de veículo. Nossa equipe confirma a proposta pelo WhatsApp antes do embarque — garantindo que você saiba exatamente o que vai pagar.</p>
         </div>
       </div>
       <div class="faq-item">
         <button class="faq-question" aria-expanded="false">
-          Qual a diferença entre Sedan e Van?
-          <i class="fa-solid fa-chevron-down"></i>
+          Vocês atendem Viracopos?<i class="fa-solid fa-chevron-down"></i>
         </button>
         <div class="faq-answer">
-          <p>O <strong>Sedan</strong> comporta até 4 passageiros e é ideal para deslocamentos executivos e cotidianos. A <strong>Van de 7 lugares</strong> é indicada para grupos de 5 a 6 passageiros, viagens com muita bagagem ou eventos. Para grupos de 5 ou mais, a van é obrigatória para garantir conforto e segurança.</p>
+          <p>Sim! Transfer para o Aeroporto Internacional de Viracopos é um dos nossos serviços mais solicitados. Monitoramos o voo em tempo real para ajustar o horário em caso de atrasos ou adiantamentos.</p>
         </div>
       </div>
       <div class="faq-item">
         <button class="faq-question" aria-expanded="false">
-          Vocês atendem madrugada e feriados?
-          <i class="fa-solid fa-chevron-down"></i>
+          Qual a diferença entre Sedan e Van?<i class="fa-solid fa-chevron-down"></i>
         </button>
         <div class="faq-answer">
-          <p>Sim. Operamos 24 horas por dia, 7 dias por semana, incluindo feriados nacionais e municipais. Para corridas em madrugadas ou datas especiais, recomendamos o agendamento com antecedência.</p>
+          <p>O <strong>Sedan</strong> comporta até 4 passageiros — ideal para deslocamentos executivos e cotidianos. A <strong>Van de 7 lugares</strong> é indicada para grupos de 5 a 6 passageiros, viagens com muita bagagem ou eventos em Campinas.</p>
         </div>
       </div>
       <div class="faq-item">
         <button class="faq-question" aria-expanded="false">
-          Quais formas de pagamento são aceitas?
-          <i class="fa-solid fa-chevron-down"></i>
+          Atendem madrugada e feriados?<i class="fa-solid fa-chevron-down"></i>
         </button>
         <div class="faq-answer">
-          <p>Aceitamos Pix, cartão de crédito, débito e dinheiro. Para clientes corporativos com contrato mensal, disponibilizamos faturamento via boleto. O recibo digital é enviado automaticamente após cada corrida.</p>
+          <p>Operamos 24 horas por dia, 7 dias por semana, incluindo feriados. Para corridas de madrugada ou em datas especiais em Campinas, recomendamos o agendamento com antecedência.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Quais formas de pagamento?<i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Aceitamos Pix, cartão de crédito, débito e dinheiro. Para clientes corporativos com contrato mensal em Campinas, disponibilizamos faturamento via boleto.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      CTA FINAL
-══════════════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <section class="cta-final" aria-label="Chamada para ação">
   <div class="container">
     <div class="cta-final__card reveal">
       <div class="cta-blob cta-blob--1" aria-hidden="true"></div>
       <div class="cta-blob cta-blob--2" aria-hidden="true"></div>
-      <p class="eyebrow eyebrow--center">Pronto para viajar?</p>
-      <h2 class="cta-final__title">Segurança e pontualidade<br />a um agendamento de distância.</h2>
-      <p class="cta-final__sub">Solicite sua corrida agora — resposta rápida, sem compromisso.</p>
+      <p class="eyebrow eyebrow--center">Pronto para viajar em Campinas?</p>
+      <h2 class="cta-final__title">Segurança e pontualidade<br/>a um agendamento de distância.</h2>
+      <p class="cta-final__sub">Solicite sua corrida agora — resposta em minutos, sem compromisso.</p>
       <div class="cta-final__actions">
         <a href="#agendamento" class="btn btn--primary btn--lg">
           <i class="fa-solid fa-calendar-check"></i>
           <span class="btn-text">Agendar minha viagem</span>
         </a>
-        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener" class="btn btn--ghost btn--lg">
+        <a href="https://wa.me/5519999999999" target="_blank" rel="noopener" class="btn btn--ghost btn--lg">
           <i class="fa-brands fa-whatsapp"></i>
           <span class="btn-text">Falar no WhatsApp</span>
         </a>
@@ -658,77 +806,57 @@
 
 </main>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      FOOTER
-══════════════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <footer class="footer" role="contentinfo">
 
-  <!-- Barra de credenciais -->
   <div class="footer__trust-bar">
     <div class="container footer__trust-bar-inner">
-      <div class="trust-item">
-        <i class="fa-solid fa-shield-halved"></i>
-        <span>Motoristas certificados</span>
-      </div>
+      <div class="trust-item"><i class="fa-solid fa-shield-halved"></i><span>Motoristas certificados</span></div>
       <div class="trust-sep" aria-hidden="true"></div>
-      <div class="trust-item">
-        <i class="fa-solid fa-car"></i>
-        <span>Frota segurada e rastreada</span>
-      </div>
+      <div class="trust-item"><i class="fa-solid fa-car"></i><span>Frota segurada e rastreada</span></div>
       <div class="trust-sep" aria-hidden="true"></div>
-      <div class="trust-item">
-        <i class="fa-solid fa-headset"></i>
-        <span>Suporte 24h · 7 dias</span>
-      </div>
+      <div class="trust-item"><i class="fa-solid fa-headset"></i><span>Suporte 24h · 7 dias</span></div>
       <div class="trust-sep" aria-hidden="true"></div>
-      <div class="trust-item">
-        <i class="fa-solid fa-award"></i>
-        <span>+10 anos de mercado</span>
-      </div>
+      <div class="trust-item"><i class="fa-solid fa-location-dot"></i><span>Campinas e região</span></div>
     </div>
   </div>
 
-  <!-- Corpo principal -->
   <div class="footer__main">
     <div class="container footer__grid">
 
-      <!-- Marca -->
       <div class="footer-brand">
         <a href="#" class="logo" aria-label="Vira Táxis">
           <div class="logo__mark"><i class="fa-solid fa-taxi"></i></div>
           <span class="logo__name">Vira<span>Táxis</span></span>
         </a>
-        <p>Mais de 10 anos conectando pessoas com segurança, pontualidade e atendimento humano em São Paulo e Grande SP.</p>
+        <p>Mais de 10 anos conectando pessoas com segurança, pontualidade e atendimento humano em Campinas e região metropolitana.</p>
         <p class="footer-brand__tagline">"Cada corrida, um compromisso."</p>
-
         <div class="footer__social" aria-label="Redes sociais">
           <a href="#" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
           <a href="#" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
           <a href="#" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="https://wa.me/5511999999999" class="social-btn social-btn--wa" aria-label="WhatsApp">
-            <i class="fa-brands fa-whatsapp"></i>
-          </a>
+          <a href="https://wa.me/5519999999999" class="social-btn social-btn--wa" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
       </div>
 
-      <!-- Navegação -->
       <div class="footer-col">
         <h4>Navegação</h4>
         <ul>
           <li><a href="#inicio">Início</a></li>
           <li><a href="#historia">Nossa história</a></li>
           <li><a href="#servicos">Serviços</a></li>
-          <li><a href="#agendamento">Agendar viagem</a></li>
+          <li><a href="#agendamento">Solicitar cotação</a></li>
           <li><a href="#depoimentos">Depoimentos</a></li>
           <li><a href="#faq">Perguntas frequentes</a></li>
         </ul>
       </div>
 
-      <!-- Serviços -->
       <div class="footer-col">
         <h4>Serviços</h4>
         <ul>
-          <li><a href="#servicos">Transfer aeroporto</a></li>
+          <li><a href="#servicos">Transfer Viracopos</a></li>
           <li><a href="#servicos">Executivo corporativo</a></li>
           <li><a href="#servicos">Grupos e eventos</a></li>
           <li><a href="#servicos">Deslocamento urbano</a></li>
@@ -737,34 +865,17 @@
         </ul>
       </div>
 
-      <!-- Contato -->
       <div class="footer-col footer-col--contact">
         <h4>Fale conosco</h4>
         <address>
           <ul>
-            <li>
-              <i class="fa-brands fa-whatsapp"></i>
-              <a href="https://wa.me/5511999999999" target="_blank" rel="noopener">(11) 99999-9999</a>
-            </li>
-            <li>
-              <i class="fa-solid fa-phone"></i>
-              <a href="tel:+5511999999999">(11) 99999-9999</a>
-            </li>
-            <li>
-              <i class="fa-solid fa-envelope"></i>
-              <a href="mailto:contato@virataxis.com.br">contato@virataxis.com.br</a>
-            </li>
-            <li>
-              <i class="fa-solid fa-location-dot"></i>
-              São Paulo e Grande SP
-            </li>
-            <li>
-              <i class="fa-solid fa-clock"></i>
-              Atendimento 24h · 7 dias
-            </li>
+            <li><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/5519999999999" target="_blank" rel="noopener">(19) 99999-9999</a></li>
+            <li><i class="fa-solid fa-phone"></i><a href="tel:+5519999999999">(19) 99999-9999</a></li>
+            <li><i class="fa-solid fa-envelope"></i><a href="mailto:contato@virataxis.com.br">contato@virataxis.com.br</a></li>
+            <li><i class="fa-solid fa-location-dot"></i>Campinas e região, SP</li>
+            <li><i class="fa-solid fa-clock"></i>Atendimento 24h · 7 dias</li>
           </ul>
         </address>
-
         <a href="#agendamento" class="footer-cta-btn">
           <i class="fa-solid fa-calendar-check"></i> Agendar agora
         </a>
@@ -773,12 +884,11 @@
     </div>
   </div>
 
-  <!-- Rodapé inferior -->
   <div class="footer__bottom">
     <div class="container footer__bottom-inner">
-      <p>© 2024 Vira Táxis. Todos os direitos reservados.</p>
+      <p>© 2024 Vira Táxis · Campinas, SP. Todos os direitos reservados.</p>
       <div class="footer__bottom-links">
-        <a href="#">Política de Privacidade</a>
+        <a href="#">Privacidade</a>
         <span aria-hidden="true">·</span>
         <a href="#">Termos de Uso</a>
         <span aria-hidden="true">·</span>
@@ -790,13 +900,13 @@
 </footer>
 
 <!-- WhatsApp flutuante -->
-<a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer"
+<a href="https://wa.me/5519999999999" target="_blank" rel="noopener noreferrer"
    class="wa-float" aria-label="Fale conosco pelo WhatsApp">
   <i class="fa-brands fa-whatsapp"></i>
   <span>Fale conosco</span>
 </a>
 
-<!-- Scripts — ordem de dependência: calculations → validations → whatsapp → maps → ui -->
+<!-- Scripts — ordem de dependência -->
 <script src="scripts/calculations.js"></script>
 <script src="scripts/validations.js"></script>
 <script src="scripts/whatsapp.js"></script>

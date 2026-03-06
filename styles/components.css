@@ -1,0 +1,119 @@
+/*
+ * 03-components.css — Botões, Logo, Badges
+ */
+
+/* ── Botões ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: .9rem;
+  padding: .72rem 1.6rem;
+  border-radius: var(--r-full);
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease),
+    background var(--t-fast),
+    border-color var(--t-fast),
+    color var(--t-fast);
+}
+.btn:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+
+/* Shimmer effect */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.25) 60%, transparent 70%);
+  transform: translateX(-110%);
+  transition: transform .5s ease;
+}
+.btn:hover::after { transform: translateX(110%); }
+
+/* Variants */
+.btn--primary {
+  background: var(--green);
+  color: var(--white);
+  box-shadow: 0 4px 16px var(--green-20);
+}
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px var(--green-20);
+}
+
+.btn--outline {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink-60);
+}
+.btn--outline:hover {
+  border-color: var(--sky-mid);
+  color: var(--sky-deep);
+  background: var(--sky-10);
+}
+
+.btn--ghost {
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.28);
+  color: var(--white);
+}
+.btn--ghost:hover {
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.5);
+  transform: translateY(-2px);
+}
+
+.btn--full { width: 100%; justify-content: center; }
+.btn--lg   { font-size: .95rem; padding: .85rem 2rem; }
+
+/* Loading state */
+.btn.loading { pointer-events: none; opacity: .8; }
+.btn.loading .btn-text { opacity: 0; }
+.btn.loading::before {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+/* ── Logo ────────────────────────────────────────────────── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  font-family: var(--font-body);
+  color: var(--ink);
+  text-decoration: none;
+}
+.logo__mark {
+  width: 36px; height: 36px;
+  background: var(--sky);
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+  color: var(--ink);
+  flex-shrink: 0;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.logo:hover .logo__mark { background: var(--sky-mid); color: var(--white); }
+.logo__name {
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+.logo__name span { color: var(--green); }

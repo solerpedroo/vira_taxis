@@ -1,0 +1,205 @@
+/*
+ * 05-sections.css — História, Serviços, Diferenciais
+ */
+
+/* ── História ────────────────────────────────────────────── */
+.historia {
+  padding: 7rem 0;
+  background: var(--surface);
+}
+.historia__inner {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.historia__media {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.historia__icon-card {
+  width: 200px; height: 200px;
+  border-radius: var(--r-xl);
+  background: linear-gradient(145deg, var(--ink) 0%, #1e3a56 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.5rem;
+  color: var(--sky);
+  box-shadow: var(--sh-xl);
+}
+.historia__year-badge {
+  position: absolute;
+  top: -10px; right: 10px;
+  background: var(--white);
+  border-radius: var(--r-md);
+  padding: .6rem .95rem;
+  box-shadow: var(--sh-lg);
+  text-align: center;
+  border-left: 3px solid var(--sky);
+}
+.historia__year-badge span {
+  display: block;
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-60);
+  margin-bottom: .1rem;
+}
+.historia__year-badge strong {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.historia__pillars {
+  display: flex;
+  gap: .65rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pillar {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  padding: .45rem .9rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--ink-60);
+}
+.pillar i { color: var(--sky-mid); font-size: .78rem; }
+
+.historia__text {
+  color: var(--ink-60);
+  font-size: .97rem;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  font-weight: 300;
+}
+.historia__list {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+.historia__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  font-size: .92rem;
+  color: var(--ink-60);
+  font-weight: 400;
+}
+.historia__list li i { color: var(--green); margin-top: 4px; flex-shrink: 0; }
+
+/* ── Serviços ────────────────────────────────────────────── */
+.servicos {
+  padding: 7rem 0;
+  background: var(--white);
+}
+.servicos__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.servico-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 1.75rem;
+  transition: transform var(--t-mid) var(--ease), box-shadow var(--t-mid), border-color var(--t-mid);
+}
+.servico-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-lg);
+  border-color: var(--sky);
+}
+.servico-card__icon {
+  width: 46px; height: 46px;
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+.servico-card h3 {
+  font-family: var(--font-body);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: .45rem;
+}
+.servico-card p {
+  font-size: .86rem;
+  color: var(--ink-60);
+  line-height: 1.68;
+  margin-bottom: .9rem;
+  font-weight: 300;
+}
+.servico-tag {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--sky-deep);
+  background: var(--sky-10);
+  padding: .2rem .65rem;
+  border-radius: var(--r-full);
+}
+
+/* ── Diferenciais ────────────────────────────────────────── */
+.diferenciais {
+  padding: 7rem 0;
+  background: var(--surface);
+}
+.diferenciais__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+.dif-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 1.75rem;
+  position: relative;
+  transition: transform var(--t-mid) var(--ease), box-shadow var(--t-mid);
+}
+.dif-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); }
+.dif-card__num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: var(--line);
+  line-height: 1;
+  margin-bottom: .75rem;
+}
+.dif-card__icon {
+  width: 42px; height: 42px;
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.05rem;
+  margin-bottom: .85rem;
+}
+.dif-card h3 {
+  font-family: var(--font-body);
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: .45rem;
+}
+.dif-card p {
+  font-size: .84rem;
+  color: var(--ink-60);
+  line-height: 1.68;
+  font-weight: 300;
+}
