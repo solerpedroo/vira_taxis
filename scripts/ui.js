@@ -1,12 +1,15 @@
 /**
- * ui.js — Controlador de UI do Vira Táxis
+ * ui.js — Controlador de UI do ViraTáxis
  *
  * REGRA DE NEGÓCIO: O resultado de cotação exibe apenas o VALOR
  * ESTIMADO formatado (ex: "R$ 42,00") e o tipo de veículo.
  * Nunca exibe a tarifa por km nem o cálculo.
  *
- * A cotação aparece automaticamente quando todos os campos
- * do formulário estão preenchidos corretamente.
+ * SEGURANÇA:
+ * - Nenhum input do usuário é inserido via innerHTML
+ * - Rate limiting no botão de cotação (máx 5 cliques por minuto)
+ * - Validação do href do botão WhatsApp (apenas URLs wa.me)
+ * - Todos os dados exibidos via textContent, nunca innerHTML com user data
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -45,7 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#"]');
     if (!a) return;
-    const target = document.querySelector(a.getAttribute('href'));
+    const href = a.getAttribute('href');
+    // Valida que o href é uma âncora local simples
+    if (!/^#[a-zA-Z][\w-]*$/.test(href)) return;
+    const target = document.querySelector(href);
     if (!target) return;
     e.preventDefault();
     const offset = (header?.offsetHeight ?? 72) + 8;
@@ -74,13 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const el = e.target;
         const target = parseInt(el.dataset.target, 10);
         const suffix = el.dataset.suffix ?? '';
+        // Valida que target é um número seguro
+        if (!Number.isFinite(target) || target < 0 || target > 1e7) return;
         const dur = 1400, start = performance.now();
         const tick = now => {
           const p = Math.min((now - start) / dur, 1);
-          const eased = 1 - Math.pow(1-p, 3);
+          const eased = 1 - Math.pow(1 - p, 3);
           const val = Math.round(target * eased);
           el.textContent = val >= 1000
-            ? (val/1000).toFixed(0) + 'k' + suffix
+            ? (val / 1000).toFixed(0) + 'k' + suffix
             : val + suffix;
           if (p < 1) requestAnimationFrame(tick);
         };
@@ -99,22 +107,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── 6b. PICKERS DE DATA E HORÁRIO ──────────────────────── */
-  const dateOverlay   = $('#datePickerOverlay');
-  const dateTrigger  = $('#dateTrigger');
-  const dateDisplay  = $('#dateDisplay');
-  const calGrid      = $('#calGrid');
-  const calMonthYear = $('#calMonthYear');
-  const datePrevBtn  = $('#datePrevMonth');
-  const dateNextBtn  = $('#dateNextMonth');
-  const dateCancelBtn = $('#dateCancelBtn');
+  const dateOverlay    = $('#datePickerOverlay');
+  const dateTrigger    = $('#dateTrigger');
+  const dateDisplay    = $('#dateDisplay');
+  const calGrid        = $('#calGrid');
+  const calMonthYear   = $('#calMonthYear');
+  const datePrevBtn    = $('#datePrevMonth');
+  const dateNextBtn    = $('#dateNextMonth');
+  const dateCancelBtn  = $('#dateCancelBtn');
 
   const timeOverlay    = $('#timePickerOverlay');
-  const timeTrigger   = $('#timeTrigger');
-  const timeDisplay   = $('#timeDisplay');
-  const timeHidden    = $('#time');
-  const hourDisp      = $('#hourDisplay');
-  const minDisp       = $('#minDisplay');
-  const timeCancelBtn = $('#timeCancelBtn');
+  const timeTrigger    = $('#timeTrigger');
+  const timeDisplay    = $('#timeDisplay');
+  const timeHidden     = $('#time');
+  const hourDisp       = $('#hourDisplay');
+  const minDisp        = $('#minDisplay');
+  const timeCancelBtn  = $('#timeCancelBtn');
   const timeConfirmBtn = $('#timeConfirmBtn');
 
   const MONTHS_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
@@ -140,13 +148,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderCalendar() {
     const today = new Date(); today.setHours(0,0,0,0);
-    const year = calView.getFullYear();
+    const year  = calView.getFullYear();
     const month = calView.getMonth();
-    calMonthYear.textContent = `${MONTHS_PT[month]} ${year}`;
+    // Usa textContent — sem XSS
+    if (calMonthYear) calMonthYear.textContent = `${MONTHS_PT[month]} ${year}`;
 
-    const firstDay = new Date(year, month, 1).getDay();
+    const firstDay    = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+    if (!calGrid) return;
     calGrid.innerHTML = '';
     for (let i = 0; i < firstDay; i++) {
       const empty = document.createElement('span');
@@ -157,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'cal-day';
-      btn.textContent = d;
+      btn.textContent = d; // textContent seguro
       const thisDate = new Date(year, month, d);
       thisDate.setHours(0,0,0,0);
       if (thisDate < today) btn.disabled = true;
@@ -166,14 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         selectedDate = thisDate;
         const iso = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-        dateHidden.value = iso;
-        dateDisplay.textContent = `${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`;
+        if (dateHidden) dateHidden.value = iso;
+        if (dateDisplay) dateDisplay.textContent = `${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`;
         dateTrigger?.classList.add('has-value');
         closeDatePicker();
         quoteResult?.classList.remove('show');
-        const errDate = $('#err-date');
-        if (errDate) { errDate.textContent = ''; errDate.classList.remove('show'); }
-        dateHidden?.classList.remove('field-error');
+        _clearFieldError('date');
       });
       calGrid.appendChild(btn);
     }
@@ -188,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function openTimePicker() {
     if (hourDisp) hourDisp.textContent = String(tHour).padStart(2,'0');
-    if (minDisp) minDisp.textContent = String(tMin).padStart(2,'0');
+    if (minDisp)  minDisp.textContent  = String(tMin).padStart(2,'0');
     timeOverlay?.classList.add('is-open');
     timeOverlay?.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
@@ -206,25 +214,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $$('.time-arr').forEach(btn => {
     btn.addEventListener('click', () => {
-      const dir = parseInt(btn.dataset.dir, 10);
+      const dir  = parseInt(btn.dataset.dir, 10);
       const unit = btn.dataset.unit;
       if (unit === 'h') tHour = (tHour + dir + 24) % 24;
-      if (unit === 'm') tMin = (tMin + dir + 60) % 60;
+      if (unit === 'm') tMin  = (tMin  + dir + 60) % 60;
       if (hourDisp) hourDisp.textContent = String(tHour).padStart(2,'0');
-      if (minDisp) minDisp.textContent = String(tMin).padStart(2,'0');
+      if (minDisp)  minDisp.textContent  = String(tMin).padStart(2,'0');
     });
   });
 
   timeConfirmBtn?.addEventListener('click', () => {
     const val = `${String(tHour).padStart(2,'0')}:${String(tMin).padStart(2,'0')}`;
-    if (timeHidden) timeHidden.value = val;
+    if (timeHidden)  timeHidden.value        = val;
     if (timeDisplay) timeDisplay.textContent = val;
     timeTrigger?.classList.add('has-value');
     closeTimePicker();
     quoteResult?.classList.remove('show');
-    const errTime = $('#err-time');
-    if (errTime) { errTime.textContent = ''; errTime.classList.remove('show'); }
-    timeHidden?.classList.remove('field-error');
+    _clearFieldError('time');
   });
 
   document.addEventListener('keydown', (e) => {
@@ -250,14 +256,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updatePassengers(val) {
     passengers = Math.max(1, Math.min(6, val));
-    if (display)   display.textContent = passengers;
-    if (hiddenPax) hiddenPax.value     = passengers;
-    btnMinus.disabled = passengers <= 1;
-    btnPlus.disabled  = passengers >= 6;
+    if (display)   display.textContent    = passengers;
+    if (hiddenPax) hiddenPax.value        = passengers;
+    if (btnMinus)  btnMinus.disabled      = passengers <= 1;
+    if (btnPlus)   btnPlus.disabled       = passengers >= 6;
 
     const info = Pricing.getVehicleInfo(passengers);
     if (vehicleTag) {
-      vehicleTag.innerHTML = `<i class="fa-solid ${info.vehicleIcon}"></i> ${info.vehicleLabel}`;
+      // Constrói via DOM — nunca innerHTML com dados do usuário
+      vehicleTag.textContent = '';
+      const icon = document.createElement('i');
+      icon.className = `fa-solid ${info.vehicleIcon}`;
+      vehicleTag.appendChild(icon);
+      vehicleTag.appendChild(document.createTextNode(` ${info.vehicleLabel}`));
       vehicleTag.classList.toggle('vehicle-tag--sedan', !info.requiresVan);
       vehicleTag.classList.toggle('vehicle-tag--van',    info.requiresVan);
     }
@@ -268,11 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
   updatePassengers(1);
 
   /* ── 9. COTAÇÃO ─────────────────────────────────────────── */
-  const quoteResult      = $('#quoteResult');
-  const quoteAmount      = $('#quoteAmount');
-  const quoteVehicleIcon = $('#quoteVehicleIcon');
+  const quoteResult       = $('#quoteResult');
+  const quoteAmount       = $('#quoteAmount');
+  const quoteVehicleIcon  = $('#quoteVehicleIcon');
   const quoteVehicleLabel = $('#quoteVehicleLabel');
-  const quoteDistNote    = $('#quoteDistNote');
+  const quoteDistNote     = $('#quoteDistNote');
 
   let _currentKm = null;
 
@@ -280,41 +291,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const origin = $('#origin')?.value ?? '';
     const dest   = $('#destination')?.value ?? '';
     const match  = (origin + dest).match(/(\d+)\s*km/i);
-    if (match) return parseInt(match[1], 10);
+    if (match) {
+      const km = parseInt(match[1], 10);
+      // Valida range razoável
+      if (km > 0 && km <= 1000) return km;
+    }
     if (origin.length >= 10 && dest.length >= 10) return 15;
     return null;
   }
 
   // Atualiza km quando Maps API retorna distância real
   document.addEventListener('maps:distance', e => {
-    _currentKm = e.detail.km;
+    const km = e.detail?.km;
+    if (Number.isFinite(km) && km > 0 && km <= 1000) {
+      _currentKm = km;
+    }
   });
 
-  // Ao alterar campos, esconde a cotação (usuário deve clicar em Realizar cotação novamente)
+  // Ao alterar campos, esconde a cotação
   ['name','phone','origin','destination','date','time','luggage'].forEach(id => {
-    $('#' + id)?.addEventListener('input', () => quoteResult?.classList.remove('show'));
+    $('#' + id)?.addEventListener('input',  () => quoteResult?.classList.remove('show'));
     $('#' + id)?.addEventListener('change', () => quoteResult?.classList.remove('show'));
   });
   btnMinus?.addEventListener('click', () => quoteResult?.classList.remove('show'));
-  btnPlus?.addEventListener('click', () => quoteResult?.classList.remove('show'));
+  btnPlus?.addEventListener('click',  () => quoteResult?.classList.remove('show'));
 
   /* ── 10. VALIDAÇÃO INLINE ──────────────────────────────── */
   function setFieldError(id, msg) {
-    const input = $('#' + id);
+    // Valida que o id é um campo conhecido (evita manipulação do DOM arbitrária)
+    const knownFields = ['name','phone','origin','destination','date','time','passengers','luggage'];
+    if (!knownFields.includes(id)) return;
+
+    const input = $('#' + id) || $(`[id="${id}"]`);
     const errEl = $('#err-' + id);
     if (!input) return;
     if (msg) {
       input.classList.add('field-error');
-      if (errEl) { errEl.textContent = msg; errEl.classList.add('show'); }
+      if (errEl) {
+        errEl.textContent = msg; // textContent — sem XSS
+        errEl.classList.add('show');
+      }
     } else {
-      input.classList.remove('field-error');
-      if (errEl) { errEl.textContent = ''; errEl.classList.remove('show'); }
+      _clearFieldError(id);
     }
   }
+
+  function _clearFieldError(id) {
+    const knownFields = ['name','phone','origin','destination','date','time','passengers','luggage'];
+    if (!knownFields.includes(id)) return;
+    const input = $('#' + id);
+    const errEl = $('#err-' + id);
+    input?.classList.remove('field-error');
+    if (errEl) { errEl.textContent = ''; errEl.classList.remove('show'); }
+  }
+
   function clearErrors() {
     $$('.form-input').forEach(el => el.classList.remove('field-error'));
     $$('.field-msg').forEach(el => { el.textContent = ''; el.classList.remove('show'); });
   }
+
   ['name','phone','origin','destination','date','time','luggage'].forEach(id => {
     $('#' + id)?.addEventListener('blur', e => {
       const r = Validations.validateField(id, e.target.value);
@@ -322,9 +357,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ── 11. REALIZAR COTAÇÃO + AGENDAR VIA WHATSAPP ───────── */
-  const form       = $('#quoteForm');
-  const quoteBtn   = $('#quoteBtn');
+  /* ── 11. RATE LIMITING DO BOTÃO ────────────────────────── */
+  const RATE_LIMIT_MAX      = 5;   // máx de cliques
+  const RATE_LIMIT_WINDOW   = 60000; // em 60 segundos
+  let _quoteBtnClickTimes   = [];
+
+  function _isRateLimited() {
+    const now = Date.now();
+    _quoteBtnClickTimes = _quoteBtnClickTimes.filter(t => now - t < RATE_LIMIT_WINDOW);
+    if (_quoteBtnClickTimes.length >= RATE_LIMIT_MAX) return true;
+    _quoteBtnClickTimes.push(now);
+    return false;
+  }
+
+  /* ── 12. VALIDAR URL WHATSAPP ──────────────────────────── */
+  function _isValidWhatsAppUrl(url) {
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'https:' && parsed.hostname === 'wa.me';
+    } catch {
+      return false;
+    }
+  }
+
+  /* ── 13. REALIZAR COTAÇÃO + AGENDAR VIA WHATSAPP ──────── */
+  const form        = $('#quoteForm');
+  const quoteBtn    = $('#quoteBtn');
   const whatsappBtn = $('#whatsappBtn');
 
   form?.addEventListener('submit', e => {
@@ -333,6 +391,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   quoteBtn?.addEventListener('click', () => {
+    // Rate limiting
+    if (_isRateLimited()) {
+      // Feedback visual discreto
+      quoteBtn.disabled = true;
+      setTimeout(() => { quoteBtn.disabled = false; }, 3000);
+      return;
+    }
+
     clearErrors();
 
     const raw = {
@@ -348,29 +414,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const { valid, errors } = Validations.validateForm(raw);
     if (!valid) {
-      Object.entries(errors).forEach(([f,m]) => setFieldError(f, m));
+      Object.entries(errors).forEach(([f, m]) => setFieldError(f, m));
       form?.querySelector('.field-error')
         ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
-    const pax     = parseInt(raw.passengers, 10);
-    const luggage = parseInt(raw.luggage, 10);
+    const pax     = Math.max(1, Math.min(6, parseInt(raw.passengers, 10) || 1));
+    const luggage = Math.max(0, Math.min(20, parseInt(raw.luggage, 10) || 0));
     const info    = Pricing.getVehicleInfo(pax);
     const km      = MapsService.isActive() ? MapsService.getDistanceKm() : (_currentKm || _guessKm());
-    const pricing = km ? Pricing.calculate(km, pax) : {};
+    const pricing = (km && Number.isFinite(km)) ? Pricing.calculate(km, pax) : {};
 
     quoteBtn.classList.add('loading');
     quoteBtn.disabled = true;
 
     quoteResult?.classList.add('show');
 
-    if (quoteVehicleIcon)  quoteVehicleIcon.className  = `fa-solid ${info.vehicleIcon}`;
+    // Usa textContent — NUNCA innerHTML com dados do usuário
+    if (quoteVehicleIcon)  quoteVehicleIcon.className   = `fa-solid ${info.vehicleIcon}`;
     if (quoteVehicleLabel) quoteVehicleLabel.textContent = info.vehicleLabel;
-    if (quoteAmount) quoteAmount.textContent = km ? Pricing.formatAmount(pricing.total) : '--';
-    if (quoteDistNote) quoteDistNote.textContent = km ? `~${km} km estimados` : 'Preço confirmado via WhatsApp';
+    if (quoteAmount)       quoteAmount.textContent       = (km && pricing.total) ? Pricing.formatAmount(pricing.total) : '--';
+    if (quoteDistNote)     quoteDistNote.textContent     = km ? `~${km} km estimados` : 'Preço confirmado via WhatsApp';
 
-    whatsappBtn?.setAttribute('href', WhatsApp.getUrl({
+    // Constrói e valida URL do WhatsApp antes de atribuir ao href
+    const waUrl = WhatsApp.getUrl({
       name: raw.name, phone: raw.phone,
       origin: raw.origin, destination: raw.destination,
       date: raw.date, time: raw.time,
@@ -379,8 +447,17 @@ document.addEventListener('DOMContentLoaded', () => {
       requiresVan: info.requiresVan,
       estimatedKm: km,
       total: pricing.total ?? null,
-      pricePerKm: pricing.pricePerKm ?? null,
-    }));
+      pricePerKm: null, // NUNCA passa pricePerKm — não deve ir ao cliente
+    });
+
+    if (whatsappBtn) {
+      if (_isValidWhatsAppUrl(waUrl)) {
+        whatsappBtn.setAttribute('href', waUrl);
+      } else {
+        whatsappBtn.setAttribute('href', '#');
+        console.warn('ViraTáxis: URL WhatsApp inválida bloqueada.');
+      }
+    }
 
     quoteResult?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -390,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 400);
   });
 
-  /* ── 12. WHATSAPP FLOAT ────────────────────────────────── */
+  /* ── 14. WHATSAPP FLOAT ────────────────────────────────── */
   const waFloat = $('.wa-float');
   if (waFloat) {
     let shown = false;

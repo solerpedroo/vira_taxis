@@ -3,8 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Vira Táxis – Transporte urbano e executivo em Campinas, SP. Mais de 10 anos de experiência. Motoristas verificados, frota moderna, preço sob consulta." />
-  <title>Vira Táxis – Transporte com segurança em Campinas, SP</title>
+  <meta name="description" content="ViraTáxis – Transporte urbano e executivo em Campinas, SP. Mais de 10 anos de experiência. Motoristas verificados, frota moderna, preço sob consulta." />
+
+  <!--
+    ══════════════════════════════════════════════════════
+    CABEÇALHOS DE SEGURANÇA (Content Security Policy)
+    ══════════════════════════════════════════════════════
+    Em produção, configure estes headers no seu servidor
+    (Nginx / Apache / Vercel / Netlify / Cloudflare).
+
+    Exemplo para Nginx:
+    ────────────────────────────────────────────────────
+    add_header Content-Security-Policy "
+      default-src 'self';
+      script-src 'self' https://maps.googleapis.com https://cdnjs.cloudflare.com;
+      style-src  'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+      font-src   'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+      img-src    'self' data: https://maps.gstatic.com https://maps.googleapis.com;
+      connect-src 'self' https://maps.googleapis.com;
+      frame-ancestors 'none';
+    ";
+    add_header X-Frame-Options "DENY";
+    add_header X-Content-Type-Options "nosniff";
+    add_header Referrer-Policy "strict-origin-when-cross-origin";
+    add_header Permissions-Policy "geolocation=(), camera=(), microphone=()";
+    ──────────────────────────────────────────────────────
+  -->
+
+  <title>ViraTáxis – Transporte com segurança em Campinas, SP</title>
 
   <!-- Preconnect fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,11 +51,47 @@
 
   <!--
     ╔══════════════════════════════════════════════════════╗
-    ║  GOOGLE MAPS — Para ativar:                         ║
-    ║  1. console.cloud.google.com → criar API Key        ║
-    ║  2. Ativar: Maps JS API, Places API,                ║
-    ║     Distance Matrix API, Geocoding API              ║
-    ║  3. Substituir YOUR_KEY e descomentar abaixo        ║
+    ║  GOOGLE MAPS — Como configurar a API Key:           ║
+    ║                                                      ║
+    ║  PASSO 1 — Criar a API Key                          ║
+    ║  ─────────────────────────────────────────────────  ║
+    ║  1. Acesse: console.cloud.google.com                ║
+    ║  2. Crie um projeto (ou selecione um existente)     ║
+    ║  3. Menu: APIs e Serviços → Credenciais             ║
+    ║  4. Clique em "+ Criar Credencial" → Chave de API   ║
+    ║  5. Copie a chave gerada                            ║
+    ║                                                      ║
+    ║  PASSO 2 — Ativar as APIs necessárias               ║
+    ║  ─────────────────────────────────────────────────  ║
+    ║  Em "APIs e Serviços" → "Biblioteca", ative:        ║
+    ║  • Maps JavaScript API                              ║
+    ║  • Places API                                       ║
+    ║  • Distance Matrix API                              ║
+    ║                                                      ║
+    ║  PASSO 3 — RESTRINGIR a chave (OBRIGATÓRIO)         ║
+    ║  ─────────────────────────────────────────────────  ║
+    ║  Em Credenciais → clique na chave → editar:         ║
+    ║                                                      ║
+    ║  a) Em "Restrições de aplicativo":                  ║
+    ║     Selecione "Referenciadores HTTP (sites)"        ║
+    ║     Adicione apenas seu(s) domínio(s):              ║
+    ║     • https://seudominio.com.br/*                   ║
+    ║     • https://www.seudominio.com.br/*               ║
+    ║     • http://localhost/*  (apenas para testes)      ║
+    ║                                                      ║
+    ║  b) Em "Restrições de API":                         ║
+    ║     Selecione "Restringir chave"                    ║
+    ║     Marque APENAS as 3 APIs acima                   ║
+    ║                                                      ║
+    ║  PASSO 4 — Substituir YOUR_KEY e descomentar        ║
+    ║  ─────────────────────────────────────────────────  ║
+    ║  Substitua YOUR_KEY pela chave copiada e            ║
+    ║  descomente a linha <script> abaixo.                ║
+    ║                                                      ║
+    ║  ⚠️  NUNCA commite a chave real no Git!             ║
+    ║      Use uma variável de ambiente:                   ║
+    ║      Coloque a chave num arquivo .env (não versionado) ║
+    ║      e injete-a via build (Netlify/Vercel env var). ║
     ╚══════════════════════════════════════════════════════╝
   -->
   <!-- <script defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places&callback=initGoogleMaps"></script> -->
@@ -41,7 +103,7 @@
 ══════════════════════════════════════ -->
 <header class="header" id="header">
   <div class="container header__inner">
-    <a href="#" class="logo" aria-label="Vira Táxis — início">
+    <a href="#" class="logo" aria-label="ViraTáxis — início">
       <div class="logo__mark"><i class="fa-solid fa-taxi"></i></div>
       <span class="logo__name">Vira<span>Táxis</span></span>
     </a>
@@ -90,7 +152,7 @@
     <div class="hero__content">
       <span class="hero__tag reveal">
         <i class="fa-solid fa-location-dot"></i>
-        Campinas e região — desde 2014
+        Campinas e região — desde 2016
       </span>
 
       <h1 class="hero__h1 reveal stagger-1">
@@ -192,7 +254,7 @@
     </div>
     <div class="stat-item reveal stagger-4">
       <strong class="stat-item__num" data-target="24" data-suffix="h">24h</strong>
-      <span class="stat-item__label">Viagens à qualquer hora</span>
+      <span class="stat-item__label">Viagens a qualquer hora</span>
     </div>
   </div>
 </div>
@@ -209,7 +271,7 @@
       </div>
       <div class="historia__year-badge">
         <span>Fundado em</span>
-        <strong>2014</strong>
+        <strong>2016</strong>
       </div>
       <div class="historia__pillars">
         <div class="pillar reveal stagger-1"><i class="fa-solid fa-shield-halved"></i><span>Segurança</span></div>
@@ -223,17 +285,17 @@
       <h2 class="section-title">Uma década conectando<br/><em>pessoas e destinos.</em></h2>
 
       <p class="historia__text">
-        O Vira Táxis nasceu em 2014 no coração de Campinas com uma missão clara: oferecer transporte urbano de verdade — com preço justo, motorista confiável e pontualidade de relógio. Numa cidade que cresce rápido e exige mobilidade de qualidade, percebemos que campineiros e visitantes mereciam muito mais do que uma corrida. Mereciam uma experiência.
+        O ViraTáxis nasceu em 2016 no coração de Campinas com uma missão clara: oferecer transporte urbano de verdade — com preço justo, motorista confiável e pontualidade de relógio. Numa cidade que cresce rápido e exige mobilidade de qualidade, percebemos que campineiros e visitantes mereciam muito mais do que uma corrida. Mereciam uma experiência.
       </p>
       <p class="historia__text">
-        Em mais de uma década, construímos uma operação que vai além de transportar pessoas. Formamos motoristas com metodologia própria, revisamos a frota mensalmente e desenvolvemos um modelo de atendimento que coloca respeito e transparência acima de tudo — seja às 5h da manhã rumo a Viracopos ou numa noite de evento no centro de Campinas.
+        Em quase uma década, construímos uma operação que vai além de transportar pessoas. Formamos motoristas com metodologia própria, revisamos a frota mensalmente e desenvolvemos um modelo de atendimento que coloca respeito e transparência acima de tudo — seja às 5h da manhã rumo a Viracopos ou numa noite de evento no centro de Campinas.
       </p>
       <p class="historia__text">
         Hoje atendemos particulares, empresas e eventos corporativos em Campinas e toda a região metropolitana. Somos campineiros, orgulhosos de cada quilômetro rodado nesta cidade.
       </p>
 
       <ul class="historia__list">
-        <li><i class="fa-solid fa-circle-check"></i> Fundados em Campinas, SP, em 2014</li>
+        <li><i class="fa-solid fa-circle-check"></i> Fundados em Campinas, SP, em 2016</li>
         <li><i class="fa-solid fa-circle-check"></i> Frota 100% revisada, segurada e rastreada</li>
         <li><i class="fa-solid fa-circle-check"></i> Motoristas com treinamento e certificação próprios</li>
         <li><i class="fa-solid fa-circle-check"></i> Atendimento corporativo, executivo e particular</li>
@@ -316,7 +378,7 @@
         <li><i class="fa-solid fa-circle-check"></i> Motorista e veículo indicados</li>
       </ul>
       <div class="agendamento__contact">
-        <a href="https://wa.me/5519991865431" target="_blank" rel="noopener" class="contact-pill">
+        <a href="https://wa.me/5519991865431" target="_blank" rel="noopener noreferrer" class="contact-pill">
           <i class="fa-brands fa-whatsapp"></i> (19) 99186-5431
         </a>
         <a href="tel:+5519991865431" class="contact-pill">
@@ -342,7 +404,8 @@
               <i class="fa-solid fa-user"></i> Nome completo
             </label>
             <input type="text" id="name" name="name" class="form-input"
-              placeholder="Seu nome completo" autocomplete="name" />
+              placeholder="Seu nome completo" autocomplete="name"
+              maxlength="100" />
             <span class="field-msg" id="err-name" role="alert"></span>
           </div>
           <div class="form-group">
@@ -366,7 +429,8 @@
               <div class="input-with-icon input-with-icon--route">
                 <input type="text" id="origin" name="origin" class="form-input form-input--route"
                   placeholder="Ex: Shopping Iguatemi, Campinas – SP"
-                  autocomplete="off" data-maps-autocomplete="origin" />
+                  autocomplete="off" data-maps-autocomplete="origin"
+                  maxlength="300" />
                 <span class="input-icon"><i class="fa-solid fa-location-crosshairs"></i></span>
               </div>
               <span class="field-msg" id="err-origin" role="alert"></span>
@@ -380,7 +444,8 @@
               <div class="input-with-icon input-with-icon--route">
                 <input type="text" id="destination" name="destination" class="form-input form-input--route"
                   placeholder="Ex: Aeroporto de Viracopos – Campinas, SP"
-                  autocomplete="off" data-maps-autocomplete="destination" />
+                  autocomplete="off" data-maps-autocomplete="destination"
+                  maxlength="300" />
                 <span class="input-icon"><i class="fa-solid fa-map-location-dot"></i></span>
               </div>
               <span class="field-msg" id="err-destination" role="alert"></span>
@@ -533,29 +598,26 @@
     <header class="section-header reveal">
       <p class="eyebrow">Depoimentos</p>
       <h2 class="section-title">Quem usa em Campinas, <em>recomenda.</em></h2>
-      <p class="section-sub">Histórias reais de clientes que confiam no Vira Táxis para cada viagem.</p>
+      <p class="section-sub">Histórias reais de clientes que confiam no ViraTáxis para cada viagem.</p>
     </header>
   </div>
 
-  <!-- Carrossel — fora do container para ocupar full width -->
   <div class="depoimentos__track-wrap">
     <div class="depoimentos__track" id="depTrack">
 
-      <!-- Depoimento 1 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Uso o Vira Táxis toda semana para meus traslados em Viracopos. O motorista sempre chega com antecedência, o carro está impecável e o valor combinado é exatamente o cobrado. Não troco por nada.</blockquote>
+        <blockquote>Uso o ViraTáxis toda semana para meus traslados em Viracopos. O motorista sempre chega com antecedência, o carro está impecável e o valor combinado é exatamente o cobrado. Não troco por nada.</blockquote>
         <footer class="dep-card__author">
           <div class="dep-card__avatar">MF</div>
           <div><strong>Mariana Ferreira</strong><span>Diretora Financeira · Campinas, SP</span></div>
         </footer>
       </article>
 
-      <!-- Depoimento 2 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
@@ -569,35 +631,32 @@
         </footer>
       </article>
 
-      <!-- Depoimento 3 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Sou cliente há três anos. O que me fidelizou foi a seriedade: combinam o preço, cumprem o horário e o motorista sempre se apresenta. É o tipo de serviço que dá paz de espírito aqui em Campinas.</blockquote>
+        <blockquote>Sou cliente há anos. O que me fidelizou foi a seriedade: combinam o preço, cumprem o horário e o motorista sempre se apresenta. É o tipo de serviço que dá paz de espírito aqui em Campinas.</blockquote>
         <footer class="dep-card__author">
           <div class="dep-card__avatar">JL</div>
           <div><strong>Juliana Lima</strong><span>Consultora de RH · Campinas, SP</span></div>
         </footer>
       </article>
 
-      <!-- Depoimento 4 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Viajo bastante a trabalho e o Vira Táxis virou meu parceiro de confiança para o aeroporto de Viracopos. Pontualidade impecável e carro sempre limpo. Recomendo sem hesitar.</blockquote>
+        <blockquote>Viajo bastante a trabalho e o ViraTáxis virou meu parceiro de confiança para o aeroporto de Viracopos. Pontualidade impecável e carro sempre limpo. Recomendo sem hesitar.</blockquote>
         <footer class="dep-card__author">
           <div class="dep-card__avatar">AL</div>
           <div><strong>André Lopes</strong><span>Engenheiro de TI · Barão Geraldo, SP</span></div>
         </footer>
       </article>
 
-      <!-- Depoimento 5 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
@@ -611,7 +670,6 @@
         </footer>
       </article>
 
-      <!-- Depoimento 6 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
@@ -625,35 +683,32 @@
         </footer>
       </article>
 
-      <!-- Depoimento 7 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Usei para o meu casamento e foi perfeito. A van estava decorada, o motorista era super gentil e chegamos no horário certo. O Vira Táxis fez parte do nosso dia especial em Campinas.</blockquote>
+        <blockquote>Usei para o meu casamento e foi perfeito. A van estava decorada, o motorista era super gentil e chegamos no horário certo. O ViraTáxis fez parte do nosso dia especial em Campinas.</blockquote>
         <footer class="dep-card__author">
           <div class="dep-card__avatar">BM</div>
           <div><strong>Beatriz Martins</strong><span>Professora · Sumaré, SP</span></div>
         </footer>
       </article>
 
-      <!-- Depoimento 8 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Não adianta ter carro bom se o motorista não é profissional. O Vira Táxis tem os dois. Atende em Campinas e região, sempre no horário e com preço que faz sentido. É o que basta.</blockquote>
+        <blockquote>Não adianta ter carro bom se o motorista não é profissional. O ViraTáxis tem os dois. Atende em Campinas e região, sempre no horário e com preço que faz sentido. É o que basta.</blockquote>
         <footer class="dep-card__author">
           <div class="dep-card__avatar">FO</div>
           <div><strong>Felipe Oliveira</strong><span>Advogado · Campinas, SP</span></div>
         </footer>
       </article>
 
-      <!-- Depoimento 9 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
@@ -667,29 +722,24 @@
         </footer>
       </article>
 
-      <!-- Depoimento 10 -->
       <article class="dep-card">
         <div class="dep-card__quote" aria-hidden="true">"</div>
         <div class="dep-card__stars" aria-label="5 estrelas">
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
         </div>
-        <blockquote>Agendei pelo WhatsApp em menos de 2 minutos. Motorista chegou 5 minutos antes, carro higienizado e ele me ajudou com as malas. Isso é serviço de verdade. Campinas tem sorte de ter o Vira Táxis.</blockquote>
+        <blockquote>Agendei pelo WhatsApp em menos de 2 minutos. Motorista chegou 5 minutos antes, carro higienizado e ele me ajudou com as malas. Isso é serviço de verdade. Campinas tem sorte de ter o ViraTáxis.</blockquote>
         <footer class="dep-card__author">
           <div class="dep-card__avatar">IS</div>
           <div><strong>Isabela Santos</strong><span>Arquiteta · Americana, SP</span></div>
         </footer>
       </article>
 
-      <!--
-        Duplicatas para loop infinito perfeito.
-        O JS clona automaticamente via data-dup — mas as duplicatas
-        abaixo garantem o loop mesmo sem JS.
-      -->
+      <!-- Duplicatas para loop infinito -->
       <article class="dep-card" aria-hidden="true">
         <div class="dep-card__quote">"</div>
         <div class="dep-card__stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-        <blockquote>Uso o Vira Táxis toda semana para meus traslados em Viracopos. O motorista sempre chega com antecedência, o carro está impecável e o valor combinado é exatamente o cobrado.</blockquote>
+        <blockquote>Uso o ViraTáxis toda semana para meus traslados em Viracopos. O motorista sempre chega com antecedência, o carro está impecável e o valor combinado é exatamente o cobrado.</blockquote>
         <footer class="dep-card__author"><div class="dep-card__avatar">MF</div><div><strong>Mariana Ferreira</strong><span>Diretora Financeira · Campinas, SP</span></div></footer>
       </article>
       <article class="dep-card" aria-hidden="true">
@@ -701,7 +751,7 @@
       <article class="dep-card" aria-hidden="true">
         <div class="dep-card__quote">"</div>
         <div class="dep-card__stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-        <blockquote>Viajo bastante a trabalho e o Vira Táxis virou meu parceiro de confiança para o aeroporto de Viracopos. Pontualidade impecável e carro sempre limpo.</blockquote>
+        <blockquote>Viajo bastante a trabalho e o ViraTáxis virou meu parceiro de confiança para o aeroporto de Viracopos. Pontualidade impecável e carro sempre limpo.</blockquote>
         <footer class="dep-card__author"><div class="dep-card__avatar">AL</div><div><strong>André Lopes</strong><span>Engenheiro de TI · Barão Geraldo, SP</span></div></footer>
       </article>
       <article class="dep-card" aria-hidden="true">
@@ -751,7 +801,7 @@
         </div>
       </details>
       <details class="faq-item">
-        <summary class="faq-question">Qual a diferença entre Sedan e Van?<i class="fa-solid fa-chevron-down"></i></summary>
+        <summary class="faq-question">Qual a diferença entre Sedan e Carro 7 lugares?<i class="fa-solid fa-chevron-down"></i></summary>
         <div class="faq-answer">
           <p>O <strong>Sedan</strong> comporta até 4 passageiros — ideal para deslocamentos executivos e cotidianos. O <strong>Carro 7 lugares</strong> é indicado para grupos de 5 a 6 passageiros, viagens com muita bagagem ou eventos em Campinas.</p>
         </div>
@@ -788,7 +838,7 @@
           <i class="fa-solid fa-calendar-check"></i>
           <span class="btn-text">Agendar minha viagem</span>
         </a>
-        <a href="https://wa.me/5519991865431" target="_blank" rel="noopener" class="btn btn--ghost btn--lg">
+        <a href="https://wa.me/5519991865431" target="_blank" rel="noopener noreferrer" class="btn btn--ghost btn--lg">
           <i class="fa-brands fa-whatsapp"></i>
           <span class="btn-text">Falar no WhatsApp</span>
         </a>
@@ -820,17 +870,17 @@
     <div class="container footer__grid">
 
       <div class="footer-brand">
-        <a href="#" class="logo" aria-label="Vira Táxis">
+        <a href="#" class="logo" aria-label="ViraTáxis">
           <div class="logo__mark"><i class="fa-solid fa-taxi"></i></div>
           <span class="logo__name">Vira<span>Táxis</span></span>
         </a>
-        <p>Mais de 10 anos conectando pessoas com segurança, pontualidade e atendimento humano em Campinas e região metropolitana.</p>
+        <p>Quase uma década conectando pessoas com segurança, pontualidade e atendimento humano em Campinas e região metropolitana.</p>
         <p class="footer-brand__tagline">"Cada corrida, um compromisso."</p>
         <div class="footer__social" aria-label="Redes sociais">
           <a href="#" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
           <a href="#" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
           <a href="#" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="https://wa.me/5519991865431" class="social-btn social-btn--wa" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://wa.me/5519991865431" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--wa" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
       </div>
 
@@ -862,7 +912,7 @@
         <h4>Fale conosco</h4>
         <address>
           <ul>
-            <li><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/5519991865431" target="_blank" rel="noopener">(19) 99186-5431</a></li>
+            <li><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/5519991865431" target="_blank" rel="noopener noreferrer">(19) 99186-5431</a></li>
             <li><i class="fa-solid fa-phone"></i><a href="tel:+5519991865431">(19) 99186-5431</a></li>
             <li><i class="fa-solid fa-envelope"></i><a href="mailto:contato@virataxis.com.br">contato@virataxis.com.br</a></li>
             <li><i class="fa-solid fa-location-dot"></i>Campinas e região, SP</li>
@@ -879,7 +929,7 @@
 
   <div class="footer__bottom">
     <div class="container footer__bottom-inner">
-      <p>© 2024 Vira Táxis · Campinas, SP. Todos os direitos reservados.</p>
+      <p>© 2016–2026 ViraTáxis · Campinas, SP. Todos os direitos reservados.</p>
       <div class="footer__bottom-links">
         <a href="#">Privacidade</a>
         <span aria-hidden="true">·</span>
