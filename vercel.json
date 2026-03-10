@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/maps-api",
+      "destination": "https://maps.googleapis.com/maps/api/js?key=@GOOGLE_MAPS_KEY&libraries=places&callback=initGoogleMaps"
+    }
+  ]
+}
