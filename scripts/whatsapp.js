@@ -2,47 +2,75 @@
  * whatsapp.js
  * Monta a mensagem e redireciona ao WhatsApp.
  * Valor interno (pricing) vai para a equipe — nunca exibido ao cliente.
+ *
+ * SEGURANÇA:
+ * - Todos os inputs do usuário são sanitizados antes de compor a mensagem
+ * - A URL gerada é validada antes de qualquer redirect
+ * - pricePerKm NUNCA é exposto ao cliente
  */
 
 const WhatsApp = (() => {
 
   const WHATSAPP_NUMBER = '5519991865431'; // Campinas DDD 19
 
+  /** Valida que o número é somente dígitos (proteção contra injeção) */
+  function _safeNumber(num) {
+    return String(num).replace(/\D/g, '');
+  }
+
   function _fmtDate(iso) {
-    if (!iso) return 'Não informada';
-    const [y,m,d] = iso.split('-'); return `${d}/${m}/${y}`;
+    if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return 'Não informada';
+    const [y, m, d] = iso.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  /** Sanitiza texto para uso em mensagem WhatsApp (texto puro, não HTML) */
+  function _s(value) {
+    return Validations.sanitizeText(String(value ?? ''));
   }
 
   function buildMessage(data) {
-    const vehicle  = data.requiresVan ? '🚗 Carro 7 lugares' : '🚗 Sedan';
-    const vanFlag  = data.requiresVan ? '\n   ⚠️ _Van necessária para o grupo_' : '';
-    const kmLine   = data.estimatedKm ? `\n📏 *Distância:* ~${data.estimatedKm} km` : '';
+    // Sanitiza todos os campos antes de usar
+    const name        = _s(data.name);
+    const phone       = _s(data.phone);
+    const origin      = _s(data.origin);
+    const destination = _s(data.destination);
+    const date        = _fmtDate(data.date);
+    const time        = _s(data.time) || 'Não informado';
+    const passengers  = Math.max(1, Math.min(6, parseInt(data.passengers, 10) || 1));
+    const luggage     = Math.max(0, Math.min(20, parseInt(data.luggage, 10) || 0));
 
-    // Referência interna — somente para a equipe (valor do cálculo)
-    const internal = (data.total && data.pricePerKm)
+    const vehicle  = data.requiresVan ? '🚗 Carro 7 lugares' : '🚗 Sedan';
+    const vanFlag  = data.requiresVan ? '\n   ⚠️ _Carro 7 lugares necessário para o grupo_' : '';
+    const kmLine   = (data.estimatedKm && Number.isFinite(data.estimatedKm))
+      ? `\n📏 *Distância:* ~${Math.ceil(data.estimatedKm)} km`
+      : '';
+
+    // Referência interna — somente para a equipe
+    // pricePerKm é omitido intencionalmente para não expor ao cliente
+    const internal = (data.total && Number.isFinite(data.total))
       ? `\n\n━━━━━━━━━━━━━━━━━━━━\n`
         + `📋 *EQUIPE — referência interna*\n`
-        + `   Tarifa: ${Pricing.formatBRL(data.pricePerKm)}/km\n`
         + `   Estimativa: ${Pricing.formatBRL(data.total)}\n`
         + `   _(confirme antes de responder ao cliente)_`
       : '';
 
     return (
-      `Olá, Vira Táxis! 👋\n\n`
+      `Olá, ViraTáxis! 👋\n\n`
     + `Gostaria de agendar uma viagem em Campinas:\n\n`
     + `━━━━━━━━━━━━━━━━━━━━\n`
-    + `👤 *Nome:* ${data.name}\n`
-    + `📱 *Telefone:* ${data.phone}\n`
+    + `👤 *Nome:* ${name}\n`
+    + `📱 *Telefone:* ${phone}\n`
     + `━━━━━━━━━━━━━━━━━━━━\n`
-    + `📍 *Origem:* ${data.origin}\n`
-    + `🏁 *Destino:* ${data.destination}\n`
+    + `📍 *Origem:* ${origin}\n`
+    + `🏁 *Destino:* ${destination}\n`
     + kmLine + `\n`
     + `━━━━━━━━━━━━━━━━━━━━\n`
-    + `📅 *Data:* ${_fmtDate(data.date)}\n`
-    + `🕐 *Horário:* ${data.time || 'Não informado'}\n`
+    + `📅 *Data:* ${date}\n`
+    + `🕐 *Horário:* ${time}\n`
     + `━━━━━━━━━━━━━━━━━━━━\n`
-    + `👥 *Passageiros:* ${data.passengers}\n`
-    + `🧳 *Bagagens:* ${data.luggage}\n`
+    + `👥 *Passageiros:* ${passengers}\n`
+    + `🧳 *Bagagens:* ${luggage}\n`
     + `${vehicle}${vanFlag}\n`
     + `━━━━━━━━━━━━━━━━━━━━\n\n`
     + `Aguardo confirmação. Obrigado! 🙏`
@@ -51,11 +79,20 @@ const WhatsApp = (() => {
   }
 
   function getUrl(data) {
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage(data))}`;
+    const safeNumber = _safeNumber(WHATSAPP_NUMBER);
+    // Valida que o número tem formato esperado de telefone BR
+    if (!/^\d{12,13}$/.test(safeNumber)) {
+      console.error('WhatsApp: número inválido');
+      return '#';
+    }
+    const message = buildMessage(data);
+    return `https://wa.me/${safeNumber}?text=${encodeURIComponent(message)}`;
   }
 
   function redirect(data) {
-    window.open(getUrl(data), '_blank', 'noopener,noreferrer');
+    const url = getUrl(data);
+    if (url === '#') return;
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   return { redirect, buildMessage, getUrl };
