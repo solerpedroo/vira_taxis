@@ -19,7 +19,7 @@ const Pricing = (() => {
   function _tariff(passengers) {
     return passengers > MAX_SEDAN_PASSENGERS
       ? { pricePerKm: PRICE_PER_KM_VAN,   vehicleLabel: 'Carro 7 lugares', vehicleIcon: 'fa-van-shuttle', requiresVan: true  }
-      : { pricePerKm: PRICE_PER_KM_SEDAN, vehicleLabel: 'Sedan',         vehicleIcon: 'fa-car',         requiresVan: false };
+      : { pricePerKm: PRICE_PER_KM_SEDAN, vehicleLabel: 'Sedan',           vehicleIcon: 'fa-car',         requiresVan: false };
   }
 
   /**
@@ -27,8 +27,10 @@ const Pricing = (() => {
    * Nunca exibir pricePerKm ao cliente.
    */
   function calculate(km, passengers) {
-    const t     = _tariff(passengers);
-    const total = parseFloat(Math.max(km * t.pricePerKm, MIN_FARE).toFixed(2));
+    const pax = Math.max(1, Math.min(6, parseInt(passengers, 10) || 1));
+    const distance = Math.max(1, parseInt(km, 10) || 1);
+    const t     = _tariff(pax);
+    const total = parseFloat(Math.max(distance * t.pricePerKm, MIN_FARE).toFixed(2));
     return { total, ...t };
   }
 
@@ -36,7 +38,7 @@ const Pricing = (() => {
    * Retorna apenas informações de veículo — seguro para exibir.
    */
   function getVehicleInfo(passengers) {
-    return _tariff(passengers);
+    return _tariff(Math.max(1, Math.min(6, parseInt(passengers, 10) || 1)));
   }
 
   /** Formata valor em BRL (ex: "42,00") — sem prefixo R$ (o HTML coloca o sup) */
