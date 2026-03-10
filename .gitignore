@@ -2,3 +2,4 @@
 .env.local
 .env.production
 *.env
+config.js
