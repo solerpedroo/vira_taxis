@@ -49,52 +49,6 @@
   <link rel="stylesheet" href="styles/form-faq.css" />
   <link rel="stylesheet" href="styles/depoimentos-footer.css" />
   <link rel="stylesheet" href="styles/responsive.css" />
-
-  <!--
-    ╔══════════════════════════════════════════════════════╗
-    ║  GOOGLE MAPS — Como configurar a API Key:           ║
-    ║                                                      ║
-    ║  PASSO 1 — Criar a API Key                          ║
-    ║  ─────────────────────────────────────────────────  ║
-    ║  1. Acesse: console.cloud.google.com                ║
-    ║  2. Crie um projeto (ou selecione um existente)     ║
-    ║  3. Menu: APIs e Serviços → Credenciais             ║
-    ║  4. Clique em "+ Criar Credencial" → Chave de API   ║
-    ║  5. Copie a chave gerada                            ║
-    ║                                                      ║
-    ║  PASSO 2 — Ativar as APIs necessárias               ║
-    ║  ─────────────────────────────────────────────────  ║
-    ║  Em "APIs e Serviços" → "Biblioteca", ative:        ║
-    ║  • Maps JavaScript API                              ║
-    ║  • Places API                                       ║
-    ║  • Distance Matrix API                              ║
-    ║                                                      ║
-    ║  PASSO 3 — RESTRINGIR a chave (OBRIGATÓRIO)         ║
-    ║  ─────────────────────────────────────────────────  ║
-    ║  Em Credenciais → clique na chave → editar:         ║
-    ║                                                      ║
-    ║  a) Em "Restrições de aplicativo":                  ║
-    ║     Selecione "Referenciadores HTTP (sites)"        ║
-    ║     Adicione apenas seu(s) domínio(s):              ║
-    ║     • https://seudominio.com.br/*                   ║
-    ║     • https://www.seudominio.com.br/*               ║
-    ║     • http://localhost/*  (apenas para testes)      ║
-    ║                                                      ║
-    ║  b) Em "Restrições de API":                         ║
-    ║     Selecione "Restringir chave"                    ║
-    ║     Marque APENAS as 3 APIs acima                   ║
-    ║                                                      ║
-    ║  PASSO 4 — Substituir YOUR_KEY e descomentar        ║
-    ║  ─────────────────────────────────────────────────  ║
-    ║  Substitua YOUR_KEY pela chave copiada e            ║
-    ║  descomente a linha <script> abaixo.                ║
-    ║                                                      ║
-    ║  ⚠️  NUNCA commite a chave real no Git!             ║
-    ║      Use uma variável de ambiente:                   ║
-    ║      Coloque a chave num arquivo .env (não versionado) ║
-    ║      e injete-a via build (Netlify/Vercel env var). ║
-    ╚══════════════════════════════════════════════════════╝
-  -->
   <script defer src="/maps-api"></script>
 </head>
 <body>
