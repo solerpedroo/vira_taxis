@@ -1,25 +1,20 @@
 /**
  * maps.js — Google Maps Integration Layer
  *
- * Corrigido:
- * - Removido dispatch de 'input' após place_changed (causava loop/corrupção)
- * - Removido body.classList.add('pac-hide') que interferia com o campo
- * - Validação de distância mantida
+ * Funciona em dois modos:
+ *  - Sem Google Maps: campos são texto livre (modo stub)
+ *  - Com Google Maps: Places Autocomplete + Distance Matrix
+ *
+ * Correções:
+ *  - Nunca despacha 'input' após place_changed (causava corrupção do campo)
+ *  - initGoogleMaps registrado globalmente antes do script carregar
  */
 
 const MapsService = (() => {
-  let _active = false, _origin = null, _dest = null, _km = null;
-  let _domReady = false;
-
-  function _setup() {
-    if (!_domReady) return;
-    if (typeof google === 'undefined' || !google.maps?.places) return;
-    if (_active) return;
-
-    _active = true;
-    _initAC('origin',      p => { _origin = p; _tryDist(); });
-    _initAC('destination', p => { _dest   = p; _tryDist(); });
-  }
+  let _active = false;
+  let _origin = null;
+  let _dest   = null;
+  let _km     = null;
 
   function _initAC(id, onSelect) {
     const el = document.getElementById(id);
@@ -31,24 +26,29 @@ const MapsService = (() => {
       fields: ['geometry', 'formatted_address', 'name'],
     });
 
-    // Impede que Enter no campo de autocomplete submeta o formulário
+    // Impede Enter de submeter formulário ao navegar nas sugestões
     el.addEventListener('keydown', e => {
-      if (e.key === 'Enter') e.preventDefault();
+      if (e.key === 'Enter') {
+        const pac = document.querySelector('.pac-container');
+        if (pac && getComputedStyle(pac).display !== 'none') {
+          e.preventDefault();
+        }
+      }
     });
 
     ac.addListener('place_changed', () => {
-      const p = ac.getPlace();
-      if (!p || !p.geometry) return;
+      const place = ac.getPlace();
 
-      // Limita tamanho do endereço por segurança
-      const safeAddr = (p.formatted_address || p.name || '').slice(0, 300);
-      el.value = safeAddr;
+      // Sem geometry = usuário não selecionou sugestão, ignora
+      if (!place || !place.geometry) return;
 
-      // Dispara 'change' (não 'input') para que o ui.js esconda a cotação
-      // sem acionar novamente o autocomplete ou máscaras
+      const addr = (place.formatted_address || place.name || '').slice(0, 300);
+      el.value = addr;
+
+      // Usa 'change' (não 'input') para não reacionar validações de digitação
       el.dispatchEvent(new Event('change', { bubbles: true }));
 
-      onSelect(p);
+      onSelect(place);
     });
   }
 
@@ -64,34 +64,36 @@ const MapsService = (() => {
       },
       (res, status) => {
         if (status !== 'OK') return;
-        const el = res.rows[0]?.elements[0];
-        if (el?.status === 'OK' && el.distance?.value) {
-          const rawKm = el.distance.value / 1000;
-          if (!Number.isFinite(rawKm) || rawKm <= 0 || rawKm > 2000) return;
-          _km = Math.ceil(rawKm);
-          document.dispatchEvent(
-            new CustomEvent('maps:distance', { detail: { km: _km } })
-          );
-        }
+        const el = res?.rows?.[0]?.elements?.[0];
+        if (!el || el.status !== 'OK') return;
+
+        const meters = el.distance?.value;
+        if (!meters || !Number.isFinite(meters) || meters <= 0 || meters > 2000000) return;
+
+        _km = Math.ceil(meters / 1000);
+        document.dispatchEvent(new CustomEvent('maps:distance', { detail: { km: _km } }));
       }
     );
   }
 
-  // Chamado pelo callback do script do Google Maps
+  // Callback global chamado pelo script do Google Maps após carregar
   window.initGoogleMaps = function () {
-    _domReady = true;
-    _setup();
-  };
+    if (_active) return;
+    if (typeof google === 'undefined' || !google.maps?.places) return;
 
-  // Garantia caso o script carregue antes do DOMContentLoaded
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      _domReady = true;
-      _setup();
-    });
-  } else {
-    _domReady = true;
-  }
+    _active = true;
+
+    const run = () => {
+      _initAC('origin',      p => { _origin = p; _tryDist(); });
+      _initAC('destination', p => { _dest   = p; _tryDist(); });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+    } else {
+      run();
+    }
+  };
 
   function isActive()      { return _active; }
   function getDistanceKm() { return _km; }
