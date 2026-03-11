@@ -1,5 +1,10 @@
 /**
  * maps.js — Google Maps Integration Layer
+ *
+ * Corrigido:
+ * - Removido dispatch de 'input' após place_changed (causava loop/corrupção)
+ * - Removido body.classList.add('pac-hide') que interferia com o campo
+ * - Validação de distância mantida
  */
 
 const MapsService = (() => {
@@ -26,31 +31,22 @@ const MapsService = (() => {
       fields: ['geometry', 'formatted_address', 'name'],
     });
 
+    // Impede que Enter no campo de autocomplete submeta o formulário
     el.addEventListener('keydown', e => {
       if (e.key === 'Enter') e.preventDefault();
     });
 
-    // Remove pac-hide apenas quando o usuário digitar neste campo
-    el.addEventListener('input', () => {
-      document.body.classList.remove('pac-hide');
-    });
-
     ac.addListener('place_changed', () => {
       const p = ac.getPlace();
-      if (!p.geometry) return;
+      if (!p || !p.geometry) return;
 
+      // Limita tamanho do endereço por segurança
       const safeAddr = (p.formatted_address || p.name || '').slice(0, 300);
       el.value = safeAddr;
 
-      // Esconde o dropdown via classe CSS
-      document.body.classList.add('pac-hide');
-
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-
-      // Volta a esconder após o input acima ter disparado
-      setTimeout(() => {
-        document.body.classList.add('pac-hide');
-      }, 0);
+      // Dispara 'change' (não 'input') para que o ui.js esconda a cotação
+      // sem acionar novamente o autocomplete ou máscaras
+      el.dispatchEvent(new Event('change', { bubbles: true }));
 
       onSelect(p);
     });
@@ -58,6 +54,7 @@ const MapsService = (() => {
 
   function _tryDist() {
     if (!_origin?.geometry || !_dest?.geometry) return;
+
     new google.maps.DistanceMatrixService().getDistanceMatrix(
       {
         origins:      [_origin.geometry.location],
@@ -70,23 +67,30 @@ const MapsService = (() => {
         const el = res.rows[0]?.elements[0];
         if (el?.status === 'OK' && el.distance?.value) {
           const rawKm = el.distance.value / 1000;
-          if (!Number.isFinite(rawKm) || rawKm <= 0 || rawKm > 1000) return;
+          if (!Number.isFinite(rawKm) || rawKm <= 0 || rawKm > 2000) return;
           _km = Math.ceil(rawKm);
-          document.dispatchEvent(new CustomEvent('maps:distance', { detail: { km: _km } }));
+          document.dispatchEvent(
+            new CustomEvent('maps:distance', { detail: { km: _km } })
+          );
         }
       }
     );
   }
 
+  // Chamado pelo callback do script do Google Maps
   window.initGoogleMaps = function () {
+    _domReady = true;
     _setup();
   };
 
+  // Garantia caso o script carregue antes do DOMContentLoaded
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => { _domReady = true; _setup(); });
+    document.addEventListener('DOMContentLoaded', () => {
+      _domReady = true;
+      _setup();
+    });
   } else {
     _domReady = true;
-    _setup();
   }
 
   function isActive()      { return _active; }
