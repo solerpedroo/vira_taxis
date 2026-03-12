@@ -40,41 +40,31 @@ const WhatsApp = (() => {
     const passengers  = Math.max(1, Math.min(6, parseInt(data.passengers, 10) || 1));
     const luggage     = Math.max(0, Math.min(20, parseInt(data.luggage, 10) || 0));
 
-    const vehicle  = data.requiresVan ? '🚗 Carro 7 lugares' : '🚗 Sedan';
-    const vanFlag  = data.requiresVan ? '\n   ⚠️ _Carro 7 lugares necessário para o grupo_' : '';
-    const kmLine   = (data.estimatedKm && Number.isFinite(data.estimatedKm))
-      ? `\n📏 *Distância:* ~${Math.ceil(data.estimatedKm)} km`
+    const vehicle = data.requiresVan ? '🚗 Carro 7 lugares' : '🚗 Sedan';
+
+    const kmBlock = (data.estimatedKm && Number.isFinite(data.estimatedKm))
+      ? `📏 Distância: ~${Math.ceil(data.estimatedKm)} km\n\n`
       : '';
 
-    // Referência interna — somente para a equipe
-    // pricePerKm é omitido intencionalmente para não expor ao cliente
-    const internal = (data.total && Number.isFinite(data.total))
-      ? `\n\n━━━━━━━━━━━━━━━━━━━━\n`
-        + `📋 *EQUIPE — referência interna*\n`
-        + `   Estimativa: ${Pricing.formatBRL(data.total)}\n`
-        + `   _(confirme antes de responder ao cliente)_`
+    const estimateBlock = (data.total && Number.isFinite(data.total))
+      ? `💰 *Estimativa:* ${Pricing.formatBRL(data.total)}\n\n`
       : '';
 
     return (
       `Olá, ViraTáxis! 👋\n\n`
     + `Gostaria de agendar uma viagem em Campinas:\n\n`
-    + `━━━━━━━━━━━━━━━━━━━━\n`
     + `👤 *Nome:* ${name}\n`
-    + `📱 *Telefone:* ${phone}\n`
-    + `━━━━━━━━━━━━━━━━━━━━\n`
+    + `📱 *Telefone:* ${phone}\n\n`
     + `📍 *Origem:* ${origin}\n`
-    + `🏁 *Destino:* ${destination}\n`
-    + kmLine + `\n`
-    + `━━━━━━━━━━━━━━━━━━━━\n`
+    + `🏁 *Destino:* ${destination}\n\n`
+    + kmBlock
     + `📅 *Data:* ${date}\n`
-    + `🕐 *Horário:* ${time}\n`
-    + `━━━━━━━━━━━━━━━━━━━━\n`
+    + `🕐 *Horário:* ${time}\n\n`
     + `👥 *Passageiros:* ${passengers}\n`
     + `🧳 *Bagagens:* ${luggage}\n`
-    + `${vehicle}${vanFlag}\n`
-    + `━━━━━━━━━━━━━━━━━━━━\n\n`
-    + `Aguardo confirmação. Obrigado! 🙏`
-    + internal
+    + `${vehicle}\n\n`
+    + estimateBlock
+    + `Aguardo confirmação. Obrigado!`
     );
   }
 
