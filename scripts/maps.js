@@ -76,8 +76,8 @@ const MapsService = (() => {
     );
   }
 
-  // Callback global chamado pelo script do Google Maps após carregar
-  window.initGoogleMaps = function () {
+  // Inicialização central da API do Google Maps (pode ser chamada de vários jeitos)
+  function _onGoogleReady() {
     if (_active) return;
     if (typeof google === 'undefined' || !google.maps?.places) return;
 
@@ -93,7 +93,19 @@ const MapsService = (() => {
     } else {
       run();
     }
+  }
+
+  // Callback global chamado pelo script do Google Maps após carregar (&callback=initGoogleMaps)
+  window.initGoogleMaps = function () {
+    _onGoogleReady();
   };
+
+  // Fallback: se o script do Google Maps já tiver carregado ANTES de maps.js, inicializa imediatamente.
+  if (typeof window !== 'undefined' &&
+      typeof window.google !== 'undefined' &&
+      window.google.maps?.places) {
+    _onGoogleReady();
+  }
 
   function isActive()      { return _active; }
   function getDistanceKm() { return _km; }
