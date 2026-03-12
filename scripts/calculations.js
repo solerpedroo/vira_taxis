@@ -11,8 +11,8 @@
 const Pricing = (() => {
 
   /* Tarifas internas — não expor ao cliente */
-  const PRICE_PER_KM_SEDAN  = 1.5;   // R$/km — Sedan (1–4 pax)
-  const PRICE_PER_KM_VAN    = 2.2;   // R$/km — Van 7 lugares (5–6 pax)
+  const PRICE_PER_KM_SEDAN  = 5.0;   // R$/km — Sedan (1–4 pax)
+  const PRICE_PER_KM_VAN    = 6.0;   // R$/km — Van 7 lugares (5–6 pax)
   const MAX_SEDAN_PASSENGERS = 4;
   const MIN_FARE = 20;               // Tarifa mínima
 
