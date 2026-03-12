@@ -74,9 +74,14 @@
   flex-direction: column;
   gap: .25rem;
   transform: translateX(100%);
-  transition: transform var(--t-mid) var(--ease);
+  transition: transform 0.35s var(--ease), visibility 0.35s;
+  visibility: hidden;
 }
-.mobile-nav.open { display: flex; transform: translateX(0); }
+.mobile-nav.open {
+  display: flex;
+  transform: translateX(0);
+  visibility: visible;
+}
 .mobile-nav__link {
   font-family: var(--font-body);
   font-weight: 600;
@@ -84,10 +89,31 @@
   color: var(--ink);
   padding: .85rem 1rem;
   border-radius: var(--r-md);
-  transition: background var(--t-fast);
+  transition: background var(--t-fast), opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  opacity: 0;
+  transform: translateX(16px);
 }
+.mobile-nav.open .mobile-nav__link {
+  opacity: 1;
+  transform: translateX(0);
+}
+.mobile-nav.open .mobile-nav__link:nth-child(1) { transition-delay: 0.06s; }
+.mobile-nav.open .mobile-nav__link:nth-child(2) { transition-delay: 0.12s; }
+.mobile-nav.open .mobile-nav__link:nth-child(3) { transition-delay: 0.18s; }
+.mobile-nav.open .mobile-nav__link:nth-child(4) { transition-delay: 0.24s; }
 .mobile-nav__link:hover { background: var(--surface); }
-.mobile-nav .btn { margin-top: 1.25rem; }
+.mobile-nav .btn {
+  margin-top: 1.25rem;
+  opacity: 0;
+  transform: translateX(16px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), background var(--t-fast), color var(--t-fast);
+}
+.mobile-nav.open .mobile-nav .btn {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.3s;
+}
+.mobile-nav.open .mobile-nav .btn:hover { background: var(--sky-deep); color: var(--white); }
 
 /* ── Hero ────────────────────────────────────────────────── */
 .hero {

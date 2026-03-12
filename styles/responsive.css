@@ -20,6 +20,7 @@
 @media (max-width: 860px) {
   .header .nav    { display: none; }
   .hamburger      { display: flex; }
+  .mobile-nav     { display: flex; }
 
   .hero__inner    { grid-template-columns: 1fr; text-align: center; }
   .hero__desc     { margin-inline: auto; }
