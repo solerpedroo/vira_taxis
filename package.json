@@ -1,0 +1,10 @@
+{
+  "name": "vira-taxis",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/inject-env.js"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
