@@ -352,7 +352,32 @@ document.addEventListener('DOMContentLoaded', () => {
   btnLuggagePlus?.addEventListener('click',  () => updateLuggage(luggage + 1));
   updateLuggage(0);
 
-  /* ── 9. COTAÇÃO ─────────────────────────────────────────── */
+  /* ── 9. LIMPAR ORIGEM / DESTINO ─────────────────────────── */
+  const originInput        = $('#origin');
+  const destinationInput   = $('#destination');
+  const clearOriginBtn     = $('#clearOrigin');
+  const clearDestinationBtn = $('#clearDestination');
+
+  function _setupClearableInput(input, clearBtn, fieldId) {
+    if (!input || !clearBtn) return;
+    const toggle = () => {
+      const hasText = (input.value || '').trim().length > 0;
+      clearBtn.classList.toggle('input-clear--visible', hasText);
+    };
+    input.addEventListener('input', toggle);
+    input.addEventListener('change', toggle);
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      _clearFieldError(fieldId);
+      quoteResult?.classList.remove('show');
+      input.focus();
+    });
+    toggle();
+  }
+
+  /* ── 10. COTAÇÃO ─────────────────────────────────────────── */
   const quoteResult       = $('#quoteResult');
   const quoteAmount       = $('#quoteAmount');
   const quoteVehicleIcon  = $('#quoteVehicleIcon');
@@ -392,7 +417,11 @@ document.addEventListener('DOMContentLoaded', () => {
   btnLuggageMinus?.addEventListener('click', () => quoteResult?.classList.remove('show'));
   btnLuggagePlus?.addEventListener('click',  () => quoteResult?.classList.remove('show'));
 
-  /* ── 10. VALIDAÇÃO INLINE ──────────────────────────────── */
+  // Inicializa botões de limpar após ter quoteResult definido
+  _setupClearableInput(originInput, clearOriginBtn, 'origin');
+  _setupClearableInput(destinationInput, clearDestinationBtn, 'destination');
+
+  /* ── 11. VALIDAÇÃO INLINE ──────────────────────────────── */
   function setFieldError(id, msg) {
     // Valida que o id é um campo conhecido (evita manipulação do DOM arbitrária)
     const knownFields = ['name','phone','origin','destination','date','time','passengers','luggage'];
@@ -435,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ── 11. RATE LIMITING DO BOTÃO ────────────────────────── */
+  /* ── 12. RATE LIMITING DO BOTÃO ────────────────────────── */
   const RATE_LIMIT_MAX      = 5;   // máx de cliques
   const RATE_LIMIT_WINDOW   = 60000; // em 60 segundos
   let _quoteBtnClickTimes   = [];
