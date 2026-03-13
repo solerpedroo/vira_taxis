@@ -384,6 +384,9 @@
                   placeholder="Ex: Shopping Iguatemi, Campinas – SP"
                   autocomplete="off" data-maps-autocomplete="origin"
                   maxlength="300" required aria-required="true" />
+                <button type="button" class="input-clear" id="clearOrigin" aria-label="Limpar endereço de origem">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
                 <span class="input-icon"><i class="fa-solid fa-location-crosshairs"></i></span>
               </div>
               <span class="field-msg" id="err-origin" role="alert"></span>
@@ -399,6 +402,9 @@
                   placeholder="Ex: Aeroporto de Viracopos – Campinas, SP"
                   autocomplete="off" data-maps-autocomplete="destination"
                   maxlength="300" required aria-required="true" />
+                <button type="button" class="input-clear" id="clearDestination" aria-label="Limpar endereço de destino">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
                 <span class="input-icon"><i class="fa-solid fa-map-location-dot"></i></span>
               </div>
               <span class="field-msg" id="err-destination" role="alert"></span>
@@ -971,7 +977,7 @@
 <script src="scripts/ui.js"></script>
   <!-- Chave injetada no build a partir de GOOGLE_MAPS_KEY (Vercel / .env). -->
   <script 
-  src="https://maps.googleapis.com/maps/api/js?key=__GOOGLE_MAPS_KEY__&libraries=places&callback=initGoogleMaps" 
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2B8iM2A5zrmjw_EGNMfOaOQ3jmgyiSq0&libraries=places&callback=initGoogleMaps" 
   async defer>
 </script>
 </body>
