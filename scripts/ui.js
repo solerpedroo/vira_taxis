@@ -490,11 +490,21 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       const { valid, errors } = Validations.validateForm(raw);
-      if (!valid) {
-        Object.entries(errors).forEach(([f, m]) => setFieldError(f, m));
+      const placeErrors = {};
+      if (MapsService.isActive()) {
+        if (raw.origin.length >= 5 && !MapsService.getOriginPlace()) {
+          placeErrors.origin = 'Selecione o endereço de origem na lista de sugestões ao digitar.';
+        }
+        if (raw.destination.length >= 5 && !MapsService.getDestinationPlace()) {
+          placeErrors.destination = 'Selecione o endereço de destino na lista de sugestões ao digitar.';
+        }
+      }
+      const allErrors = { ...errors, ...placeErrors };
+      if (!valid || Object.keys(placeErrors).length > 0) {
+        Object.entries(allErrors).forEach(([f, m]) => setFieldError(f, m));
         const firstErrorMsg = form?.querySelector('.field-msg.show');
         if (firstErrorMsg) firstErrorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        const firstInvalid = Object.keys(errors)[0];
+        const firstInvalid = Object.keys(allErrors)[0];
         const focusIds = { name: 'name', phone: 'phone', origin: 'origin', destination: 'destination', date: 'dateTrigger', time: 'timeTrigger', passengers: 'btnMinus', luggage: 'btnLuggageMinus' };
         const toFocus = focusIds[firstInvalid] ? $(`#${focusIds[firstInvalid]}`) : null;
         if (toFocus) toFocus.focus({ preventScroll: true });

@@ -39,16 +39,49 @@ const MapsService = (() => {
     ac.addListener('place_changed', () => {
       const place = ac.getPlace();
 
-      // Sem geometry = usuário não selecionou sugestão, ignora
       if (!place || !place.geometry) return;
 
       const addr = (place.formatted_address || place.name || '').slice(0, 300);
       el.value = addr;
-
-      // Usa 'change' (não 'input') para não reacionar validações de digitação
       el.dispatchEvent(new Event('change', { bubbles: true }));
 
       onSelect(place);
+    });
+
+    el.addEventListener('input', () => {
+      if (id === 'origin') { _origin = null; _km = null; }
+      if (id === 'destination') { _dest = null; _km = null; }
+    });
+
+    // Ao sair do campo: se há texto mas não foi seleção do autocomplete, tenta geocodificar (estilo big tech)
+    el.addEventListener('blur', () => {
+      const address = (el.value || '').trim();
+      const hasPlace = (id === 'origin' && _origin) || (id === 'destination' && _dest);
+      if (address.length < 8 || hasPlace) return;
+
+      _geocodeAndSet(id, address, (place) => {
+        if (!place) return;
+        const addr = (place.formatted_address || place.name || '').slice(0, 300);
+        el.value = addr;
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+        if (id === 'origin') { _origin = place; _tryDist(); }
+        if (id === 'destination') { _dest = place; _tryDist(); }
+      });
+    });
+  }
+
+  function _geocodeAndSet(id, address, onDone) {
+    if (!address || address.trim().length < 8) { onDone(null); return; }
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: address.trim(), region: 'BR' }, (results, status) => {
+      if (status !== 'OK' || !results?.[0]?.geometry) { onDone(null); return; }
+      const r = results[0];
+      const place = {
+        geometry: r.geometry,
+        formatted_address: (r.formatted_address || r.address_components?.map(c => c.long_name).join(', ') || '').slice(0, 300),
+        name: r.address_components?.[0]?.long_name || '',
+      };
+      onDone(place);
     });
   }
 
@@ -107,9 +140,11 @@ const MapsService = (() => {
     _onGoogleReady();
   }
 
-  function isActive()      { return _active; }
-  function getDistanceKm() { return _km; }
-  function reset()         { _origin = null; _dest = null; _km = null; }
+  function isActive()           { return _active; }
+  function getDistanceKm()      { return _km; }
+  function getOriginPlace()     { return _origin; }
+  function getDestinationPlace() { return _dest; }
+  function reset()              { _origin = null; _dest = null; _km = null; }
 
-  return { isActive, getDistanceKm, reset };
+  return { isActive, getDistanceKm, getOriginPlace, getDestinationPlace, reset };
 })();
