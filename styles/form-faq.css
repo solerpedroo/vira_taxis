@@ -7,20 +7,15 @@
   position: relative;
   padding: 7rem 0;
   overflow: hidden;
+  scroll-margin-top: 96px;
+  background: var(--surface);
 }
 .agendamento__bg {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(155deg, #0c1929 0%, #1a3248 100%);
-  z-index: 0;
+  display: none;
 }
 /* Textura sutil no bg */
 .agendamento__bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(152,197,254,.06) 1px, transparent 1px);
-  background-size: 28px 28px;
+  content: none;
 }
 .agendamento__inner {
   position: relative;
@@ -33,7 +28,7 @@
 
 /* Painel info esquerdo */
 .agendamento__desc {
-  color: rgba(255,255,255,.62);
+  color: var(--ink-60);
   font-size: .96rem;
   font-weight: 300;
   margin: .75rem 0 1.6rem;
@@ -50,27 +45,32 @@
   align-items: center;
   gap: .65rem;
   font-size: .89rem;
-  color: rgba(255,255,255,.72);
+  color: var(--ink-60);
   font-weight: 400;
 }
-.agendamento__checklist li i { color: var(--sky); font-size: .78rem; flex-shrink: 0; }
+.agendamento__checklist li i { color: var(--green); font-size: .78rem; flex-shrink: 0; }
 
 .agendamento__contact { display: flex; flex-direction: column; gap: .6rem; }
 .contact-pill {
   display: inline-flex;
   align-items: center;
   gap: .6rem;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.14);
-  color: var(--white);
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--ink-80);
   border-radius: var(--r-full);
   padding: .52rem 1.1rem;
   font-size: .87rem;
   font-weight: 500;
-  transition: background var(--t-fast);
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast), box-shadow var(--t-fast);
 }
-.contact-pill:hover { background: rgba(255,255,255,.15); }
-.contact-pill i { color: var(--sky); font-size: .9rem; }
+.contact-pill:hover {
+  background: var(--sky-10);
+  border-color: var(--sky-mid);
+  color: var(--ink);
+  box-shadow: var(--sh-sm);
+}
+.contact-pill i { color: var(--sky-mid); font-size: .9rem; }
 
 /* Card do formulário */
 .form-card {
