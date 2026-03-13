@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
+  const footerYear = $('#footerYear');
+  if (footerYear) footerYear.textContent = new Date().getFullYear();
+
   /* ── 1. HEADER SCROLL ──────────────────────────────────── */
   const header = $('#header');
   window.addEventListener('scroll', () => {
