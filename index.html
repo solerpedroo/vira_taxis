@@ -92,99 +92,211 @@
 <main>
 
 <!-- ══════════════════════════════════════
-     HERO
+     AGENDAMENTO / COTAÇÃO
 ══════════════════════════════════════ -->
-<section class="hero" id="inicio" aria-label="Seção principal">
-  <div class="hero__bg" aria-hidden="true">
-    <div class="hero__bg-gradient"></div>
-    <div class="hero__bg-stripe"></div>
-    <div class="hero__bg-dots"></div>
-  </div>
+<section class="agendamento" id="agendamento" aria-label="Formulário de agendamento">
+  <div class="agendamento__bg" aria-hidden="true"></div>
+  <div class="container agendamento__inner">
 
-  <div class="container hero__inner">
-    <div class="hero__content">
-      <span class="hero__tag reveal">
-        <i class="fa-solid fa-location-dot"></i>
-        Campinas e região — desde 2016
-      </span>
-
-      <h1 class="hero__h1 reveal stagger-1">
-        Parta com<br/>
-        <span class="accent">confiança.</span><br/>
-        Chegue com <span class="highlight">segurança.</span>
-      </h1>
-
-      <p class="hero__desc reveal stagger-2">
-        Referência em transporte executivo urbano e intercidades. Motoristas profissionais, frota moderna e atendimento humanizado — desde o agendamento, ao embarque até o destino final.
+    <!-- Painel esquerdo -->
+    <div class="agendamento__info reveal from-left">
+      <p class="eyebrow eyebrow--light">Agende sua viagem</p>
+      <h2 class="section-title section-title--light">Solicite sua<br/><em>cotação agora.</em></h2>
+      <p class="agendamento__desc">
+        Preencha o formulário com os dados da sua viagem. Nossa equipe em Campinas entrará em contato pelo WhatsApp com a confirmação e todos os detalhes.
       </p>
-
-      <div class="hero__actions reveal stagger-3">
-        <a href="#agendamento" class="btn btn--primary btn--lg">
-          <i class="fa-solid fa-calendar-check"></i>
-          <span class="btn-text">Solicitar cotação</span>
+      <ul class="agendamento__checklist">
+        <li><i class="fa-solid fa-circle-check"></i> Resposta rápida pelo WhatsApp</li>
+        <li><i class="fa-solid fa-circle-check"></i> Sem compromisso ao solicitar</li>
+        <li><i class="fa-solid fa-circle-check"></i> Preço confirmado antes da viagem</li>
+        <li><i class="fa-solid fa-circle-check"></i> Motorista e veículo indicados</li>
+      </ul>
+      <div class="agendamento__contact">
+        <a href="https://wa.me/5519988244480" target="_blank" rel="noopener noreferrer" class="contact-pill">
+          <i class="fa-brands fa-whatsapp"></i> (19) 98824-4480
         </a>
-        <a href="#historia" class="btn btn--outline btn--lg">
-          Nossa história <i class="fa-solid fa-arrow-right"></i>
+        <a href="tel:+5519988244480" class="contact-pill">
+          <i class="fa-solid fa-phone"></i> (19) 98824-4480
         </a>
-      </div>
-
-      <div class="hero__trust reveal stagger-4">
-        <div class="hero__trust-avatars" aria-hidden="true">
-          <div class="hero__avatar">MF</div>
-          <div class="hero__avatar">RC</div>
-          <div class="hero__avatar">AL</div>
-          <div class="hero__avatar">+</div>
-        </div>
-        <span>+2.400 clientes satisfeitos em Campinas este mês</span>
       </div>
     </div>
 
-    <div class="hero__visual reveal from-right" aria-hidden="true">
-      <div class="hero__card">
-        <div class="card-top">
-          <div class="card-top__logo"><i class="fa-solid fa-taxi"></i></div>
-          <span class="card-badge"><span class="pulse-dot"></span> Atendendo agora</span>
-        </div>
-        <div class="card-route">
-          <div class="route-stop">
-            <div class="dot dot--origin"></div>
-            <div class="route-stop__info">
-              <span class="route-stop__label">Origem</span>
-              <span class="route-stop__addr">Royal Palm Plaza Resort, Campinas</span>
-            </div>
-          </div>
-          <div class="route-line"></div>
-          <div class="route-stop">
-            <div class="dot dot--dest"></div>
-            <div class="route-stop__info">
-              <span class="route-stop__label">Destino</span>
-              <span class="route-stop__addr">Aeroporto Viracopos</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-details">
-          <div class="card-detail-item"><i class="fa-solid fa-car"></i><span>Sedan</span></div>
-          <div class="card-detail-item"><i class="fa-solid fa-users"></i><span>2 pessoas</span></div>
-          <div class="card-detail-item"><i class="fa-solid fa-clock"></i><span>~25 min</span></div>
-        </div>
-        <div class="card-status">
-          <i class="fa-solid fa-circle-check" style="color:#37B422"></i>
-          Motorista confirmado · Aguardando embarque
-        </div>
+    <!-- Card do formulário -->
+    <div class="form-card reveal from-right">
+      <div class="form-card__header">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span>Dados do agendamento</span>
       </div>
-      <div class="float-badge float-badge--1">
-        <i class="fa-solid fa-star"></i> Motorista 5 estrelas
-      </div>
-      <div class="float-badge float-badge--2">
-        <i class="fa-solid fa-shield-halved"></i> Viagem segura
-      </div>
-    </div>
-  </div>
 
-  <div class="hero__wave" aria-hidden="true">
-    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,32 C480,64 960,0 1440,32 L1440,64 L0,64 Z" fill="#f5f8fb"/>
-    </svg>
+      <form id="quoteForm" novalidate aria-label="Formulário de cotação de táxi">
+
+        <!-- Responsável -->
+        <p class="form-section-label">Responsável pela viagem</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="name">
+              <i class="fa-solid fa-user"></i> Nome completo
+            </label>
+            <input type="text" id="name" name="name" class="form-input"
+              placeholder="Seu nome completo" autocomplete="name"
+              maxlength="100" required aria-required="true" />
+            <span class="field-msg" id="err-name" role="alert"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="phone">
+              <i class="fa-solid fa-phone"></i> Telefone / WhatsApp
+            </label>
+            <input type="tel" id="phone" name="phone" class="form-input"
+              placeholder="(19) 99999-9999" autocomplete="tel" maxlength="16" required aria-required="true" />
+            <span class="field-msg" id="err-phone" role="alert"></span>
+          </div>
+        </div>
+
+        <!-- Rota -->
+        <p class="form-section-label">Rota da viagem</p>
+        <div class="form-route-section">
+          <div class="form-row form-row--single">
+            <div class="form-group form-group--route">
+              <label class="form-label" for="origin">
+                <i class="fa-solid fa-circle-dot"></i> Endereço de origem
+              </label>
+              <div class="input-with-icon input-with-icon--route">
+                <input type="text" id="origin" name="origin" class="form-input form-input--route"
+                  placeholder="Ex: Shopping Iguatemi, Campinas – SP"
+                  autocomplete="off" data-maps-autocomplete="origin"
+                  maxlength="300" required aria-required="true" />
+                <button type="button" class="input-clear" id="clearOrigin" aria-label="Limpar endereço de origem">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="input-icon"><i class="fa-solid fa-location-crosshairs"></i></span>
+              </div>
+              <span class="field-msg" id="err-origin" role="alert"></span>
+            </div>
+          </div>
+          <div class="form-row form-row--single">
+            <div class="form-group form-group--route">
+              <label class="form-label" for="destination">
+                <i class="fa-solid fa-location-dot"></i> Endereço de destino
+              </label>
+              <div class="input-with-icon input-with-icon--route">
+                <input type="text" id="destination" name="destination" class="form-input form-input--route"
+                  placeholder="Ex: Aeroporto de Viracopos – Campinas, SP"
+                  autocomplete="off" data-maps-autocomplete="destination"
+                  maxlength="300" required aria-required="true" />
+                <button type="button" class="input-clear" id="clearDestination" aria-label="Limpar endereço de destino">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="input-icon"><i class="fa-solid fa-map-location-dot"></i></span>
+              </div>
+              <span class="field-msg" id="err-destination" role="alert"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data e horário -->
+        <p class="form-section-label">Data e horário</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="dateTrigger">
+              <i class="fa-solid fa-calendar"></i> Data
+            </label>
+            <button type="button" id="dateTrigger" class="form-input picker-trigger" aria-haspopup="dialog" aria-required="true">
+              <span id="dateDisplay">Selecione a data</span>
+              <i class="fa-solid fa-calendar"></i>
+            </button>
+            <input type="hidden" id="date" name="date" />
+            <span class="field-msg" id="err-date" role="alert"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="timeTrigger">
+              <i class="fa-solid fa-clock"></i> Horário
+            </label>
+            <button type="button" id="timeTrigger" class="form-input picker-trigger" aria-haspopup="dialog" aria-required="true">
+              <span id="timeDisplay">Selecione o horário</span>
+              <i class="fa-solid fa-clock"></i>
+            </button>
+            <input type="hidden" id="time" name="time" />
+            <span class="field-msg" id="err-time" role="alert"></span>
+          </div>
+        </div>
+
+        <!-- Passageiros e bagagem -->
+        <p class="form-section-label">Passageiros e bagagem</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fa-solid fa-users"></i> Passageiros (1–6)
+            </label>
+            <div class="stepper" role="group" aria-label="Número de passageiros">
+              <button type="button" class="stepper__btn" id="btnMinus" aria-label="Diminuir">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <span class="stepper__display" id="passengerDisplay" aria-live="polite">1</span>
+              <input type="hidden" id="passengers" name="passengers" value="1" />
+              <button type="button" class="stepper__btn" id="btnPlus" aria-label="Aumentar">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            <div class="vehicle-tag vehicle-tag--sedan" id="vehicleTag">
+              <i class="fa-solid fa-car"></i> Sedan
+            </div>
+            <div class="van-notice" id="vanNotice" role="status">
+              <i class="fa-solid fa-car-side"></i>
+              Para 5 ou mais passageiros utilizamos carro 7 lugares.
+            </div>
+            <span class="field-msg" id="err-passengers" role="alert"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="luggage">
+              <i class="fa-solid fa-suitcase"></i> Bagagens (0–20)
+            </label>
+            <div class="stepper" role="group" aria-label="Número de bagagens">
+              <button type="button" class="stepper__btn" id="btnLuggageMinus" aria-label="Diminuir bagagens">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <span class="stepper__display" id="luggageDisplay" aria-live="polite">0</span>
+              <input type="hidden" id="luggage" name="luggage" value="0" />
+              <button type="button" class="stepper__btn" id="btnLuggagePlus" aria-label="Aumentar bagagens">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            <span class="field-msg" id="err-luggage" role="alert"></span>
+          </div>
+        </div>
+
+        <!-- Ações -->
+        <div class="submit-row">
+          <button type="button" class="btn btn--primary btn--full btn--lg" id="quoteBtn">
+            <i class="fa-solid fa-calculator"></i>
+            <span class="btn-text">Realizar cotação</span>
+          </button>
+
+          <!-- Resultado da cotação (aparece após clicar em Realizar cotação) -->
+          <div class="quote-result" id="quoteResult" role="status" aria-live="polite">
+            <p class="quote-result__label">Estimativa para sua viagem</p>
+            <div class="quote-result__value">
+              <sup>R$</sup><span id="quoteAmount">--</span>
+            </div>
+            <div class="quote-result__meta">
+              <div class="quote-result__vehicle">
+                <i class="fa-solid fa-car" id="quoteVehicleIcon"></i>
+                <span id="quoteVehicleLabel">Sedan</span>
+              </div>
+              <span class="quote-result__note" id="quoteDistNote"></span>
+            </div>
+            <p class="quote-result__disclaimer">
+              Valor estimado sujeito a confirmação pela nossa equipe via WhatsApp.
+            </p>
+            <a href="#" class="btn btn--primary btn--full" id="whatsappBtn" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span class="btn-text">Agendar via WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
   </div>
 </section>
 
@@ -307,6 +419,103 @@
         <span class="servico-tag">24h · 7 dias</span>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero" id="inicio" aria-label="Seção principal">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__bg-gradient"></div>
+    <div class="hero__bg-stripe"></div>
+    <div class="hero__bg-dots"></div>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <span class="hero__tag reveal">
+        <i class="fa-solid fa-location-dot"></i>
+        Campinas e região — desde 2016
+      </span>
+
+      <h1 class="hero__h1 reveal stagger-1">
+        Parta com<br/>
+        <span class="accent">confiança.</span><br/>
+        Chegue com <span class="highlight">segurança.</span>
+      </h1>
+
+      <p class="hero__desc reveal stagger-2">
+        Referência em transporte executivo urbano e intercidades. Motoristas profissionais, frota moderna e atendimento humanizado — desde o agendamento, ao embarque até o destino final.
+      </p>
+
+      <div class="hero__actions reveal stagger-3">
+        <a href="#agendamento" class="btn btn--primary btn--lg">
+          <i class="fa-solid fa-calendar-check"></i>
+          <span class="btn-text">Solicitar cotação</span>
+        </a>
+        <a href="#historia" class="btn btn--outline btn--lg">
+          Nossa história <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="hero__trust reveal stagger-4">
+        <div class="hero__trust-avatars" aria-hidden="true">
+          <div class="hero__avatar">MF</div>
+          <div class="hero__avatar">RC</div>
+          <div class="hero__avatar">AL</div>
+          <div class="hero__avatar">+</div>
+        </div>
+        <span>+2.400 clientes satisfeitos em Campinas este mês</span>
+      </div>
+    </div>
+
+    <div class="hero__visual reveal from-right" aria-hidden="true">
+      <div class="hero__card">
+        <div class="card-top">
+          <div class="card-top__logo"><i class="fa-solid fa-taxi"></i></div>
+          <span class="card-badge"><span class="pulse-dot"></span> Atendendo agora</span>
+        </div>
+        <div class="card-route">
+          <div class="route-stop">
+            <div class="dot dot--origin"></div>
+            <div class="route-stop__info">
+              <span class="route-stop__label">Origem</span>
+              <span class="route-stop__addr">Royal Palm Plaza Resort, Campinas</span>
+            </div>
+          </div>
+          <div class="route-line"></div>
+          <div class="route-stop">
+            <div class="dot dot--dest"></div>
+            <div class="route-stop__info">
+              <span class="route-stop__label">Destino</span>
+              <span class="route-stop__addr">Aeroporto Viracopos</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-detail-item"><i class="fa-solid fa-car"></i><span>Sedan</span></div>
+          <div class="card-detail-item"><i class="fa-solid fa-users"></i><span>2 pessoas</span></div>
+          <div class="card-detail-item"><i class="fa-solid fa-clock"></i><span>~25 min</span></div>
+        </div>
+        <div class="card-status">
+          <i class="fa-solid fa-circle-check" style="color:#37B422"></i>
+          Motorista confirmado · Aguardando embarque
+        </div>
+      </div>
+      <div class="float-badge float-badge--1">
+        <i class="fa-solid fa-star"></i> Motorista 5 estrelas
+      </div>
+      <div class="float-badge float-badge--2">
+        <i class="fa-solid fa-shield-halved"></i> Viagem segura
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,32 C480,64 960,0 1440,32 L1440,64 L0,64 Z" fill="#f5f8fb"/>
+    </svg>
   </div>
 </section>
 
