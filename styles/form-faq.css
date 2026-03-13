@@ -180,7 +180,7 @@
 .input-with-icon--route .form-input--route {
   width: 100%;
   min-height: 52px;
-  padding: .85rem 2.6rem .85rem 1rem;
+  padding: .85rem 3.3rem .85rem 1rem;
   font-size: .95rem;
   line-height: 1.4;
   box-sizing: border-box;
@@ -188,6 +188,41 @@
 .input-with-icon--route .input-icon {
   right: .75rem;
   font-size: .9rem;
+}
+
+/* Botão de limpar origem/destino */
+.input-clear {
+  position: absolute;
+  right: 2.15rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-full);
+  border: none;
+  background: transparent;
+  color: var(--ink-30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .68rem;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--t-fast),
+    color var(--t-fast),
+    background var(--t-fast);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.input-clear--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.input-clear:hover {
+  background: var(--surface);
+  color: var(--ink-60);
 }
 
 /* Field messages */
