@@ -68,14 +68,55 @@ const WhatsApp = (() => {
     );
   }
 
+  /**
+   * Mensagem para cotação com rota fora do padrão (sem destinos pré-definidos).
+   * Inclui aviso para a equipe avaliar e não inclui estimativa de distância/preço.
+   */
+  function buildMessageCustomRoute(data) {
+    const name        = _s(data.name);
+    const phone       = _s(data.phone);
+    const origin      = _s(data.origin);
+    const destination = _s(data.destination);
+    const date        = _fmtDate(data.date);
+    const time        = _s(data.time) || 'Não informado';
+    const passengers  = Math.max(1, Math.min(6, parseInt(data.passengers, 10) || 1));
+    const luggage     = Math.max(0, Math.min(20, parseInt(data.luggage, 10) || 0));
+    const vehicle     = data.requiresVan ? '🚗 Carro 7 lugares' : '🚗 Sedan';
+
+    return (
+      `Olá, ViraTáxis! 👋\n\n`
+    + `Gostaria de solicitar uma *cotação para uma rota que não está entre os endereços pré-definidos*:\n\n`
+    + `⚠️ *Minha viagem não se enquadra em nenhum dos destinos listados.* Solicito que a equipe avalie a rota e retorne com uma cotação.\n\n`
+    + `👤 *Nome:* ${name}\n`
+    + `📱 *Telefone:* ${phone}\n\n`
+    + `📍 *Origem:* ${origin}\n`
+    + `🏁 *Destino:* ${destination}\n\n`
+    + `📅 *Data:* ${date}\n`
+    + `🕐 *Horário:* ${time}\n\n`
+    + `👥 *Passageiros:* ${passengers}\n`
+    + `🧳 *Bagagens:* ${luggage}\n`
+    + `${vehicle}\n\n`
+    + `Aguardo retorno. Obrigado!`
+    );
+  }
+
   function getUrl(data) {
     const safeNumber = _safeNumber(WHATSAPP_NUMBER);
-    // Valida que o número tem formato esperado de telefone BR
     if (!/^\d{12,13}$/.test(safeNumber)) {
       console.error('WhatsApp: número inválido');
       return '#';
     }
     const message = buildMessage(data);
+    return `https://wa.me/${safeNumber}?text=${encodeURIComponent(message)}`;
+  }
+
+  function getUrlCustomRoute(data) {
+    const safeNumber = _safeNumber(WHATSAPP_NUMBER);
+    if (!/^\d{12,13}$/.test(safeNumber)) {
+      console.error('WhatsApp: número inválido');
+      return '#';
+    }
+    const message = buildMessageCustomRoute(data);
     return `https://wa.me/${safeNumber}?text=${encodeURIComponent(message)}`;
   }
 
@@ -85,6 +126,12 @@ const WhatsApp = (() => {
     window.open(url, '_blank', 'noopener,noreferrer');
   }
 
-  return { redirect, buildMessage, getUrl };
+  function redirectCustomRoute(data) {
+    const url = getUrlCustomRoute(data);
+    if (url === '#') return;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  return { redirect, redirectCustomRoute, buildMessage, buildMessageCustomRoute, getUrl, getUrlCustomRoute };
 
 })();

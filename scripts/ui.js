@@ -548,6 +548,99 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  /* ── 7.1 MODAL COTAÇÃO ROTA FORA DO PADRÃO ───────────────── */
+  const customQuoteOverlay   = $('#customQuoteOverlay');
+  const openCustomQuoteModal = $('#openCustomQuoteModal');
+  const closeCustomQuoteModal = $('#closeCustomQuoteModal');
+  const customQuoteCancelBtn = $('#customQuoteCancelBtn');
+  const customQuoteForm      = $('#customQuoteForm');
+  const customQuoteSubmitBtn = $('#customQuoteSubmitBtn');
+  const customQuoteName      = $('#customQuoteName');
+  const customQuotePhone     = $('#customQuotePhone');
+  const customQuotePhoneCountry = $('#customQuotePhoneCountry');
+  const customQuoteOrigin   = $('#customQuoteOrigin');
+  const customQuoteDestination = $('#customQuoteDestination');
+  const customQuoteDate     = $('#customQuoteDate');
+  const customQuoteTime     = $('#customQuoteTime');
+  const customQuotePassengers = $('#customQuotePassengers');
+  const customQuoteLuggage  = $('#customQuoteLuggage');
+
+  if (customQuotePhoneCountry && PHONE_COUNTRIES.length) {
+    customQuotePhoneCountry.innerHTML = '';
+    PHONE_COUNTRIES.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.code;
+      opt.textContent = `${codeToFlag(c.code) ? codeToFlag(c.code) + ' ' : ''}${c.dial}`;
+      if (c.code === 'BR') opt.selected = true;
+      customQuotePhoneCountry.appendChild(opt);
+    });
+  }
+
+  function openCustomQuote() {
+    if (customQuoteOverlay) {
+      customQuoteOverlay.classList.add('is-open');
+      customQuoteOverlay.setAttribute('aria-hidden', 'false');
+    }
+  }
+  function closeCustomQuote() {
+    if (customQuoteOverlay) {
+      customQuoteOverlay.classList.remove('is-open');
+      customQuoteOverlay.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  openCustomQuoteModal?.addEventListener('click', (e) => { e.preventDefault(); openCustomQuote(); });
+  closeCustomQuoteModal?.addEventListener('click', closeCustomQuote);
+  customQuoteCancelBtn?.addEventListener('click', closeCustomQuote);
+  customQuoteOverlay?.addEventListener('click', (e) => { if (e.target === customQuoteOverlay) closeCustomQuote(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && customQuoteOverlay?.classList.contains('is-open')) closeCustomQuote();
+  });
+
+  customQuoteSubmitBtn?.addEventListener('click', () => {
+    const raw = {
+      name:        (customQuoteName?.value ?? '').trim(),
+      phone:       (customQuotePhone?.value ?? '').trim(),
+      origin:      (customQuoteOrigin?.value ?? '').trim(),
+      destination: (customQuoteDestination?.value ?? '').trim(),
+      date:        customQuoteDate?.value ?? '',
+      time:        customQuoteTime?.value ?? '',
+      passengers:  String(customQuotePassengers?.value ?? '1'),
+      luggage:     String(customQuoteLuggage?.value ?? '0'),
+    };
+    const { valid, errors } = Validations.validateForm(raw);
+    $$('#customQuoteForm .field-msg').forEach(el => { el.textContent = ''; el.classList.remove('show'); });
+    $$('#customQuoteForm .form-input').forEach(el => el.classList.remove('field-error'));
+    if (!valid) {
+      Object.entries(errors).forEach(([field, msg]) => {
+        const id = 'customQuote' + field.charAt(0).toUpperCase() + field.slice(1);
+        const el = $(`#${id}`);
+        const errEl = $(`#err-${id}`);
+        if (el) el.classList.add('field-error');
+        if (errEl) { errEl.textContent = msg; errEl.classList.add('show'); }
+      });
+      const firstErr = customQuoteForm?.querySelector('.field-msg.show');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    const paxNum = Math.max(1, Math.min(6, parseInt(raw.passengers, 10) || 1));
+    const selected = PHONE_COUNTRIES.find(c => c.code === (customQuotePhoneCountry?.value || 'BR')) || PHONE_COUNTRIES[0];
+    const phoneDisplay = selected.dial + ' ' + (customQuotePhone?.value ?? '').trim();
+    const data = {
+      name: raw.name,
+      phone: phoneDisplay,
+      origin: raw.origin,
+      destination: raw.destination,
+      date: raw.date,
+      time: raw.time,
+      passengers: paxNum,
+      luggage: Math.max(0, Math.min(20, parseInt(raw.luggage, 10) || 0)),
+      requiresVan: paxNum >= 5,
+    };
+    WhatsApp.redirectCustomRoute(data);
+    closeCustomQuote();
+  });
+
   /* ── 8. STEPPER DE PASSAGEIROS ─────────────────────────── */
   const display    = $('#passengerDisplay');
   const hiddenPax  = $('#passengers');

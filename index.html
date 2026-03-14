@@ -256,6 +256,9 @@
               <span class="field-msg" id="err-destination-predefined" role="alert"></span>
             </div>
           </div>
+          <p class="route-custom-link">
+            <button type="button" class="link-button" id="openCustomQuoteModal" aria-controls="customQuoteOverlay">Não encontrou seu endereço? Clique aqui</button>
+          </p>
         </div>
 
         <!-- Data e horário -->
@@ -939,6 +942,82 @@
     </div>
     <div class="picker-modal__footer">
       <button type="button" class="btn btn--outline btn--sm" id="countryPickerCancelBtn">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="picker-overlay" id="customQuoteOverlay" role="dialog" aria-modal="true" aria-label="Solicitar cotação — rota fora do padrão" aria-hidden="true">
+  <div class="picker-modal custom-quote-modal" role="document">
+    <div class="picker-modal__header">
+      <span class="picker-modal__title">Solicitar cotação — rota fora do padrão</span>
+      <button type="button" class="custom-quote-close" id="closeCustomQuoteModal" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="custom-quote-body">
+      <p class="custom-quote-desc">Preencha os dados abaixo. Sua solicitação será enviada para a equipe avaliar e retornar com uma cotação.</p>
+      <form id="customQuoteForm" novalidate aria-label="Formulário de cotação para rota fora do padrão">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="customQuoteName"><i class="fa-solid fa-user"></i> Nome completo</label>
+            <input type="text" id="customQuoteName" class="form-input" placeholder="Seu nome completo" maxlength="100" required />
+            <span class="field-msg" id="err-customQuoteName" role="alert"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customQuotePhone"><i class="fa-solid fa-phone"></i> Telefone / WhatsApp</label>
+            <div class="phone-field">
+              <select id="customQuotePhoneCountry" class="form-input phone-country__select" aria-label="País"><option value="BR">🇧🇷 +55</option></select>
+              <input type="tel" id="customQuotePhone" class="form-input phone-input" placeholder="(19) 99999-9999" maxlength="20" required />
+            </div>
+            <span class="field-msg" id="err-customQuotePhone" role="alert"></span>
+          </div>
+        </div>
+        <p class="form-section-label">Rota</p>
+        <div class="form-row form-row--single">
+          <div class="form-group">
+            <label class="form-label" for="customQuoteOrigin"><i class="fa-solid fa-circle-dot"></i> Endereço de origem</label>
+            <input type="text" id="customQuoteOrigin" class="form-input" placeholder="Ex: Endereço completo de partida" maxlength="300" required />
+            <span class="field-msg" id="err-customQuoteOrigin" role="alert"></span>
+          </div>
+        </div>
+        <div class="form-row form-row--single">
+          <div class="form-group">
+            <label class="form-label" for="customQuoteDestination"><i class="fa-solid fa-location-dot"></i> Endereço de destino</label>
+            <input type="text" id="customQuoteDestination" class="form-input" placeholder="Ex: Endereço completo de chegada" maxlength="300" required />
+            <span class="field-msg" id="err-customQuoteDestination" role="alert"></span>
+          </div>
+        </div>
+        <p class="form-section-label">Data e horário</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="customQuoteDate"><i class="fa-solid fa-calendar"></i> Data</label>
+            <input type="date" id="customQuoteDate" class="form-input" required />
+            <span class="field-msg" id="err-customQuoteDate" role="alert"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customQuoteTime"><i class="fa-solid fa-clock"></i> Horário</label>
+            <input type="time" id="customQuoteTime" class="form-input" required />
+            <span class="field-msg" id="err-customQuoteTime" role="alert"></span>
+          </div>
+        </div>
+        <p class="form-section-label">Passageiros e bagagem</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="customQuotePassengers"><i class="fa-solid fa-users"></i> Passageiros (1–6)</label>
+            <input type="number" id="customQuotePassengers" class="form-input" min="1" max="6" value="1" required />
+            <span class="field-msg" id="err-customQuotePassengers" role="alert"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customQuoteLuggage"><i class="fa-solid fa-suitcase"></i> Bagagens (0–20)</label>
+            <input type="number" id="customQuoteLuggage" class="form-input" min="0" max="20" value="0" />
+            <span class="field-msg" id="err-customQuoteLuggage" role="alert"></span>
+          </div>
+        </div>
+        <div class="picker-modal__footer">
+          <button type="button" class="btn btn--outline btn--sm" id="customQuoteCancelBtn">Cancelar</button>
+          <button type="button" class="btn btn--primary btn--sm" id="customQuoteSubmitBtn">
+            <i class="fa-solid fa-paper-plane"></i> Solicitar cotação
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
