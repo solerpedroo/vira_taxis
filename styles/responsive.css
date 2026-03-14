@@ -11,7 +11,8 @@
   .agendamento__inner    { grid-template-columns: 1fr; gap: 2.5rem; min-width: 0; }
   .agendamento__info     { text-align: center; max-width: 540px; margin-inline: auto; min-width: 0; overflow-wrap: break-word; }
   .agendamento__trust    { justify-content: center; }
-  .agendamento__actions  { display: flex; justify-content: center; }
+  .agendamento__actions       { display: flex; justify-content: center; }
+  .agendamento__actions .btn { width: auto; }
   .agendamento__slogan-float { padding: 1.35rem 1.5rem 2rem; }
   .agendamento__slogan-h1   { font-size: clamp(1.75rem, 5vw, 2.5rem); }
   /* Badges continuam fora do card no tablet/mobile */

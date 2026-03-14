@@ -121,9 +121,14 @@
 .agendamento__trust {
   margin-top: 1.25rem;
 }
-/* Botão Nossa história (igual ao da seção hero) */
+/* Botão Nossa história (igual ao da seção hero) — no desktop largura até o fim do texto da prova social */
 .agendamento__actions {
   margin-top: 1.5rem;
+  width: 100%;
+}
+.agendamento__actions .btn {
+  width: 100%;
+  justify-content: center;
 }
 
 /* Card do formulário */
