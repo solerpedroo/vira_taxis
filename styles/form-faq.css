@@ -8,14 +8,14 @@
   padding: 7rem 0;
   overflow: hidden;
   scroll-margin-top: 96px;
-  background: var(--surface);
+  background: var(--white);
 }
+/* Mesmo fundo do hero: gradiente, listra diagonal e padrão de pontos */
 .agendamento__bg {
-  display: none;
-}
-/* Textura sutil no bg */
-.agendamento__bg::after {
-  content: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
 }
 .agendamento__inner {
   position: relative;
