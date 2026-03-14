@@ -260,7 +260,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dest.triggerEl) dest.triggerEl.classList.add('has-value');
         closeDatePicker();
         quoteResult?.classList.remove('show');
-        _clearFieldError('date');
+        if (_datePickerTarget) {
+          if (typeof setCustomQuoteFieldError === 'function') setCustomQuoteFieldError('date', '');
+        } else {
+          _clearFieldError('date');
+        }
       });
       calGrid.appendChild(btn);
     }
@@ -369,7 +373,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dest.triggerEl) dest.triggerEl.classList.add('has-value');
     closeTimePicker();
     quoteResult?.classList.remove('show');
-    _clearFieldError('time');
+    if (_timePickerTarget) {
+      if (typeof setCustomQuoteFieldError === 'function') setCustomQuoteFieldError('time', '');
+    } else {
+      _clearFieldError('time');
+    }
   });
 
   document.addEventListener('keydown', (e) => {
