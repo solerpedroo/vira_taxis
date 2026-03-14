@@ -361,8 +361,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── 7. MÁSCARA TELEFONE + PAÍS ─────────────────────────── */
   const phoneInput   = $('#phone');
   const phoneCountry = $('#phoneCountry');
+  const phoneCountryTrigger = $('#phoneCountryTrigger');
 
-  // Popula seletor de país com a lista definida acima
+  // Popula select oculto com a lista de países (para submit e valor atual)
   if (phoneCountry && PHONE_COUNTRIES.length) {
     phoneCountry.innerHTML = '';
     PHONE_COUNTRIES.forEach(country => {
@@ -382,23 +383,101 @@ document.addEventListener('DOMContentLoaded', () => {
     if (country === 'BR') {
       phoneInput.value = Validations.maskPhone(phoneInput.value);
     } else {
-      // Para outros países, aceita apenas dígitos e +, sem máscara fixa
       const raw = phoneInput.value.replace(/[^+\d]/g, '');
       phoneInput.value = raw.slice(0, 20);
     }
   }
 
-  phoneInput?.addEventListener('input', _applyPhoneMask);
-  phoneCountry?.addEventListener('change', () => {
-    // Atualiza placeholder conforme país selecionado
+  function _applyPlaceholderForCountry(selected) {
     if (!phoneInput) return;
-    const selected = PHONE_COUNTRIES.find(c => c.code === phoneCountry.value) || PHONE_COUNTRIES[0];
     if (selected.code === 'BR') {
       phoneInput.placeholder = '(19) 99999-9999';
     } else {
       phoneInput.placeholder = `${selected.dial} número do WhatsApp`;
     }
     phoneInput.value = '';
+  }
+
+  phoneInput?.addEventListener('input', _applyPhoneMask);
+
+  /* Country picker (DDI) — mesmo padrão do seletor de endereço */
+  const countryPickerOverlay = $('#countryPickerOverlay');
+  const countryPickerSearch = $('#countryPickerSearch');
+  const countryPickerList = $('#countryPickerList');
+  const countryPickerEmpty = $('#countryPickerEmpty');
+  const countryPickerCancelBtn = $('#countryPickerCancelBtn');
+
+  function filterCountries(query) {
+    const q = (query || '').trim().toLowerCase();
+    if (!q) return PHONE_COUNTRIES.slice();
+    return PHONE_COUNTRIES.filter(c =>
+      c.name.toLowerCase().includes(q) ||
+      c.dial.includes(q) ||
+      c.code.toLowerCase().includes(q)
+    );
+  }
+
+  function renderCountryList(items) {
+    if (!countryPickerList) return;
+    countryPickerList.innerHTML = '';
+    countryPickerList.setAttribute('aria-label', 'Lista de países');
+    items.forEach(country => {
+      const flag = codeToFlag(country.code);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'address-picker-item';
+      btn.role = 'option';
+      btn.textContent = `${flag ? flag + ' ' : ''}${country.dial} — ${country.name}`;
+      btn.dataset.code = country.code;
+      btn.addEventListener('click', () => {
+        if (phoneCountry) phoneCountry.value = country.code;
+        const triggerText = phoneCountryTrigger?.querySelector('.phone-country-trigger__text');
+        if (triggerText) triggerText.textContent = `${flag ? flag + ' ' : ''}${country.dial} — ${country.name}`;
+        if (phoneCountryTrigger) phoneCountryTrigger.classList.add('has-value');
+        _applyPlaceholderForCountry(country);
+        phoneCountry?.dispatchEvent(new Event('change', { bubbles: true }));
+        closeCountryPicker();
+      });
+      countryPickerList.appendChild(btn);
+    });
+    const isEmpty = items.length === 0;
+    if (countryPickerEmpty) countryPickerEmpty.style.display = isEmpty ? 'block' : 'none';
+  }
+
+  function openCountryPicker() {
+    if (countryPickerSearch) { countryPickerSearch.value = ''; countryPickerSearch.focus(); }
+    renderCountryList(PHONE_COUNTRIES);
+    if (countryPickerOverlay) {
+      countryPickerOverlay.classList.add('is-open');
+      countryPickerOverlay.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  function closeCountryPicker() {
+    if (countryPickerOverlay) {
+      countryPickerOverlay.classList.remove('is-open');
+      countryPickerOverlay.setAttribute('aria-hidden', 'true');
+    }
+    if (countryPickerSearch) countryPickerSearch.value = '';
+  }
+
+  if (phoneCountryTrigger && phoneCountry?.value) phoneCountryTrigger.classList.add('has-value');
+  phoneCountryTrigger?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openCountryPicker(); });
+  countryPickerSearch?.addEventListener('input', () => { renderCountryList(filterCountries(countryPickerSearch.value)); });
+  countryPickerSearch?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeCountryPicker();
+    if (e.key === 'Enter') e.preventDefault();
+  });
+  countryPickerCancelBtn?.addEventListener('click', closeCountryPicker);
+  countryPickerOverlay?.addEventListener('click', (e) => { if (e.target === countryPickerOverlay) closeCountryPicker(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && countryPickerOverlay?.classList.contains('is-open')) closeCountryPicker();
+  });
+
+  // Ao mudar país (por exemplo por outro código que seta phoneCountry.value), atualizar placeholder
+  phoneCountry?.addEventListener('change', () => {
+    const selected = PHONE_COUNTRIES.find(c => c.code === phoneCountry.value) || PHONE_COUNTRIES[0];
+    _applyPlaceholderForCountry(selected);
   });
 
   /* ── 8. STEPPER DE PASSAGEIROS ─────────────────────────── */

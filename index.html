@@ -164,12 +164,11 @@
               <i class="fa-solid fa-phone"></i> Telefone / WhatsApp
             </label>
             <div class="phone-field">
-              <select id="phoneCountry" name="phoneCountry" class="form-input phone-country__select" aria-label="País do telefone">
-                <option value="BR" data-code="+55" selected>🇧🇷 +55</option>
-                <option value="US" data-code="+1">🇺🇸 +1</option>
-                <option value="PT" data-code="+351">🇵🇹 +351</option>
-                <option value="AR" data-code="+54">🇦🇷 +54</option>
-              </select>
+              <button type="button" id="phoneCountryTrigger" class="form-input picker-trigger phone-country-trigger" aria-haspopup="dialog" aria-label="País do telefone">
+                <span class="phone-country-trigger__text">🇧🇷 +55 — Brasil</span>
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <select id="phoneCountry" name="phoneCountry" class="sr-only" aria-hidden="true" tabindex="-1"><option value="BR">🇧🇷 +55 — Brasil</option></select>
               <input type="tel" id="phone" name="phone" class="form-input phone-input"
                 placeholder="(19) 99999-9999" autocomplete="tel" maxlength="20" required aria-required="true" />
             </div>
@@ -924,6 +923,22 @@
     </div>
     <div class="picker-modal__footer">
       <button type="button" class="btn btn--outline btn--sm" id="addressPickerCancelBtn">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="picker-overlay" id="countryPickerOverlay" role="dialog" aria-modal="true" aria-label="Selecionar país" aria-hidden="true">
+  <div class="picker-modal picker-modal--address picker-modal--country" role="document">
+    <div class="picker-modal__header">
+      <span class="picker-modal__title">Selecione o país (DDI)</span>
+    </div>
+    <div class="address-picker-body">
+      <input type="text" id="countryPickerSearch" class="form-input address-picker-search" placeholder="Digite para buscar..." autocomplete="off" aria-label="Buscar país" />
+      <div class="address-picker-list" id="countryPickerList" role="listbox"></div>
+      <p class="address-picker-empty" id="countryPickerEmpty" role="status" aria-live="polite" style="display: none;">Nenhum país encontrado. Tente outra busca.</p>
+    </div>
+    <div class="picker-modal__footer">
+      <button type="button" class="btn btn--outline btn--sm" id="countryPickerCancelBtn">Cancelar</button>
     </div>
   </div>
 </div>
