@@ -27,6 +27,27 @@
 }
 
 /* Painel info esquerdo */
+
+/* Card flutuante com slogan (mesma tipografia do hero) */
+.agendamento__slogan-float {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-xl);
+  border: 1px solid var(--line);
+  padding: 1.75rem 2rem;
+  margin-bottom: 2.5rem;
+  animation: floatCard 4.5s ease-in-out infinite;
+}
+.agendamento__slogan-h1 {
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  margin-bottom: 1rem;
+}
+.agendamento__slogan-desc {
+  max-width: 100%;
+  margin-bottom: 0;
+  font-size: .95rem;
+}
+
 .agendamento__desc {
   color: var(--ink-60);
   font-size: .96rem;
