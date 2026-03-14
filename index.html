@@ -198,10 +198,11 @@
                 <i class="fa-solid fa-circle-dot"></i> Endereço de origem
               </label>
               <div class="input-with-icon input-with-icon--route">
-                <select id="originPredefined" class="form-input form-input--route form-select-route" aria-label="Escolha o endereço de origem">
-                  <option value="">Selecione a origem</option>
-                  <!-- Opções preenchidas por JS a partir de PREDEFINED_ADDRESSES -->
-                </select>
+                <button type="button" id="originPredefinedTrigger" class="form-input form-input--route picker-trigger address-picker-trigger" aria-haspopup="dialog" aria-label="Escolha o endereço de origem">
+                  <span class="address-picker-trigger__text">Selecione a origem</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <select id="originPredefined" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Selecione a origem</option></select>
                 <span class="input-icon"><i class="fa-solid fa-location-crosshairs"></i></span>
               </div>
               <span class="field-msg" id="err-origin-predefined" role="alert"></span>
@@ -246,10 +247,11 @@
                 <i class="fa-solid fa-location-dot"></i> Endereço de destino
               </label>
               <div class="input-with-icon input-with-icon--route">
-                <select id="destinationPredefined" class="form-input form-input--route form-select-route" aria-label="Escolha o endereço de destino">
-                  <option value="">Selecione o destino</option>
-                  <!-- Opções preenchidas por JS -->
-                </select>
+                <button type="button" id="destinationPredefinedTrigger" class="form-input form-input--route picker-trigger address-picker-trigger" aria-haspopup="dialog" aria-label="Escolha o endereço de destino">
+                  <span class="address-picker-trigger__text">Selecione o destino</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <select id="destinationPredefined" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Selecione o destino</option></select>
                 <span class="input-icon"><i class="fa-solid fa-map-location-dot"></i></span>
               </div>
               <span class="field-msg" id="err-destination-predefined" role="alert"></span>
@@ -906,6 +908,22 @@
     <div class="cal-grid" id="calGrid"></div>
     <div class="picker-modal__footer">
       <button type="button" class="btn btn--outline btn--sm" id="dateCancelBtn">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="picker-overlay" id="addressPickerOverlay" role="dialog" aria-modal="true" aria-label="Selecionar endereço" aria-hidden="true">
+  <div class="picker-modal picker-modal--address" role="document">
+    <div class="picker-modal__header">
+      <span class="picker-modal__title" id="addressPickerTitle">Selecione o endereço</span>
+    </div>
+    <div class="address-picker-body">
+      <input type="text" id="addressPickerSearch" class="form-input address-picker-search" placeholder="Digite para buscar..." autocomplete="off" aria-label="Buscar endereço" />
+      <div class="address-picker-list" id="addressPickerList" role="listbox"></div>
+      <p class="address-picker-empty" id="addressPickerEmpty" role="status" aria-live="polite" style="display: none;">Nenhum endereço encontrado. Tente outra busca.</p>
+    </div>
+    <div class="picker-modal__footer">
+      <button type="button" class="btn btn--outline btn--sm" id="addressPickerCancelBtn">Cancelar</button>
     </div>
   </div>
 </div>

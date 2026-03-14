@@ -536,12 +536,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return active?.dataset?.routeMode === 'ir_para' ? 'ir_para' : 'sair_de';
   }
 
-  function populatePredefinedSelect(selectEl) {
+  function fillHiddenSelectOptions(selectEl, placeholder) {
     if (!selectEl) return;
     selectEl.innerHTML = '';
     const opt0 = document.createElement('option');
     opt0.value = '';
-    opt0.textContent = selectEl.id === 'originPredefined' ? 'Selecione a origem' : 'Selecione o destino';
+    opt0.textContent = placeholder;
     selectEl.appendChild(opt0);
     PREDEFINED_ADDRESSES.forEach((addr, i) => {
       const opt = document.createElement('option');
@@ -550,8 +550,96 @@ document.addEventListener('DOMContentLoaded', () => {
       selectEl.appendChild(opt);
     });
   }
-  populatePredefinedSelect(originPredefined);
-  populatePredefinedSelect(destinationPredefined);
+  fillHiddenSelectOptions(originPredefined, 'Selecione a origem');
+  fillHiddenSelectOptions(destinationPredefined, 'Selecione o destino');
+
+  /* Address picker overlay (seletor personalizado com busca) */
+  const addressPickerOverlay = $('#addressPickerOverlay');
+  const addressPickerTitle = $('#addressPickerTitle');
+  const addressPickerSearch = $('#addressPickerSearch');
+  const addressPickerList = $('#addressPickerList');
+  const addressPickerEmpty = $('#addressPickerEmpty');
+  const addressPickerCancelBtn = $('#addressPickerCancelBtn');
+  const originPredefinedTrigger = $('#originPredefinedTrigger');
+  const destinationPredefinedTrigger = $('#destinationPredefinedTrigger');
+  let _addressPickerContext = null; // 'origin' | 'destination'
+
+  function filterAddresses(query) {
+    const q = (query || '').trim().toLowerCase();
+    if (!q) return PREDEFINED_ADDRESSES.slice();
+    return PREDEFINED_ADDRESSES.filter(addr => addr.label.toLowerCase().includes(q));
+  }
+
+  function renderAddressList(items) {
+    if (!addressPickerList) return;
+    addressPickerList.innerHTML = '';
+    addressPickerList.setAttribute('aria-label', _addressPickerContext === 'origin' ? 'Lista de endereços de origem' : 'Lista de endereços de destino');
+    items.forEach((addr, i) => {
+      const idx = PREDEFINED_ADDRESSES.indexOf(addr);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'address-picker-item';
+      btn.role = 'option';
+      btn.textContent = addr.label;
+      btn.dataset.index = String(idx);
+      btn.addEventListener('click', () => {
+        const index = btn.dataset.index;
+        const select = _addressPickerContext === 'origin' ? originPredefined : destinationPredefined;
+        const trigger = _addressPickerContext === 'origin' ? originPredefinedTrigger : destinationPredefinedTrigger;
+        const triggerText = trigger?.querySelector('.address-picker-trigger__text');
+        const inputEl = _addressPickerContext === 'origin' ? originInput : destinationInput;
+        if (select) select.value = index;
+        if (triggerText) triggerText.textContent = addr.label;
+        if (trigger) trigger.classList.add('has-value');
+        if (inputEl) {
+          inputEl.value = addr.label;
+          inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+          inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        if (typeof MapsService !== 'undefined') {
+          if (_addressPickerContext === 'origin') MapsService.setOriginFromCoords(addr);
+          else MapsService.setDestinationFromCoords(addr);
+        }
+        _clearFieldError(_addressPickerContext === 'origin' ? 'origin-predefined' : 'destination-predefined');
+        if (quoteResult) quoteResult.classList.remove('show');
+        closeAddressPicker();
+      });
+      addressPickerList.appendChild(btn);
+    });
+    const isEmpty = items.length === 0;
+    if (addressPickerEmpty) addressPickerEmpty.style.display = isEmpty ? 'block' : 'none';
+  }
+
+  function openAddressPicker(context) {
+    _addressPickerContext = context;
+    if (addressPickerTitle) addressPickerTitle.textContent = context === 'origin' ? 'Selecione a origem' : 'Selecione o destino';
+    if (addressPickerSearch) { addressPickerSearch.value = ''; addressPickerSearch.focus(); }
+    renderAddressList(PREDEFINED_ADDRESSES);
+    if (addressPickerOverlay) {
+      addressPickerOverlay.classList.add('is-open');
+      addressPickerOverlay.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  function closeAddressPicker() {
+    _addressPickerContext = null;
+    if (addressPickerOverlay) {
+      addressPickerOverlay.classList.remove('is-open');
+      addressPickerOverlay.setAttribute('aria-hidden', 'true');
+    }
+    if (addressPickerSearch) addressPickerSearch.value = '';
+  }
+
+  originPredefinedTrigger?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openAddressPicker('origin'); });
+  destinationPredefinedTrigger?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openAddressPicker('destination'); });
+  addressPickerSearch?.addEventListener('input', () => { renderAddressList(filterAddresses(addressPickerSearch.value)); });
+  addressPickerSearch?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAddressPicker();
+    if (e.key === 'Enter') e.preventDefault();
+  });
+  addressPickerCancelBtn?.addEventListener('click', closeAddressPicker);
+  addressPickerOverlay?.addEventListener('click', (e) => { if (e.target === addressPickerOverlay) closeAddressPicker(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && addressPickerOverlay?.classList.contains('is-open')) closeAddressPicker(); });
 
   function applyRouteMode(mode) {
     const isSairDe = mode === 'sair_de';
@@ -566,6 +654,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (originPredefined) originPredefined.value = '';
     if (destinationPredefined) destinationPredefined.value = '';
+    if (originPredefinedTrigger) {
+      originPredefinedTrigger.classList.remove('has-value');
+      const t = originPredefinedTrigger.querySelector('.address-picker-trigger__text');
+      if (t) t.textContent = 'Selecione a origem';
+    }
+    if (destinationPredefinedTrigger) {
+      destinationPredefinedTrigger.classList.remove('has-value');
+      const t = destinationPredefinedTrigger.querySelector('.address-picker-trigger__text');
+      if (t) t.textContent = 'Selecione o destino';
+    }
     if (originInput) originInput.value = '';
     if (destinationInput) destinationInput.value = '';
     if (typeof MapsService !== 'undefined') MapsService.reset();
@@ -583,41 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  originPredefined?.addEventListener('change', () => {
-    _clearFieldError('origin-predefined');
-    const idx = originPredefined.value;
-    if (idx === '') {
-      if (originInput) originInput.value = '';
-      if (typeof MapsService !== 'undefined') MapsService.reset();
-    } else {
-      const addr = PREDEFINED_ADDRESSES[parseInt(idx, 10)];
-      if (addr && originInput) {
-        originInput.value = addr.label;
-        originInput.dispatchEvent(new Event('input', { bubbles: true }));
-        originInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-      if (addr && typeof MapsService !== 'undefined') MapsService.setOriginFromCoords(addr);
-    }
-    if (quoteResult) quoteResult.classList.remove('show');
-  });
-
-  destinationPredefined?.addEventListener('change', () => {
-    _clearFieldError('destination-predefined');
-    const idx = destinationPredefined.value;
-    if (idx === '') {
-      if (destinationInput) destinationInput.value = '';
-      if (typeof MapsService !== 'undefined') MapsService.reset();
-    } else {
-      const addr = PREDEFINED_ADDRESSES[parseInt(idx, 10)];
-      if (addr && destinationInput) {
-        destinationInput.value = addr.label;
-        destinationInput.dispatchEvent(new Event('input', { bubbles: true }));
-        destinationInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-      if (addr && typeof MapsService !== 'undefined') MapsService.setDestinationFromCoords(addr);
-    }
-    if (quoteResult) quoteResult.classList.remove('show');
-  });
+  /* Valores de origem/destino pré-definidos são definidos pelo address picker; os selects ocultos mantêm o value para validação e submit */
 
   /* ── 11. VALIDAÇÃO INLINE ──────────────────────────────── */
   function setFieldError(id, msg) {
@@ -625,8 +689,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!knownFields.includes(id)) return;
 
     let input = $('#' + id) || $(`[id="${id}"]`);
-    if (id === 'origin-predefined') input = $('#originPredefined');
-    if (id === 'destination-predefined') input = $('#destinationPredefined');
+    if (id === 'origin-predefined') input = $('#originPredefinedTrigger');
+    if (id === 'destination-predefined') input = $('#destinationPredefinedTrigger');
     const errEl = $('#err-' + id);
     if (!input) return;
     if (msg) {
@@ -643,7 +707,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function _clearFieldError(id) {
     const knownFields = ['name','phone','origin','destination','date','time','passengers','luggage','origin-predefined','destination-predefined'];
     if (!knownFields.includes(id)) return;
-    const input = $('#' + id);
+    let input = $('#' + id);
+    if (id === 'origin-predefined') input = $('#originPredefinedTrigger');
+    if (id === 'destination-predefined') input = $('#destinationPredefinedTrigger');
     const errEl = $('#err-' + id);
     input?.classList.remove('field-error');
     if (errEl) { errEl.textContent = ''; errEl.classList.remove('show'); }
@@ -722,13 +788,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isSairDe && !originPredefined?.value) {
         setFieldError('origin-predefined', 'Selecione o endereço de origem.');
         quoteResult?.classList.remove('show');
-        $('#originPredefined')?.focus();
+        $('#originPredefinedTrigger')?.focus();
         return;
       }
       if (!isSairDe && !destinationPredefined?.value) {
         setFieldError('destination-predefined', 'Selecione o endereço de destino.');
         quoteResult?.classList.remove('show');
-        $('#destinationPredefined')?.focus();
+        $('#destinationPredefinedTrigger')?.focus();
         return;
       }
 
@@ -761,7 +827,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstErrorMsg = form?.querySelector('.field-msg.show');
         if (firstErrorMsg) firstErrorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
         const firstInvalid = Object.keys(allErrors)[0];
-        const focusIds = { name: 'name', phone: 'phone', origin: 'origin', destination: 'destination', 'origin-predefined': 'originPredefined', 'destination-predefined': 'destinationPredefined', date: 'dateTrigger', time: 'timeTrigger', passengers: 'btnMinus', luggage: 'btnLuggageMinus' };
+        const focusIds = { name: 'name', phone: 'phone', origin: 'origin', destination: 'destination', 'origin-predefined': 'originPredefinedTrigger', 'destination-predefined': 'destinationPredefinedTrigger', date: 'dateTrigger', time: 'timeTrigger', passengers: 'btnMinus', luggage: 'btnLuggageMinus' };
         const toFocus = focusIds[firstInvalid] ? $(`#${focusIds[firstInvalid]}`) : null;
         if (toFocus) toFocus.focus({ preventScroll: true });
         return;
