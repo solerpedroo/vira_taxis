@@ -652,6 +652,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (customQuotePhoneCountry?.value === 'BR') customQuotePhone.value = Validations.maskPhone(customQuotePhone.value);
   });
 
+  /* Validação em tempo real (blur) no modal de cotação — mesmas regras do formulário principal */
+  const customQuoteBlurFields = [
+    { el: customQuoteName, field: 'name', getValue: () => (customQuoteName?.value ?? '').trim() },
+    { el: customQuotePhone, field: 'phone', getValue: () => (customQuotePhone?.value ?? '').trim() },
+    { el: customQuoteOrigin, field: 'origin', getValue: () => (customQuoteOrigin?.value ?? '').trim() },
+    { el: customQuoteDestination, field: 'destination', getValue: () => (customQuoteDestination?.value ?? '').trim() },
+    { el: customQuoteDateTrigger, field: 'date', getValue: () => customQuoteDate?.value ?? '' },
+    { el: customQuoteTimeTrigger, field: 'time', getValue: () => customQuoteTime?.value ?? '' },
+    { el: customQuotePassengers, field: 'passengers', getValue: () => String(customQuotePassengers?.value ?? '1') },
+    { el: customQuoteLuggage, field: 'luggage', getValue: () => String(customQuoteLuggage?.value ?? '0') },
+  ];
+  customQuoteBlurFields.forEach(({ el, field, getValue }) => {
+    el?.addEventListener('blur', () => {
+      const r = Validations.validateField(field, getValue());
+      setCustomQuoteFieldError(field, r.valid ? '' : r.message);
+    });
+  });
+
   function openCustomQuote() {
     if (customQuoteOverlay) {
       customQuoteOverlay.classList.add('is-open');
@@ -673,6 +691,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape' && customQuoteOverlay?.classList.contains('is-open')) closeCustomQuote();
   });
 
+  function setCustomQuoteFieldError(field, msg) {
+    const id = 'customQuote' + field.charAt(0).toUpperCase() + field.slice(1);
+    const errEl = $(`#err-${id}`);
+    let input = $(`#${id}`);
+    if (field === 'date') input = customQuoteDateTrigger;
+    if (field === 'time') input = customQuoteTimeTrigger;
+    if (errEl) { errEl.textContent = msg || ''; errEl.classList.toggle('show', !!msg); }
+    input?.classList.toggle('field-error', !!msg);
+    if (field === 'date' && customQuoteDateTrigger) customQuoteDateTrigger.classList.toggle('field-error', !!msg);
+    if (field === 'time' && customQuoteTimeTrigger) customQuoteTimeTrigger.classList.toggle('field-error', !!msg);
+  }
+
   customQuoteSubmitBtn?.addEventListener('click', () => {
     const raw = {
       name:        (customQuoteName?.value ?? '').trim(),
@@ -685,10 +715,22 @@ document.addEventListener('DOMContentLoaded', () => {
       luggage:     String(customQuoteLuggage?.value ?? '0'),
     };
     const { valid, errors } = Validations.validateForm(raw);
+    const placeErrors = {};
+    if (typeof MapsService !== 'undefined' && MapsService.isActive()) {
+      if (raw.origin.length >= 5 && !MapsService.getCustomQuoteOriginPlace()) {
+        placeErrors.origin = 'Selecione o endereço de origem na lista de sugestões ao digitar.';
+      }
+      if (raw.destination.length >= 5 && !MapsService.getCustomQuoteDestinationPlace()) {
+        placeErrors.destination = 'Selecione o endereço de destino na lista de sugestões ao digitar.';
+      }
+    }
+    const allErrors = { ...errors, ...placeErrors };
     $$('#customQuoteForm .field-msg').forEach(el => { el.textContent = ''; el.classList.remove('show'); });
     $$('#customQuoteForm .form-input').forEach(el => el.classList.remove('field-error'));
-    if (!valid) {
-      Object.entries(errors).forEach(([field, msg]) => {
+    customQuoteDateTrigger?.classList.remove('field-error');
+    customQuoteTimeTrigger?.classList.remove('field-error');
+    if (!valid || Object.keys(placeErrors).length > 0) {
+      Object.entries(allErrors).forEach(([field, msg]) => {
         const id = 'customQuote' + field.charAt(0).toUpperCase() + field.slice(1);
         const el = $(`#${id}`);
         const errEl = $(`#err-${id}`);

@@ -15,6 +15,8 @@ const MapsService = (() => {
   let _origin = null;
   let _dest   = null;
   let _km     = null;
+  let _customQuoteOriginPlace = null;
+  let _customQuoteDestinationPlace = null;
 
   function _initAC(id, onSelect) {
     const el = document.getElementById(id);
@@ -70,6 +72,39 @@ const MapsService = (() => {
     });
   }
 
+  function _initACCustomQuote(id, storeKey) {
+    const el = document.getElementById(id);
+    if (!el || el.dataset.acInit) return;
+    el.dataset.acInit = '1';
+
+    const ac = new google.maps.places.Autocomplete(el, {
+      componentRestrictions: { country: 'br' },
+      fields: ['geometry', 'formatted_address', 'name'],
+    });
+
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const pac = document.querySelector('.pac-container');
+        if (pac && getComputedStyle(pac).display !== 'none') e.preventDefault();
+      }
+    });
+
+    ac.addListener('place_changed', () => {
+      const place = ac.getPlace();
+      if (!place || !place.geometry) return;
+      const addr = (place.formatted_address || place.name || '').slice(0, 300);
+      el.value = addr;
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      if (storeKey === 'origin') _customQuoteOriginPlace = place;
+      if (storeKey === 'destination') _customQuoteDestinationPlace = place;
+    });
+
+    el.addEventListener('input', () => {
+      if (storeKey === 'origin') _customQuoteOriginPlace = null;
+      if (storeKey === 'destination') _customQuoteDestinationPlace = null;
+    });
+  }
+
   function _geocodeAndSet(id, address, onDone) {
     if (!address || address.trim().length < 8) { onDone(null); return; }
     const geocoder = new google.maps.Geocoder();
@@ -119,6 +154,8 @@ const MapsService = (() => {
     const run = () => {
       _initAC('origin',      p => { _origin = p; _tryDist(); });
       _initAC('destination', p => { _dest   = p; _tryDist(); });
+      _initACCustomQuote('customQuoteOrigin', 'origin');
+      _initACCustomQuote('customQuoteDestination', 'destination');
     };
 
     if (document.readyState === 'loading') {
@@ -166,11 +203,13 @@ const MapsService = (() => {
     _tryDist();
   }
 
-  function isActive()           { return _active; }
-  function getDistanceKm()      { return _km; }
-  function getOriginPlace()     { return _origin; }
-  function getDestinationPlace() { return _dest; }
-  function reset()              { _origin = null; _dest = null; _km = null; }
+  function isActive()                    { return _active; }
+  function getDistanceKm()              { return _km; }
+  function getOriginPlace()             { return _origin; }
+  function getDestinationPlace()        { return _dest; }
+  function getCustomQuoteOriginPlace()      { return _customQuoteOriginPlace; }
+  function getCustomQuoteDestinationPlace() { return _customQuoteDestinationPlace; }
+  function reset()                      { _origin = null; _dest = null; _km = null; }
 
   return { isActive, getDistanceKm, getOriginPlace, getDestinationPlace, setOriginFromCoords, setDestinationFromCoords, reset };
 })();

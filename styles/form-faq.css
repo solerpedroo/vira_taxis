@@ -985,6 +985,9 @@
   margin-top: 2px;
   overflow: hidden;
 }
+body:has(#customQuoteOverlay.is-open) .pac-container {
+  z-index: 10001 !important;
+}
 .pac-container::after {
   background-image: none !important;
   height: 0 !important;
