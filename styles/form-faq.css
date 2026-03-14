@@ -21,9 +21,11 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.05fr 1.45fr;
-  gap: 4rem;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 3.5rem;
   align-items: start;
+  max-width: 1100px;
+  margin-inline: auto;
 }
 
 /* Painel info esquerdo */
@@ -34,18 +36,24 @@
   border-radius: var(--r-xl);
   box-shadow: var(--sh-xl);
   border: 1px solid var(--line);
-  padding: 1.75rem 2rem;
-  margin-bottom: 2.5rem;
+  padding: 1.35rem 1.6rem;
+  margin-bottom: 2rem;
   animation: floatCard 4.5s ease-in-out infinite;
 }
+.agendamento__tag {
+  margin-bottom: .9rem;
+  font-size: .7rem;
+  padding: .28rem .7rem;
+}
 .agendamento__slogan-h1 {
-  font-size: clamp(2rem, 4.2vw, 3rem);
-  margin-bottom: 1rem;
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  margin-bottom: .75rem;
 }
 .agendamento__slogan-desc {
   max-width: 100%;
   margin-bottom: 0;
-  font-size: .95rem;
+  font-size: .88rem;
+  line-height: 1.7;
 }
 
 .agendamento__desc {
