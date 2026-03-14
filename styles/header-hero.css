@@ -162,9 +162,11 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 4rem;
   align-items: center;
+  max-width: 560px;
+  margin-inline: auto;
 }
 
 /* Hero tag */
